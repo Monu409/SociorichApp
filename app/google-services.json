@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "819598392807",
+    "firebase_url": "https://sociorich-bdfc4.firebaseio.com",
+    "project_id": "sociorich-bdfc4",
+    "storage_bucket": "sociorich-bdfc4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819598392807:android:61dbaef76929734b",
+        "android_client_info": {
+          "package_name": "com.app.sociorichapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "819598392807-02vqj5860omrr9n0192d1teis7mmi9a1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.sociorichapp",
+            "certificate_hash": "6d9841fa475712af945c2f9afd290852525dd10c"
+          }
+        },
+        {
+          "client_id": "819598392807-3l7epj3l253kcndren9derfnk0a6ghol.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.sociorichapp",
+            "certificate_hash": "92a2fe3a82d7d14f70567cc093f9e0da6b8bfc0c"
+          }
+        },
+        {
+          "client_id": "819598392807-qucqho6l59570bcb4f6fbom31r8dsf88.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2EHPJVf1qJOFiBZOK32CSJCUhNdsLXV0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "819598392807-qucqho6l59570bcb4f6fbom31r8dsf88.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

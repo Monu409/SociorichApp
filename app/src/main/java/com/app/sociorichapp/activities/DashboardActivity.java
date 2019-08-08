@@ -1,0 +1,522 @@
+package com.app.sociorichapp.activities;
+
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.os.Bundle;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.SearchView;
+
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.app.sociorichapp.R;
+import com.app.sociorichapp.adapters.DashbordAdapter;
+import com.app.sociorichapp.app_utils.ConstantMethods;
+import com.app.sociorichapp.app_utils.DbHelper;
+import com.app.sociorichapp.app_utils.MainSliderAdapter;
+import com.app.sociorichapp.app_utils.PicassoImageLoadingService;
+import com.app.sociorichapp.modals.DashModal;
+import com.app.sociorichapp.modals.LoginActivity;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import ss.com.bannerslider.Slider;
+
+import static com.app.sociorichapp.app_utils.AppApis.GET_BANNER_DATA;
+import static com.app.sociorichapp.app_utils.AppApis.HOMEPAGE_URL_2;
+import static com.app.sociorichapp.app_utils.AppApis.HOMEPAGE_URL_LOGIN;
+import static com.app.sociorichapp.app_utils.AppApis.HOMEPAGE_URL_LOGOUT;
+import static com.app.sociorichapp.app_utils.AppApis.MY_INTEREST_URL;
+import static com.app.sociorichapp.app_utils.AppApis.MY_NETWORK_URL;
+
+public class DashboardActivity extends AppCompatActivity {
+    Map<String,String> catMap = new HashMap<>();
+    private RecyclerView homeList;
+    private LinearLayout createPostView,withLoginHeader,tabView;
+    private RelativeLayout logoutHeader;
+    private TextView loginTxt,signupTxt,globlTxt,netwrkTxt,intrstTxt;
+    private LinearLayout globalView,networkView,intrestView;
+    static String postupdation="N";
+    private SQLiteDatabase dataBase;
+    private Button aboutBtn;
+
+    int visibleItemCount, totalItemCount = 1;
+    int firstVisiblesItems = 0;
+    int totalPages = 10; // get your total pages from web service first response
+    int current_page = 1;
+    boolean canLoadMoreData = true; // make this variable false while your web service call is going on.
+    LinearLayoutManager linearLayoutManager;
+    String tabTag = "Global";
+    int i = 0;
+    List<DashModal> dashModals = new ArrayList<>();
+    private Slider slider;
+    List<String> imgList = new ArrayList<>();
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        String checkLogin = ConstantMethods.getStringPreference("login_status",this);
+        if(checkLogin.equals("login")){
+
+        }
+        else {
+            getSupportActionBar().hide();
+        }
+        setContentView(R.layout.activity_dashboard);
+        setTitle("SocioRich");
+        loginTxt = findViewById(R.id.login_txt);
+        signupTxt = findViewById(R.id.sign_up_txt);
+        aboutBtn = findViewById(R.id.about_btn);
+        loginTxt.setOnClickListener(view -> startActivity(new Intent(this, LoginActivity.class)));
+        signupTxt.setOnClickListener(view -> startActivity(new Intent(this, CreateAccActivity.class)));
+        homeList = findViewById(R.id.home_list);
+        createPostView = findViewById(R.id.create_post_view);
+//        withLoginHeader = findViewById(R.id.with_login_header);
+        tabView = findViewById(R.id.tab_view);
+        logoutHeader = findViewById(R.id.logout_header);
+        globalView = findViewById(R.id.global_view);
+        networkView = findViewById(R.id.network_view);
+        intrestView = findViewById(R.id.interest_view);
+        globlTxt = findViewById(R.id.globl_txt);
+        netwrkTxt = findViewById(R.id.netwrk_txt);
+        intrstTxt = findViewById(R.id.intrst_txt);
+        Slider.init(new PicassoImageLoadingService(this));
+
+        getBannerData();
+        if(checkLogin.equals("login")){
+//            withLoginHeader.setVisibility(View.VISIBLE);
+            createPostView.setVisibility(View.VISIBLE);
+            tabView.setVisibility(View.VISIBLE);
+            logoutHeader.setVisibility(View.GONE);
+            getHomePageData(HOMEPAGE_URL_LOGIN,"0");
+            getCatName(HOMEPAGE_URL_2);
+            globlTxt.setTextColor(Color.parseColor("#ef633f"));
+            globalView.setOnClickListener(v->{
+                tabTag = "Global";
+                changeTextColor();
+                globlTxt.setTextColor(Color.parseColor("#ef633f"));
+                getHomePageData(HOMEPAGE_URL_LOGIN,"0");
+                getCatName(HOMEPAGE_URL_2);
+            });
+            networkView.setOnClickListener(v->{
+                tabTag = "Network";
+                changeTextColor();
+                netwrkTxt.setTextColor(Color.parseColor("#ef633f"));
+                getHomePageData(MY_NETWORK_URL,"0");
+                getCatName(HOMEPAGE_URL_2);
+            });
+            intrestView.setOnClickListener(v->{
+                tabTag = "Intrest";
+                changeTextColor();
+                intrstTxt.setTextColor(Color.parseColor("#ef633f"));
+                getHomePageData(MY_INTEREST_URL,"0");
+                getCatName(HOMEPAGE_URL_2);
+            });
+            aboutBtn.setText("Feedback");
+            aboutBtn.setOnClickListener(view -> startActivity(new Intent(this, FeedbackActivity.class)));
+        }
+        else if(checkLogin.equals("logout")){
+//            withLoginHeader.setVisibility(View.GONE);
+            createPostView.setVisibility(View.GONE);
+            tabView.setVisibility(View.GONE);
+            logoutHeader.setVisibility(View.VISIBLE);
+            getHomePageData(HOMEPAGE_URL_LOGOUT,"");
+            getCatName(HOMEPAGE_URL_2);
+            aboutBtn.setText("About");
+            aboutBtn.setOnClickListener(view ->{
+                Intent intent = new Intent(this, AboutUsActivity.class);
+                intent.putExtra("url_is","http://dev.sociorich.com/about");
+                intent.putExtra("title_is","About Us");
+                startActivity(intent);
+            });
+        }
+        else {
+//            withLoginHeader.setVisibility(View.GONE);
+            createPostView.setVisibility(View.GONE);
+            tabView.setVisibility(View.GONE);
+            logoutHeader.setVisibility(View.VISIBLE);
+            getHomePageData(HOMEPAGE_URL_LOGOUT,"");
+            getCatName(HOMEPAGE_URL_2);
+        }
+        linearLayoutManager = new LinearLayoutManager(this);
+        homeList.setLayoutManager(linearLayoutManager);
+        homeList.setNestedScrollingEnabled(false);
+
+        homeList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+
+                if (dy > 0) //check for scroll down
+                {
+                    visibleItemCount = linearLayoutManager.getChildCount();
+                    totalItemCount = linearLayoutManager.getItemCount();
+                    firstVisiblesItems = linearLayoutManager.findFirstVisibleItemPosition();
+
+                    if (canLoadMoreData) {
+                        if ((visibleItemCount + firstVisiblesItems) >= totalItemCount) {
+                            if (current_page < totalPages) {
+                                canLoadMoreData  = false;
+                                i=+i;
+                                String pageNoStr = String.valueOf(current_page);
+                                if(checkLogin.equals("login")){
+                                    if(tabTag.equals("Global")){
+                                        getHomePageData(HOMEPAGE_URL_LOGIN,pageNoStr);
+                                        homeList.scrollToPosition(50);
+                                    }
+                                    else if(tabTag.equals("Network")){
+                                        getHomePageData(MY_NETWORK_URL,pageNoStr);
+                                    }
+                                    else if(tabTag.equals("Intrest")){
+                                        getHomePageData(MY_INTEREST_URL,pageNoStr);
+                                    }
+                                }
+//                                getHomePageData1(pageNoStr);
+                            }
+                        }
+                    }
+
+                }
+            }
+        });
+        createPostView.setOnClickListener(v->{
+            Intent intent = new Intent(this,Create_Post.class);
+            startActivity(intent);
+        });
+
+        if(postupdation==null){
+
+        }
+        else {
+            if(postupdation.equals("S")){
+                postupdation="N";
+                DbHelper db = new DbHelper(this);
+                dataBase = db.getWritableDatabase();
+                dataBase.execSQL("delete from "+ DbHelper.TABLE_NAME);
+            }
+            else {
+
+            }
+        }
+    }
+
+    private void getHomePageData(String url,String pageNo){
+        ConstantMethods.showProgressbar(this);
+        String userToken = ConstantMethods.getStringPreference("user_token",this);
+        AndroidNetworking
+                .get(url+pageNo)
+                .setPriority(Priority.MEDIUM)
+                .addHeaders("authorization","Bearer "+userToken)
+                .build()
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        ConstantMethods.dismissProgressBar();
+                        dashModals.clear();
+                        for (int i=0;i<response.length();i++){
+                            DashModal dashModal = new DashModal();
+                            try {
+                                JSONObject allObjs = response.getJSONObject(i);
+                                JSONObject postJsonObj = allObjs.getJSONObject("post");
+                                JSONObject uProfileJsonObj = allObjs.getJSONObject("userProfile");
+                                String displayName = uProfileJsonObj.getString("displayName");
+                                String postId = postJsonObj.getString("identity");
+                                dashModal.setPostIdStr(postId);
+                                String createdAt = uProfileJsonObj.getString("modifiedAt");
+                                Long longTime = Long.parseLong(createdAt);
+                                String theDate = ConstantMethods.getDate(longTime);
+                                String title = postJsonObj.getString("title");
+                                String socioCrdt = postJsonObj.getString("socioMoneyDonated");
+                                String catId = postJsonObj.getString("categoryId");
+                                JSONObject profilePicObj = null;
+                                dashModal.setCategoryId(catId);
+                                try{
+                                    profilePicObj = uProfileJsonObj.getJSONObject("profilePic");
+                                }catch(JSONException je){
+                                    //json object not found
+                                }
+
+                                JSONArray mediaArr = postJsonObj.getJSONArray("mediaList");
+                                List<String> mediaList = new ArrayList<>();
+                                for(int j=0;j<mediaArr.length();j++){
+                                    JSONObject mediaObj = mediaArr.getJSONObject(j);
+                                    String mediaStr = mediaObj.getString("url");
+                                    mediaList.add(mediaStr);
+                                }
+                                dashModal.setMediaList(mediaList);
+
+
+
+                                JSONObject commentObj = allObjs.getJSONObject("comments");
+                                String totalComntStr = commentObj.getString("numberOfElements");
+                                JSONArray contentArr = commentObj.getJSONArray("content");
+                                List<String> userList = new ArrayList<>();
+                                List<String> comentList = new ArrayList<>();
+                                for(int k=0;k<contentArr.length();k++){
+                                    JSONObject contentObj = contentArr.getJSONObject(k);
+                                    JSONObject userObject = contentObj.getJSONObject("user");
+                                    JSONObject comentObject = contentObj.getJSONObject("comment");
+                                    String userStr = userObject.getString("displayName");
+                                    String commentStr = comentObject.getString("comment");
+                                    userList.add(userStr);
+                                    comentList.add(commentStr);
+                                }
+
+                                dashModal.setTestComments(comentList);
+                                dashModal.setTestUsers(userList);
+
+                                String createdBy = postJsonObj.getString("createdBy");
+                                dashModal.setUserIdentity(createdBy);
+
+                                JSONArray userExprsnArr = allObjs.getJSONArray("userExpressions");
+                                Log.e("value",""+userExprsnArr);
+                                if(userExprsnArr.length()==0){
+                                    dashModal.setmVeryfyStr("");
+                                    dashModal.setmLikeStr("");
+                                }
+                                else{
+                                    dashModal.setmVeryfyStr("VERIFY");
+                                    dashModal.setmLikeStr("LIKE");
+                                }
+                                String exprsnStr = postJsonObj.getString("expressions");
+                                if (exprsnStr.equals("null")) {
+                                    dashModal.setLikeStr("0");
+                                    dashModal.setVerifyStr("0");
+
+                                } else {
+                                    JSONObject exprsnObj = postJsonObj.getJSONObject("expressions");
+                                    JSONObject obj4 = exprsnObj.getJSONObject("countByType");
+
+                                    if (obj4.isNull("VERIFY") == true) {
+                                        //   profilepic = ;
+                                        dashModal.setVerifyStr("0");
+                                    } else {
+                                        String verfy = obj4.getString("VERIFY");
+                                        dashModal.setVerifyStr(verfy);
+                                        // actor.setSt_imgfile(cname1);
+                                    }
+                                    String like = obj4.getString("LIKE");
+                                    dashModal.setLikeStr(like);
+
+                                }
+                                String profilePicUrl = "";
+                                if (profilePicObj != null) {
+                                    profilePicUrl = profilePicObj.getString("url");
+                                }
+                                String catName = catMap.get(catId);
+                                dashModal.setCatNameStr(catName);
+                                dashModal.setUserNameStr(displayName);
+                                dashModal.setDateStr(theDate);
+                                dashModal.setPostDataStr(title);
+                                dashModal.setProfilePicStr(profilePicUrl);
+                                dashModal.setSocioCreStr(socioCrdt);
+                                dashModal.setCommentStr(totalComntStr);
+                                dashModals.add(dashModal);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        DashbordAdapter dashbordAdapter = new DashbordAdapter(dashModals,DashboardActivity.this);
+                        homeList.setAdapter(dashbordAdapter);
+                        canLoadMoreData  = true;
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        ConstantMethods.dismissProgressBar();
+                        Toast.makeText(DashboardActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void getCatName(String url){
+        AndroidNetworking
+                .get(url)
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        for(int i=0;i<response.length();i++){
+                            try {
+                                JSONObject jsonObject = response.getJSONObject(i);
+                                String createdAt = jsonObject.getString("identity");
+                                String name = jsonObject.getString("name");
+                                catMap.put(createdAt,name);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        Toast.makeText(DashboardActivity.this, "Some data is not there", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+
+    private void changeTextColor(){
+        globlTxt.setTextColor(Color.parseColor("#000000"));
+        netwrkTxt.setTextColor(Color.parseColor("#000000"));
+        intrstTxt.setTextColor(Color.parseColor("#000000"));
+    }
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.main_menu, menu);
+//        return true;
+//    }
+
+    @Override
+    public boolean onCreateOptionsMenu( Menu menu) {
+        getMenuInflater().inflate( R.menu.main_menu, menu);
+
+        MenuItem myActionMenuItem = menu.findItem( R.id.action_search);
+        SearchView searchView = (SearchView) myActionMenuItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Toast like print
+                if( ! searchView.isIconified()) {
+                    searchView.setIconified(true);
+                    Intent intent = new Intent(DashboardActivity.this,SearchResultActivity.class);
+                    intent.putExtra("search_key",query);
+                    startActivity(intent);
+                }
+                myActionMenuItem.collapseActionView();
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String s) {
+                // UserFeedback.show( "SearchOnQueryTextChanged: " + s);
+                return false;
+            }
+        });
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.profile_menu:
+                startActivity(new Intent(this,ProfileUpActivity.class));
+                return true;
+            case R.id.global_menu:
+                // Do whatever you want to do on logout click.
+                return true;
+            case R.id.settings_menu:
+                startActivity(new Intent(this,SettingsActivity.class));
+                return true;
+            case R.id.help_guide:
+                Intent intent = new Intent(this, AboutUsActivity.class);
+                intent.putExtra("url_is","http://dev.sociorich.com/tutorial");
+                intent.putExtra("title_is","Help & Guide");
+                startActivity(intent);
+                return true;
+            case R.id.logout_menu:
+                alertDialog(this);
+                return true;
+            case R.id.badge:
+                Intent intentNo = new Intent(this,NotificationActivity.class);
+                startActivity(intentNo);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void alertDialog(Context context){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+        builder1.setTitle("Logout");
+        builder1.setMessage("Do you want to logout?");
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        ConstantMethods.setStringPreference("login_status","logout",context);
+                        finish();
+                        startActivity(getIntent());
+                    }
+                });
+
+        builder1.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+    }
+
+    private void getBannerData(){
+        AndroidNetworking
+                .get(GET_BANNER_DATA)
+                .build()
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        for(int i=0;i<response.length();i++){
+                            try {
+                                JSONObject bannerObject = response.getJSONObject(i);
+                                JSONObject postObj = bannerObject.getJSONObject("post");
+                                JSONArray mediaList = postObj.getJSONArray("mediaList");
+                                JSONObject imgObj = mediaList.getJSONObject(0);
+                                String urlImg = imgObj.getString("url");
+                                imgList.add(urlImg);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        slider = findViewById(R.id.banner_slider);
+                        slider.setAdapter(new MainSliderAdapter(imgList));
+                        slider.setInterval(3000);
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+
+                    }
+                });
+    }
+
+}
+

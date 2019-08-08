@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/profile_menu"
+        android:orderInCategory="100"
+        android:title="Profile"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/global_menu"
+        android:orderInCategory="100"
+        android:title="Global"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/settings_menu"
+        android:orderInCategory="100"
+        android:title="Settings"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/help_guide"
+        android:orderInCategory="100"
+        android:title="Help &amp; Guide"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/logout_menu"
+        android:orderInCategory="100"
+        android:title="Sign Out"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="always|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        android:title="Search"/>
+
+    <item
+        android:id="@+id/badge"
+        android:actionLayout="@layout/feed_update_count"
+        android:icon="@drawable/notification"
+        app:showAsAction="always"
+        android:title="notification">
+    </item>
+</menu>

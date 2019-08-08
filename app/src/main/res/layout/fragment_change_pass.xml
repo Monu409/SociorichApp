@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/curnt_pass_edt"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:paddingLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rect_view_orange"
+        android:hint="Current Password"
+        android:inputType="textPassword"
+        android:maxLines="1"
+        android:layout_below="@id/email_edt"
+        />
+
+    <EditText
+        android:id="@+id/new_pass_edt"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:paddingLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rect_view_orange"
+        android:hint="New Password"
+        android:inputType="textPassword"
+        android:maxLines="1"
+        android:layout_below="@id/email_edt"
+        />
+
+    <EditText
+        android:id="@+id/retype_pass_edt"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:paddingLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rect_view_orange"
+        android:hint="Re-Type New Password"
+        android:inputType="textPassword"
+        android:maxLines="1"
+        android:layout_below="@id/email_edt"
+        />
+    <Button
+        android:id="@+id/submit_btn"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/forgot_txt"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorPrimary"
+        android:text="Change"
+        android:textColor="@color/white" />
+
+</LinearLayout>

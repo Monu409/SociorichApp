@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="15dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/logo_txt_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/login_text" />
+    </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/email_edt"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/logo_txt_view"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rect_view_orange"
+        android:hint="Email Id/Mobile Number"
+        android:inputType="textEmailAddress"
+        android:maxLines="1"
+        android:paddingLeft="5dp" />
+
+
+    <EditText
+        android:id="@+id/password_edt"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:paddingLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rect_view_orange"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:maxLines="1"
+        android:layout_below="@id/email_edt"
+        />
+
+
+    <TextView
+        android:id="@+id/forgot_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/password_edt"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:text="Forgot password ?"
+        android:textColor="@color/colorAccent"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/login_btn"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/forgot_txt"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorPrimary"
+        android:text="Login Now"
+        android:textColor="@color/white" />
+
+    <LinearLayout
+        android:id="@+id/create_acc_lay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/login_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New to SocioRich? "
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/create_acc_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create your account"
+            android:textColor="@color/colorAccent"
+            android:textSize="17sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="Terms &amp; Conditions"
+        android:layout_below="@+id/create_acc_lay"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:textSize="17sp"
+        android:id="@+id/terms_txt"
+        />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_below="@+id/terms_txt"/>
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/login_button"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/sign_in_button"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"/>
+
+
+</RelativeLayout>

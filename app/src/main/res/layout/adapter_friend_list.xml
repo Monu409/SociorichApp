@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F0EDED">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/rect_white_view">
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:id="@+id/fr_img"
+            android:layout_centerVertical="true"
+            android:src="@drawable/user_profile"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fr_name_txt"
+            android:layout_toRightOf="@+id/fr_img"
+            android:text="sammamm"
+            android:textSize="17sp"
+            android:layout_marginTop="10dp"
+            android:textColor="#555F92"
+            android:layout_marginLeft="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fr_conn_txt"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/fr_img"
+            android:text="0 Mutual Connection"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/fr_name_txt"/>
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/connct_txt"
+            android:padding="5dp"
+            android:text="Connect"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/fr_name_txt"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:background="@drawable/rect_view_orange"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/colorAccent"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

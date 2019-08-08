@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#dcd9d9"
+    android:orientation="vertical">
+    <!-- -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/activity_comapny"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:textSize="20dp"
+            android:textColor="@color/colorPrimary"
+            android:layout_height="wrap_content"
+            android:text="* Choose Sector"/>
+        <RadioGroup
+            android:id="@+id/sector"
+            android:layout_width="wrap_content"
+            android:outlineProvider="background"
+            android:layout_height="wrap_content" >
+
+            <RadioButton
+                android:id="@+id/auto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:text="Automobile"
+               />
+
+            <RadioButton
+                android:id="@+id/chini"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:text="Chemical" />
+            <RadioButton
+                android:id="@+id/rstate"
+                android:layout_width="wrap_content"
+                android:textColor="#000"
+                android:layout_height="wrap_content"
+                android:text="Constructio/Real State" />
+            <RadioButton
+                android:id="@+id/education"
+                android:layout_width="wrap_content"
+                android:textColor="#000"
+                android:layout_height="wrap_content"
+                android:text="Education" />
+            <RadioButton
+                android:id="@+id/enter"
+                android:layout_width="wrap_content"
+                android:textColor="#000"
+                android:layout_height="wrap_content"
+                android:text="Entertainment" />
+            <RadioButton
+                android:id="@+id/fec"
+                android:layout_width="wrap_content"
+                android:textColor="#000"
+                android:layout_height="wrap_content"
+                android:text="Fashion/E-Commerce" />
+            <RadioButton
+                android:id="@+id/food"
+                android:layout_width="wrap_content"
+                android:textColor="#000"
+                android:layout_height="wrap_content"
+                android:text="Food" />
+            <RadioButton
+                android:id="@+id/health"
+                android:layout_width="wrap_content"
+                android:textColor="#000"
+                android:layout_height="wrap_content"
+                android:text="Healthcare" />
+            <RadioButton
+                android:id="@+id/it"
+                android:layout_width="wrap_content"
+                android:textColor="#000"
+                android:layout_height="wrap_content"
+                android:text="IT Software " />
+            <RadioButton
+                android:id="@+id/othe2r"
+                android:layout_width="wrap_content"
+                android:textColor="#000"
+                android:layout_height="wrap_content"
+                android:text="Others" />
+        </RadioGroup>
+    </LinearLayout>
+
+</RelativeLayout>
+<!--
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="0dp"
+    android:background="#EFF4F7"
+    xmlns:ripple="http://schemas.android.com/apk/res-auto"
+
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:background="#ffffff"
+        android:orientation="vertical"
+
+        >
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/bgamount_gray_outline"
+            android:visibility="gone"
+
+
+            >
+
+            <com.zaptas.filfox.custom_view.MyCustomTextView3
+                android:id="@+id/textViewr"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="2dp"
+                android:background="#FFB600"
+                android:text=""
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bgamount_gray_outline"
+
+
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:background="#ffffff"
+                android:orientation="vertical"
+
+                >
+
+
+                <com.zaptas.filfox.custom_view.MyCustomTextView3
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:drawablePadding="5dp"
+
+                    android:gravity="center"
+                    android:text="Thank You"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+
+                    />
+
+                <com.zaptas.filfox.custom_view.MyCustomTextView2
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="30dp"
+                    android:drawablePadding="5dp"
+                    android:gravity="center"
+                    android:text="Thank you for submitting your enquiry. We will contact you shortly."
+
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+
+                    />
+
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+
+
+                    android:padding="0dp"
+                    android:weightSum="1">
+
+
+                 &lt;!&ndash;   <com.zaptas.filfox.library.RippleView
+                        android:id="@+id/rect_ripp1"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        ripple:rv_type="rectangle"
+                        ripple:rv_zoom="true">
+
+
+                        <TextView
+                            android:visibility="gone"
+                            android:id="@+id/btnOkRating"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bgamount_blue_round_inner_white"
+                            android:elevation="0dp"
+                            android:gravity="center"
+                            android:padding="12dp"
+                            android:text="SUBMIT"
+                            android:textColor="@color/white"
+                            android:textSize="16dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true" />
+                    </com.zaptas.filfox.library.RippleView>&ndash;&gt;
+
+
+                    <com.zaptas.filfox.library.RippleView
+                        android:id="@+id/rect_ripp2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        ripple:rv_type="rectangle"
+                        ripple:rv_zoom="true">
+
+
+                        <TextView
+                            android:id="@+id/btn_done"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bgamount_blue_round_inner_white"
+                            android:elevation="0dp"
+                            android:gravity="center"
+                            android:padding="12dp"
+                            android:text="DONE"
+                            android:textColor="@color/white"
+                            android:textSize="16dp" />
+                    </com.zaptas.filfox.library.RippleView>
+
+
+                    &lt;!&ndash;<Button
+                        android:id="@+id/btnOkRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginRight="10dp"
+
+                        android:background="@drawable/gradient_buttons_blue"
+                        android:text="Submit"
+                        android:textColor="@color/white"
+                        android:elevation="1dp"/>
+
+
+                   <Button
+                        android:id="@+id/btnCancelRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="cancel"
+                       android:background="@drawable/gradient_buttons_grey"
+
+
+                       android:textColor="#DA251C"
+                        android:elevation="1dp"/>&ndash;&gt;
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>-->

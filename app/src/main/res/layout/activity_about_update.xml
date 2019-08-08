@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="15dp"
+    >
+
+    <EditText
+        android:id="@+id/location_edt"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:hint="Location"
+        android:inputType="number"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="#000"
+        android:background="@drawable/rect_view_orange"/>
+
+    <EditText
+        android:id="@+id/work_edt"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:hint="Work"
+        android:inputType="number"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="#000"
+        android:background="@drawable/rect_view_orange"
+        android:layout_marginTop="10dp"/>
+
+
+    <EditText
+        android:id="@+id/dob_edt"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:hint="DOB"
+        android:inputType="number"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="#000"
+        android:background="@drawable/rect_view_orange"
+        android:layout_marginTop="10dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/save_btn"
+            android:layout_width="70dp"
+            android:background="@color/colorPrimary"
+            android:textColor="#fff"
+            android:layout_height="40dp"
+            android:text="Save"/>
+        <Button
+            android:id="@+id/cancel_btn"
+            android:layout_width="70dp"
+            android:layout_marginLeft="20dp"
+            android:background="#797777"
+            android:textColor="#fff"
+            android:layout_height="40dp"
+            android:text="Cancel"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
