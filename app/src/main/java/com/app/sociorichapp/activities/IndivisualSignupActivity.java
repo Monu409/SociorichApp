@@ -38,12 +38,12 @@ public class IndivisualSignupActivity extends BaseActivity {
     private Spinner cntryCodSpnr;
     private String cntryCodStr;
     String refer="undefined";
-    private TextView alreadyTxt;
+    private TextView alreadyTxt,termsTxt;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ConstantMethods.setTitleAndBack(this,"Indivisual Signup");
+        ConstantMethods.setTitleAndBack(this,"Signup as Indivisual");
         nameEdt = findViewById(R.id.name);
         mobileEdt = findViewById(R.id.mobile);
         emailEdt = findViewById(R.id.email);
@@ -52,12 +52,19 @@ public class IndivisualSignupActivity extends BaseActivity {
         signUpBtn = findViewById(R.id.sign_up_button);
         cntryCodSpnr = findViewById(R.id.spinner);
         alreadyTxt = findViewById(R.id.already_txt);
+        termsTxt = findViewById(R.id.terms_txt);
 
         String str1 = "Already Registered,";
         String penalty = " Click here";
         String strb2 = "<u><b><font color='#ef633f'>"+ penalty +"</font></b></u>";
         String strd = str1 +strb2;
         alreadyTxt.setText(Html.fromHtml(strd));
+        termsTxt.setOnClickListener(t->{
+            Intent intent = new Intent(this, AboutUsActivity.class);
+            intent.putExtra("url_is","http://dev.sociorich.com/terms");
+            intent.putExtra("title_is","Terms & Conditions");
+            startActivity(intent);
+        });
         getCountries();
 
 
@@ -78,6 +85,7 @@ public class IndivisualSignupActivity extends BaseActivity {
 
             }
         });
+
         signUpBtn.setOnClickListener(v->postIndivisualData());
         alreadyTxt.setOnClickListener(v->startActivity(new Intent(this, LoginActivity.class)));
     }
@@ -97,12 +105,13 @@ public class IndivisualSignupActivity extends BaseActivity {
         if(nameStr.isEmpty()){
             nameEdt.setError("Enter Name");
         }
-        else if(mobileStr.isEmpty()){
-            mobileEdt.setError("Enter Mobile");
+        else if(mobileStr.isEmpty() && emailStr.isEmpty()){
+            mobileEdt.setError("Enter Mobile or Email");
+            emailEdt.setError("Enter Mobile or Email");
         }
-        else if(emailStr.isEmpty()){
-            emailEdt.setError("Enter Email");
-        }
+//        else if(emailStr.isEmpty()){
+//            emailEdt.setError("Enter Email");
+//        }
         else if(passwordStr.isEmpty()){
             passwordEdt.setError("Enter Password");
         }
@@ -183,6 +192,8 @@ public class IndivisualSignupActivity extends BaseActivity {
                         ArrayAdapter<String> counrtAdapter = new ArrayAdapter<String>(IndivisualSignupActivity.this, android.R.layout.simple_spinner_item, countryCodeList);
                         counrtAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
                         cntryCodSpnr.setAdapter(counrtAdapter);
+                        int spinnerPosition = counrtAdapter.getPosition("+91 (India)");
+                        cntryCodSpnr.setSelection(spinnerPosition);
                     }
 
                     @Override

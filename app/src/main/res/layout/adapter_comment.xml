@@ -9,7 +9,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        card_view:contentPadding="16dp"
+        card_view:contentPadding="10dp"
         card_view:cardElevation="2dp"
         card_view:cardCornerRadius="5dp">
 
@@ -18,12 +18,22 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <com.app.sociorichapp.app_utils.CircleImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/user_img"
+                android:src="@drawable/profile_icon"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Title"
                 android:id="@+id/user_txt"
-                android:textStyle="bold"/>
+                android:layout_toLeftOf="@+id/date_txt"
+                android:layout_toRightOf="@+id/user_img"
+                android:layout_marginRight="5dp"
+                android:textStyle="bold"
+                android:layout_marginLeft="5dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -38,7 +48,9 @@
                 android:layout_height="wrap_content"
                 android:text="Content here"
                 android:id="@+id/comment_txt"
-                android:layout_below="@+id/user_txt"/>
+                android:layout_below="@+id/user_txt"
+                android:layout_toRightOf="@+id/user_img"
+                android:layout_marginLeft="5dp"/>
 
         </RelativeLayout>
 

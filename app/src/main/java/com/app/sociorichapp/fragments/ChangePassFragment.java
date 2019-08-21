@@ -18,6 +18,7 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.app.sociorichapp.R;
 import com.app.sociorichapp.app_utils.ConstantMethods;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -70,7 +71,7 @@ public class ChangePassFragment extends Fragment {
                             try {
                                 String result = response.getString("result");
                                 if(result.equals("success")){
-                                    Toast.makeText(getActivity(),"Password Changed",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(),"Password Changed Successfully",Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -80,7 +81,16 @@ public class ChangePassFragment extends Fragment {
                         @Override
                         public void onError(ANError anError) {
                             ConstantMethods.dismissProgressBar();
-                            Log.e("errpr",""+anError);
+                            String errJson = anError.getErrorBody();
+                            try {
+                                JSONObject errObj = new JSONObject(errJson);
+                                JSONArray jsonArray = errObj.getJSONArray("errors");
+                                JSONObject childErr = jsonArray.getJSONObject(0);
+                                String errorMessage = childErr.getString("errorMessage");
+                                Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
         }

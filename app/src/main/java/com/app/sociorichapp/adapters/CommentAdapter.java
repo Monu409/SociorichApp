@@ -35,6 +35,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ComntHol
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
     }
+
+    public CommentAdapter(List<CommentModal> commentModals, Context context){
+        this.commentModals = commentModals;
+        this.context = context;
+        layoutInflater = LayoutInflater.from(context);
+    }
+
+
     @NonNull
     @Override
     public ComntHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {

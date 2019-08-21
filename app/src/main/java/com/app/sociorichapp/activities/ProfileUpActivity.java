@@ -410,9 +410,6 @@ public class ProfileUpActivity extends AppCompatActivity {
                             catch (Exception e){
                                 e.getStackTrace();
                             }
-//                            String location = "";
-//                            if(locationObj!=null){
-//                            }
                             mAboutDataListener.onDataReceived(profileDes,wrkPlace,location,dob);
                             JSONObject profileObj = response.getJSONObject("profilePic");
                             String profileUrl = profileObj.getString("url");

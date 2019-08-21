@@ -50,6 +50,7 @@ public class AboutFragment extends Fragment implements OnAboutDataReceivedListen
         workTxt = view.findViewById(R.id.work);
         locationTxt = view.findViewById(R.id.location);
         dobTxt = view.findViewById(R.id.dob);
+
         introPen.setOnClickListener(v->{
             introLay.setVisibility(View.VISIBLE);
         });
@@ -68,9 +69,11 @@ public class AboutFragment extends Fragment implements OnAboutDataReceivedListen
 
         aboutPen.setOnClickListener(v->{
             Intent intent = new Intent(getActivity(), AboutUpdateActivity.class);
+            intent.putExtra("dobTxt",dobTxt.getText().toString());
+            intent.putExtra("workTxt",workTxt.getText().toString());
+            intent.putExtra("locationTxt",locationTxt.getText().toString());
             startActivity(intent);
         });
-
         ProfileUpActivity profileUpActivity = (ProfileUpActivity)getActivity();
         profileUpActivity.setAboutDataListener(this);
         return view;
@@ -116,6 +119,17 @@ public class AboutFragment extends Fragment implements OnAboutDataReceivedListen
                         Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        String workSpc = ConstantMethods.getStringPreference("location_prif",getActivity());
+        String location = ConstantMethods.getStringPreference("work_prif",getActivity());
+        String dob = ConstantMethods.getStringPreference("dob_prif",getActivity());
+        workTxt.setText(workSpc);
+        locationTxt.setText(location);
+        dobTxt.setText(dob);
     }
 
     @Override

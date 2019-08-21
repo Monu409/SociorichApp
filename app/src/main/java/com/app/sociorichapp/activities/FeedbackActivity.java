@@ -39,52 +39,56 @@ public class FeedbackActivity extends BaseActivity {
     }
 
     private void sendFeedback(){
-        ConstantMethods.showProgressbar(this);
         String userToken = ConstantMethods.getStringPreference("user_token",this);
         String nameStr = nameEdt.getText().toString();
-        String emailStr = nameEdt.getText().toString();
-        String mobileStr = nameEdt.getText().toString();
-        String cityStr = nameEdt.getText().toString();
-        String messageStr = nameEdt.getText().toString();
+        String emailStr = emailEdt.getText().toString();
+        String mobileStr = mobileEdt.getText().toString();
+        String cityStr = cityEdt.getText().toString();
+        String messageStr = messageEdt.getText().toString();
 
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("city",nameStr);
-            jsonObject.put("emailId",emailStr);
-            jsonObject.put("message",messageStr);
-            jsonObject.put("name",cityStr);
-            jsonObject.put("phoneNo",mobileStr);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if(nameStr.isEmpty()||emailStr.isEmpty()||mobileStr.isEmpty()||cityStr.isEmpty()||messageStr.isEmpty()){
+            Toast.makeText(this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
         }
-        AndroidNetworking
-                .post(FEEDBACK_DATA)
-                .addJSONObjectBody(jsonObject)
-                .addHeaders("authorization","Bearer "+userToken)
-                .build()
-                .getAsJSONObject(new JSONObjectRequestListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        ConstantMethods.dismissProgressBar();
-                        try {
-                            String result = response.getString("result");
-                            if(result.equals("success")){
-                                Toast.makeText(FeedbackActivity.this, "Submit your data", Toast.LENGTH_SHORT).show();
-                                onBackPressed();
+        else {
+            ConstantMethods.showProgressbar(this);
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("city", nameStr);
+                jsonObject.put("emailId", emailStr);
+                jsonObject.put("message", messageStr);
+                jsonObject.put("name", cityStr);
+                jsonObject.put("phoneNo", mobileStr);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            AndroidNetworking
+                    .post(FEEDBACK_DATA)
+                    .addJSONObjectBody(jsonObject)
+                    .addHeaders("authorization", "Bearer " + userToken)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            ConstantMethods.dismissProgressBar();
+                            try {
+                                String result = response.getString("result");
+                                if (result.equals("success")) {
+                                    Toast.makeText(FeedbackActivity.this, "Submit your data", Toast.LENGTH_SHORT).show();
+                                    onBackPressed();
+                                } else {
+                                    Toast.makeText(FeedbackActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                            else{
-                                Toast.makeText(FeedbackActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
-                    }
 
-                    @Override
-                    public void onError(ANError anError) {
-                        ConstantMethods.dismissProgressBar();
-                        Toast.makeText(FeedbackActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        @Override
+                        public void onError(ANError anError) {
+                            ConstantMethods.dismissProgressBar();
+                            Toast.makeText(FeedbackActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
     }
 }

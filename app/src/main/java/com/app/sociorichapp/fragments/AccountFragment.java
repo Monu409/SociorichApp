@@ -13,12 +13,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.app.sociorichapp.R;
 import com.app.sociorichapp.app_utils.ConstantMethods;
+import com.app.sociorichapp.modals.LoginActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,28 +51,54 @@ public class AccountFragment extends Fragment {
         nameCnclBtn = view.findViewById(R.id.name_cncl_btn);
         phoneSvBtn = view.findViewById(R.id.phone_save_btn);
         phoneCnclBtn = view.findViewById(R.id.phone_cncl_btn);
+        String displayName = ConstantMethods.getStringPreference("display_name_prif",getActivity());
+        String phoneNo = ConstantMethods.getStringPreference("phone_no_prif",getActivity());
+        String email = ConstantMethods.getStringPreference("email_prif",getActivity());
+        nameTxt.setText(displayName);
+        phoneTxt.setText(phoneNo);
+        emailTxt.setText(email);
+
 
         nameEdtIcn.setOnClickListener(v->{
             nameTxt.setVisibility(View.GONE);
             nameLay.setVisibility(View.VISIBLE);
+            String nameStr = nameTxt.getText().toString();
+            nameEdt.setText(nameStr);
         });
         nameSvBtn.setOnClickListener(v->{
             nameTxt.setVisibility(View.VISIBLE);
             nameLay.setVisibility(View.GONE);
             String nameStr = nameEdt.getText().toString();
-            changeUserName(nameStr);
-            nameTxt.setText(nameStr);
+            if(nameStr.isEmpty()){
+                Toast.makeText(getActivity(), "Enter Name", Toast.LENGTH_SHORT).show();
+            }else {
+                changeUserName(nameStr);
+            }
         });
         phoneEdtIcn.setOnClickListener(v->{
             phoneTxt.setVisibility(View.GONE);
             phoneLay.setVisibility(View.VISIBLE);
+            String phoneStr = phoneTxt.getText().toString();
+            phoneEdt.setText(phoneStr);
+
         });
         phoneSvBtn.setOnClickListener(v->{
             phoneTxt.setVisibility(View.VISIBLE);
             phoneLay.setVisibility(View.GONE);
             String phoneStr = phoneEdt.getText().toString();
-            changePhnName(phoneStr);
-            phoneTxt.setText(phoneStr);
+            if(phoneStr.isEmpty()){
+                Toast.makeText(getActivity(), "Enter Mobile Number", Toast.LENGTH_SHORT).show();
+            }else {
+                changePhnName(phoneStr);
+            }
+        });
+        nameCnclBtn.setOnClickListener(n->{
+            nameLay.setVisibility(View.GONE);
+            nameTxt.setVisibility(View.VISIBLE);
+        });
+        phoneCnclBtn.setOnClickListener(n->{
+            phoneLay.setVisibility(View.GONE);
+            phoneTxt.setVisibility(View.VISIBLE);
         });
         return view;
     }
@@ -94,6 +122,14 @@ public class AccountFragment extends Fragment {
                     public void onResponse(JSONObject response) {
                         ConstantMethods.dismissProgressBar();
                         Log.e("res",""+response);
+                        try {
+                            String displayName = response.getString("displayName");
+                            ConstantMethods.setStringPreference("display_name_prif",displayName,getActivity());
+                            nameTxt.setText(displayName);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(getActivity(), "Successfully Saved", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -123,7 +159,14 @@ public class AccountFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         ConstantMethods.dismissProgressBar();
-                        Log.e("res",""+response);
+                        try {
+                            String phoneNo = response.getString("phoneNo");
+                            ConstantMethods.setStringPreference("phone_no_prif",phoneNo,getActivity());
+                            phoneTxt.setText(phoneNo);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(getActivity(), "Successfully Saved", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

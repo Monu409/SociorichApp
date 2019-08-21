@@ -40,6 +40,22 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         String nameStr = notifModals.get(i).getNameStr();
         String timeStr = notifModals.get(i).getTimeStr();
         String descStr = notifModals.get(i).getDetailsStr();
+        String type = notifModals.get(i).getType();
+        String postTitle = notifModals.get(i).getPostTitle();
+        String amount = notifModals.get(i).getAmount();
+        String desStr = "";
+        if(type.equals("DONATION_RECEIVED")){
+            desStr = "Donated you "+amount+" Equa Credits on your post "+postTitle;
+        }
+        else if(type.equals("COMMENT_ON_UR_POST")){
+            desStr = "Commented on your post "+postTitle;
+        }
+        else if(type.equals("INSPIRED_BY_UR_POST")){
+            desStr = "has inspired from your post "+postTitle;
+        }
+        else if(type.equals("VERIFIED_UR_POST")){
+            desStr = "has verified your post "+postTitle;
+        }
         Glide.with(context)
                 .load(imgPath)
                 .placeholder(R.drawable.user_profile)
@@ -48,7 +64,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 .priority(Priority.HIGH)
                 .into(notifHolder.profileImg);
         notifHolder.nameTxt.setText(nameStr+" ("+timeStr+")");
-        notifHolder.descTxt.setText(descStr);
+        notifHolder.descTxt.setText(desStr);
     }
 
     @Override

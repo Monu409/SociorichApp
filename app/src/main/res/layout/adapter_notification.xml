@@ -24,10 +24,17 @@
         android:id="@+id/notif_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Anjni (2/2/2019)"
+        android:text="You have received................"
         android:layout_toRightOf="@+id/profile_img"
         android:layout_marginLeft="10dp"
         android:layout_below="@+id/name_txt"
         android:layout_marginTop="20dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#d3d3d3"
+        android:layout_below="@+id/profile_img"
+        android:layout_marginTop="5dp"/>
 
 </RelativeLayout>

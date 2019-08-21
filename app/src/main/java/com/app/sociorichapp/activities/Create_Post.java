@@ -121,14 +121,15 @@ public class Create_Post extends BaseActivity implements AdapterView.OnItemSelec
     EditText tv_titel, tv_dec;
     private static final int REQUEST_IMAGE_CAPTURE = 2;
     public static final int PERMISSION_CAMERA_CODE = 121;
-    String[] category = {"Animals", "Community & Development", "Discrimination", "Disasters", "Education", "Environment", "Health", "Homelessness+Poverty", "Spiritual", "Other", "Social News", "Social Discussions", "Social Suggestions", "Social Tasks"};
+    Spinner spin;
+    String[] category = {"Select Category","Animals", "Community & Development", "Discrimination", "Disasters", "Education", "Environment", "Health", "Homelessness+Poverty", "Spiritual", "Other", "Social News", "Social Discussions", "Social Suggestions", "Social Tasks"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ConstantMethods.setTitleAndBack(this, "Create Post");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        Spinner spin = (Spinner) findViewById(R.id.spinner);
+        spin = findViewById(R.id.spinner);
         tv_titel = (EditText) findViewById(R.id.titel);
         tv_dec = (EditText) findViewById(R.id.edittext1);
         spin.setOnItemSelectedListener(this);
@@ -156,7 +157,11 @@ public class Create_Post extends BaseActivity implements AdapterView.OnItemSelec
         String titleStr,descStr;
         titleStr = tv_titel.getText().toString();
         descStr = tv_dec.getText().toString();
-        if(titleStr.isEmpty()||descStr.isEmpty()){
+        String selectedValue = spin.getSelectedItem().toString();
+        if(selectedValue.equals("Select Category")){
+            Toast.makeText(this, "Please select category", Toast.LENGTH_SHORT).show();
+        }
+        else if(titleStr.isEmpty()||descStr.isEmpty()){
             Toast.makeText(this, "Please enter all fields", Toast.LENGTH_SHORT).show();
         }
         else {
@@ -685,7 +690,7 @@ public class Create_Post extends BaseActivity implements AdapterView.OnItemSelec
             dataBase.update(DbHelper.TABLE_NAME, values, DbHelper.KEY_ID + "=" + j + 1, null);
         } else {
             dataBase.insert(DbHelper.TABLE_NAME, null, values);
-            Toast.makeText(getApplicationContext(), "Add To Cart", Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext(), "Add To Cart", Toast.LENGTH_LONG).show();
 
         }
 

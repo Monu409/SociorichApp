@@ -23,8 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_height="wrap_content"
-            android:text="Your password has been changed successfully.
-Click below to experience SocioRich"/>
+            android:text="Your password has been changed successfully.Click below to experience SocioRich"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,7 +38,7 @@ Click below to experience SocioRich"/>
             android:layout_marginRight="20dp"
             android:background="@color/colorPrimary"
             android:onClick="update"
-            android:text="Go Home"
+            android:text="Login Now"
             android:textColor="#fff"
             android:textStyle="bold" />
     </LinearLayout>

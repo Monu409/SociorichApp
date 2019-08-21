@@ -28,7 +28,7 @@ public class OrganisationAccount extends BaseActivity {
     static String select_value, org_type, org_value, org_name, org_websitE, org_team, org_incorpo, org_address, orhabout;
     Button button;
     AlertDialog alertDialog1;
-    CharSequence[] values = {" Automobile ", " Chemical ", " Construction/Real State ", " Education ", " Entertainment ", " Fashion/E-Commerce ", " Food ", " Healthcare ", " IT Software ", " Others "};
+    CharSequence[] values = {" Automobile ", " Chemical ", " Construction/Real Estate ", " Education ", " Entertainment ", " Fashion/E-Commerce ", " Food ", " Healthcare ", " IT / Software ", " Others "};
     CharSequence[] values2 = {" Animals ", " Community & Development ", " Disasters ", " Education ", " Discrimination ", " Health ", " Homelessness+Poverty ", " Spiritual ", " Other ", " Environment "};
     CharSequence[] values3 = {" Educational Institutes ", " Government Department ", " Hospitals ", " Other ", " Political Parties ", " Proprietorship/Partnership "};
     AlertDialog dialog;
@@ -45,16 +45,16 @@ public class OrganisationAccount extends BaseActivity {
         radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);
         selectvalue = (TextView) findViewById(R.id.selectvalue);
         sector = (RadioGroup) findViewById(R.id.sector);
-        org_tvname = (EditText) findViewById(R.id.org_tvname);
-        org_tvwebsite = (EditText) findViewById(R.id.org_tvwebsite);
-        org_tvyear = (EditText) findViewById(R.id.org_tvyear);
-        org_tvadress = (EditText) findViewById(R.id.org_tvadress);
+        org_tvname = findViewById(R.id.org_tvname);
+        org_tvwebsite = findViewById(R.id.org_tvwebsite);
+        org_tvyear = findViewById(R.id.org_tvyear);
+        org_tvadress = findViewById(R.id.org_tvadress);
         alreadyTxt = findViewById(R.id.already_txt);
 
         radioSexGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 // checkedId is the RadioButton selected
-                RadioButton rb = (RadioButton) findViewById(checkedId);
+                RadioButton rb = findViewById(checkedId);
                 if (rb.getText().equals("Company")) {
                     CreateAlertDialogWithRadioButtonGroup();
                     org_type = "Company";
@@ -66,7 +66,6 @@ public class OrganisationAccount extends BaseActivity {
                     other();
                 }
                 //textViewChoice.setText("You Selected " + rb.getText());
-                Toast.makeText(getApplicationContext(), rb.getText(), Toast.LENGTH_SHORT).show();
             }
         });
         alreadyTxt.setOnClickListener(v->startActivity(new Intent(this, LoginActivity.class)));
@@ -100,12 +99,8 @@ public class OrganisationAccount extends BaseActivity {
     }
 
     public void CreateAlertDialogWithRadioButtonGroup() {
-
-
         AlertDialog.Builder builder = new AlertDialog.Builder(OrganisationAccount.this);
-
         builder.setTitle("Choose sector*");
-
         builder.setSingleChoiceItems(values, -1, new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int item) {
@@ -125,7 +120,7 @@ public class OrganisationAccount extends BaseActivity {
                         break;
                     case 2:
 
-                        Toast.makeText(OrganisationAccount.this, "Constructio/Real State", Toast.LENGTH_LONG).show();
+                        Toast.makeText(OrganisationAccount.this, "Constructio/Real Estate", Toast.LENGTH_LONG).show();
                         select_value = "Constructio/Real State";
                         selectvalue.setText(select_value);
                         break;
@@ -161,7 +156,7 @@ public class OrganisationAccount extends BaseActivity {
                         break;
                     case 8:
 
-                        Toast.makeText(OrganisationAccount.this, "IT Software", Toast.LENGTH_LONG).show();
+                        Toast.makeText(OrganisationAccount.this, "IT / Software", Toast.LENGTH_LONG).show();
                         select_value = "IT Software";
                         selectvalue.setText(select_value);
                         break;

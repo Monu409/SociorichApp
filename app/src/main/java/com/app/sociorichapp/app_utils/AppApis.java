@@ -34,6 +34,7 @@ public interface AppApis {
     String CANCEL_REQUEST = BASE_URL+"api/v1/conn/request/cancel";
     String ALL_NOTIFICATION = BASE_URL+"api/v1/user/notifications?pageno=0";
     String GET_BANNER_DATA = BASE_URL+"api/v1/post/sotd";
+    String SOCIAL_LOGIN = BASE_URL+"api/v1/user/signup/mobile";
 //    api/v1/conn/request/cancel
 
 //    http://dev.sociorich.com/api/v1/post/featured

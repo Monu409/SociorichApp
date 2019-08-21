@@ -61,11 +61,15 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-auth:18.1.0'
 
+    implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
+
     //this line you need to add
     //make sure you are using the same version for both
     //and also make sure you are using version atleast 11.6.0
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
 //    implementation 'com.joanzapata.iconify:android-iconify-fontawesome:2.1.0'
     implementation 'com.facebook.android:facebook-android-sdk:4.36.1'
+    implementation 'com.twitter.sdk.android:twitter-core:3.1.1'
+    implementation 'com.twitter.sdk.android:tweet-ui:3.1.1'
 }
 apply plugin: 'com.google.gms.google-services'

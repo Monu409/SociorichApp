@@ -115,4 +115,7 @@
     <string name="title_activity_forget_password">Sign in</string>
 
     <string name="app_id">1633122750278973</string>
+
+    <string name="com_twitter_sdk_android_CONSUMER_KEY">aZo3BPzE2wRi2hqNv9PSclDc5</string>
+    <string name="com_twitter_sdk_android_CONSUMER_SECRET">EwXIhS10odWv5Zy0PtGKiGLl2sfbXh8YjJ3xvd1mziIkKINRwR</string>
 </resources>

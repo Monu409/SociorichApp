@@ -1,14 +1,20 @@
 package com.app.sociorichapp.activities;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SearchView;
@@ -75,150 +81,153 @@ public class DashboardActivity extends AppCompatActivity {
     List<DashModal> dashModals = new ArrayList<>();
     private Slider slider;
     List<String> imgList = new ArrayList<>();
+    public static final int REQUEST_ID_MULTIPLE_PERMISSIONS= 7;
+    int whichPosition = 0;
+    DashbordAdapter dashbordAdapter;
+    int itemLimit = 10;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String checkLogin = ConstantMethods.getStringPreference("login_status",this);
-        if(checkLogin.equals("login")){
+        if(checkAndRequestPermissions()) {
+            String checkLogin = ConstantMethods.getStringPreference("login_status", this);
+            if (checkLogin.equals("login")) {
 
-        }
-        else {
-            getSupportActionBar().hide();
-        }
-        setContentView(R.layout.activity_dashboard);
-        setTitle("SocioRich");
-        loginTxt = findViewById(R.id.login_txt);
-        signupTxt = findViewById(R.id.sign_up_txt);
-        aboutBtn = findViewById(R.id.about_btn);
-        loginTxt.setOnClickListener(view -> startActivity(new Intent(this, LoginActivity.class)));
-        signupTxt.setOnClickListener(view -> startActivity(new Intent(this, CreateAccActivity.class)));
-        homeList = findViewById(R.id.home_list);
-        createPostView = findViewById(R.id.create_post_view);
+            } else {
+                getSupportActionBar().hide();
+            }
+            setContentView(R.layout.activity_dashboard);
+            setTitle("SocioRich");
+//            checkAndroidVersion();
+            loginTxt = findViewById(R.id.login_txt);
+            signupTxt = findViewById(R.id.sign_up_txt);
+            aboutBtn = findViewById(R.id.about_btn);
+            loginTxt.setOnClickListener(view -> startActivity(new Intent(this, LoginActivity.class)));
+            signupTxt.setOnClickListener(view -> startActivity(new Intent(this, CreateAccActivity.class)));
+            homeList = findViewById(R.id.home_list);
+            createPostView = findViewById(R.id.create_post_view);
 //        withLoginHeader = findViewById(R.id.with_login_header);
-        tabView = findViewById(R.id.tab_view);
-        logoutHeader = findViewById(R.id.logout_header);
-        globalView = findViewById(R.id.global_view);
-        networkView = findViewById(R.id.network_view);
-        intrestView = findViewById(R.id.interest_view);
-        globlTxt = findViewById(R.id.globl_txt);
-        netwrkTxt = findViewById(R.id.netwrk_txt);
-        intrstTxt = findViewById(R.id.intrst_txt);
-        Slider.init(new PicassoImageLoadingService(this));
+            tabView = findViewById(R.id.tab_view);
+            logoutHeader = findViewById(R.id.logout_header);
+            globalView = findViewById(R.id.global_view);
+            networkView = findViewById(R.id.network_view);
+            intrestView = findViewById(R.id.interest_view);
+            globlTxt = findViewById(R.id.globl_txt);
+            netwrkTxt = findViewById(R.id.netwrk_txt);
+            intrstTxt = findViewById(R.id.intrst_txt);
+            Slider.init(new PicassoImageLoadingService(this));
 
-        getBannerData();
-        if(checkLogin.equals("login")){
+//        getBannerData();
+            if (checkLogin.equals("login")) {
 //            withLoginHeader.setVisibility(View.VISIBLE);
-            createPostView.setVisibility(View.VISIBLE);
-            tabView.setVisibility(View.VISIBLE);
-            logoutHeader.setVisibility(View.GONE);
-            getHomePageData(HOMEPAGE_URL_LOGIN,"0");
-            getCatName(HOMEPAGE_URL_2);
-            globlTxt.setTextColor(Color.parseColor("#ef633f"));
-            globalView.setOnClickListener(v->{
-                tabTag = "Global";
-                changeTextColor();
+                createPostView.setVisibility(View.VISIBLE);
+                tabView.setVisibility(View.VISIBLE);
+                logoutHeader.setVisibility(View.GONE);
+                getHomePageData(HOMEPAGE_URL_LOGIN, "0");
+                getCatName(HOMEPAGE_URL_2);
                 globlTxt.setTextColor(Color.parseColor("#ef633f"));
-                getHomePageData(HOMEPAGE_URL_LOGIN,"0");
-                getCatName(HOMEPAGE_URL_2);
-            });
-            networkView.setOnClickListener(v->{
-                tabTag = "Network";
-                changeTextColor();
-                netwrkTxt.setTextColor(Color.parseColor("#ef633f"));
-                getHomePageData(MY_NETWORK_URL,"0");
-                getCatName(HOMEPAGE_URL_2);
-            });
-            intrestView.setOnClickListener(v->{
-                tabTag = "Intrest";
-                changeTextColor();
-                intrstTxt.setTextColor(Color.parseColor("#ef633f"));
-                getHomePageData(MY_INTEREST_URL,"0");
-                getCatName(HOMEPAGE_URL_2);
-            });
-            aboutBtn.setText("Feedback");
-            aboutBtn.setOnClickListener(view -> startActivity(new Intent(this, FeedbackActivity.class)));
-        }
-        else if(checkLogin.equals("logout")){
+                globalView.setOnClickListener(v -> {
+                    tabTag = "Global";
+                    changeTextColor();
+                    globlTxt.setTypeface(null, Typeface.BOLD);
+                    getHomePageData(HOMEPAGE_URL_LOGIN, "0");
+                    getCatName(HOMEPAGE_URL_2);
+                });
+                networkView.setOnClickListener(v -> {
+                    tabTag = "Network";
+                    changeTextColor();
+                    netwrkTxt.setTypeface(null, Typeface.BOLD);
+                    getHomePageData(MY_NETWORK_URL, "0");
+                    getCatName(HOMEPAGE_URL_2);
+                });
+                intrestView.setOnClickListener(v -> {
+                    tabTag = "Intrest";
+                    changeTextColor();
+                    intrstTxt.setTypeface(null, Typeface.BOLD);
+                    getHomePageData(MY_INTEREST_URL, "0");
+                    getCatName(HOMEPAGE_URL_2);
+                });
+                aboutBtn.setText("Feedback");
+                aboutBtn.setOnClickListener(view -> startActivity(new Intent(this, FeedbackActivity.class)));
+            } else if (checkLogin.equals("logout")) {
 //            withLoginHeader.setVisibility(View.GONE);
-            createPostView.setVisibility(View.GONE);
-            tabView.setVisibility(View.GONE);
-            logoutHeader.setVisibility(View.VISIBLE);
-            getHomePageData(HOMEPAGE_URL_LOGOUT,"");
-            getCatName(HOMEPAGE_URL_2);
-            aboutBtn.setText("About");
-            aboutBtn.setOnClickListener(view ->{
-                Intent intent = new Intent(this, AboutUsActivity.class);
-                intent.putExtra("url_is","http://dev.sociorich.com/about");
-                intent.putExtra("title_is","About Us");
-                startActivity(intent);
-            });
-        }
-        else {
+                createPostView.setVisibility(View.GONE);
+                tabView.setVisibility(View.GONE);
+                logoutHeader.setVisibility(View.VISIBLE);
+                getHomePageData(HOMEPAGE_URL_LOGOUT, "");
+                getCatName(HOMEPAGE_URL_2);
+                aboutBtn.setText("About");
+                aboutBtn.setOnClickListener(view -> {
+                    Intent intent = new Intent(this, AboutUsActivity.class);
+                    intent.putExtra("url_is", "http://dev.sociorich.com/about");
+                    intent.putExtra("title_is", "About Us");
+                    startActivity(intent);
+                });
+            } else {
 //            withLoginHeader.setVisibility(View.GONE);
-            createPostView.setVisibility(View.GONE);
-            tabView.setVisibility(View.GONE);
-            logoutHeader.setVisibility(View.VISIBLE);
-            getHomePageData(HOMEPAGE_URL_LOGOUT,"");
-            getCatName(HOMEPAGE_URL_2);
-        }
-        linearLayoutManager = new LinearLayoutManager(this);
-        homeList.setLayoutManager(linearLayoutManager);
-        homeList.setNestedScrollingEnabled(false);
+                createPostView.setVisibility(View.GONE);
+                tabView.setVisibility(View.GONE);
+                logoutHeader.setVisibility(View.VISIBLE);
+                getHomePageData(HOMEPAGE_URL_LOGOUT, "");
+                getCatName(HOMEPAGE_URL_2);
+            }
+            linearLayoutManager = new LinearLayoutManager(this);
+            homeList.setLayoutManager(linearLayoutManager);
+            homeList.setNestedScrollingEnabled(false);
 
-        homeList.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            homeList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 
-                if (dy > 0) //check for scroll down
-                {
-                    visibleItemCount = linearLayoutManager.getChildCount();
-                    totalItemCount = linearLayoutManager.getItemCount();
-                    firstVisiblesItems = linearLayoutManager.findFirstVisibleItemPosition();
+                    if (dy > 0) //check for scroll down
+                    {
+                        visibleItemCount = linearLayoutManager.getChildCount();
+                        totalItemCount = linearLayoutManager.getItemCount();
+                        firstVisiblesItems = linearLayoutManager.findFirstVisibleItemPosition();
 
-                    if (canLoadMoreData) {
-                        if ((visibleItemCount + firstVisiblesItems) >= totalItemCount) {
-                            if (current_page < totalPages) {
-                                canLoadMoreData  = false;
-                                i=+i;
-                                String pageNoStr = String.valueOf(current_page);
-                                if(checkLogin.equals("login")){
-                                    if(tabTag.equals("Global")){
-                                        getHomePageData(HOMEPAGE_URL_LOGIN,pageNoStr);
-                                        homeList.scrollToPosition(50);
+                        if (canLoadMoreData) {
+                            if ((visibleItemCount + firstVisiblesItems) >= totalItemCount) {
+                                if (current_page < totalPages) {
+                                    canLoadMoreData = false;
+                                    dashbordAdapter.notifyDataSetChanged();
+
+                                    whichPosition=itemLimit;
+                                    itemLimit = itemLimit+10;
+                                    i = +i;
+                                    String pageNoStr = String.valueOf(current_page);
+                                    if (checkLogin.equals("login")) {
+                                        if (tabTag.equals("Global")) {
+                                            getHomePageData(HOMEPAGE_URL_LOGIN, pageNoStr);
+                                        } else if (tabTag.equals("Network")) {
+                                            getHomePageData(MY_NETWORK_URL, pageNoStr);
+                                        } else if (tabTag.equals("Intrest")) {
+                                            getHomePageData(MY_INTEREST_URL, pageNoStr);
+                                        }
                                     }
-                                    else if(tabTag.equals("Network")){
-                                        getHomePageData(MY_NETWORK_URL,pageNoStr);
-                                    }
-                                    else if(tabTag.equals("Intrest")){
-                                        getHomePageData(MY_INTEREST_URL,pageNoStr);
-                                    }
-                                }
 //                                getHomePageData1(pageNoStr);
+                                }
                             }
                         }
+
                     }
+                }
+            });
+            createPostView.setOnClickListener(v -> {
+                Intent intent = new Intent(this, Create_Post.class);
+                startActivity(intent);
+            });
+
+            if (postupdation == null) {
+
+            } else {
+                if (postupdation.equals("S")) {
+                    postupdation = "N";
+                    DbHelper db = new DbHelper(this);
+                    dataBase = db.getWritableDatabase();
+                    dataBase.execSQL("delete from " + DbHelper.TABLE_NAME);
+                } else {
 
                 }
-            }
-        });
-        createPostView.setOnClickListener(v->{
-            Intent intent = new Intent(this,Create_Post.class);
-            startActivity(intent);
-        });
-
-        if(postupdation==null){
-
-        }
-        else {
-            if(postupdation.equals("S")){
-                postupdation="N";
-                DbHelper db = new DbHelper(this);
-                dataBase = db.getWritableDatabase();
-                dataBase.execSQL("delete from "+ DbHelper.TABLE_NAME);
-            }
-            else {
-
             }
         }
     }
@@ -229,7 +238,7 @@ public class DashboardActivity extends AppCompatActivity {
         AndroidNetworking
                 .get(url+pageNo)
                 .setPriority(Priority.MEDIUM)
-                .addHeaders("authorization","Bearer "+userToken)
+//                .addHeaders("authorization","Bearer "+userToken)
                 .build()
                 .getAsJSONArray(new JSONArrayRequestListener() {
                     @Override
@@ -251,6 +260,7 @@ public class DashboardActivity extends AppCompatActivity {
                                 String title = postJsonObj.getString("title");
                                 String socioCrdt = postJsonObj.getString("socioMoneyDonated");
                                 String catId = postJsonObj.getString("categoryId");
+                                String desStr = postJsonObj.getString("desc");
                                 JSONObject profilePicObj = null;
                                 dashModal.setCategoryId(catId);
                                 try{
@@ -334,6 +344,7 @@ public class DashboardActivity extends AppCompatActivity {
                                 dashModal.setProfilePicStr(profilePicUrl);
                                 dashModal.setSocioCreStr(socioCrdt);
                                 dashModal.setCommentStr(totalComntStr);
+                                dashModal.setDesStr(desStr);
                                 dashModals.add(dashModal);
 
                             } catch (JSONException e) {
@@ -341,9 +352,10 @@ public class DashboardActivity extends AppCompatActivity {
                             }
                         }
 
-                        DashbordAdapter dashbordAdapter = new DashbordAdapter(dashModals,DashboardActivity.this);
+                        dashbordAdapter = new DashbordAdapter(dashModals,DashboardActivity.this);
                         homeList.setAdapter(dashbordAdapter);
-                        canLoadMoreData  = true;
+                        homeList.scrollToPosition(whichPosition);
+                        dashbordAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -383,9 +395,9 @@ public class DashboardActivity extends AppCompatActivity {
 
 
     private void changeTextColor(){
-        globlTxt.setTextColor(Color.parseColor("#000000"));
-        netwrkTxt.setTextColor(Color.parseColor("#000000"));
-        intrstTxt.setTextColor(Color.parseColor("#000000"));
+        globlTxt.setTypeface(null, Typeface.NORMAL);
+        netwrkTxt.setTypeface(null, Typeface.NORMAL);
+        intrstTxt.setTypeface(null, Typeface.NORMAL);
     }
 
 //    @Override
@@ -506,9 +518,9 @@ public class DashboardActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
-                        slider = findViewById(R.id.banner_slider);
-                        slider.setAdapter(new MainSliderAdapter(imgList));
-                        slider.setInterval(3000);
+//                        slider = findViewById(R.id.banner_slider);
+//                        slider.setAdapter(new MainSliderAdapter(imgList));
+//                        slider.setInterval(3000);
                     }
 
                     @Override
@@ -516,6 +528,104 @@ public class DashboardActivity extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    private void checkAndroidVersion() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            checkAndRequestPermissions();
+
+        } else {
+            // code for lollipop and pre-lollipop devices
+        }
+
+    }
+
+    private boolean checkAndRequestPermissions() {
+        int camera = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA);
+        int wtite = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        if (wtite != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (camera != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.CAMERA);
+        }
+        if (read != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), REQUEST_ID_MULTIPLE_PERMISSIONS);
+            return true;
+        }
+        return true;
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        Log.d("in fragment on request", "Permission callback called-------");
+        switch (requestCode) {
+            case REQUEST_ID_MULTIPLE_PERMISSIONS: {
+
+                Map<String, Integer> perms = new HashMap<>();
+                // Initialize the map with both permissions
+                perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+                // Fill with actual results from user
+                if (grantResults.length > 0) {
+                    for (int i = 0; i < permissions.length; i++)
+                        perms.put(permissions[i], grantResults[i]);
+                    // Check for both permissions
+                    if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                            && perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && perms.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                        Log.d("in fragment on request", "CAMERA & WRITE_EXTERNAL_STORAGE READ_EXTERNAL_STORAGE permission granted");
+                        // process the normal flow
+                        //else any one or both the permissions are not granted
+                    } else {
+                        Log.d("in fragment on request", "Some permissions are not granted ask again ");
+                        //permission is denied (this is the first time, when "never ask again" is not checked) so ask again explaining the usage of permission
+//                        // shouldShowRequestPermissionRationale will return true
+                        //show the dialog or snackbar saying its necessary and try again otherwise proceed with setup.
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA) || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                            showDialogOK("Camera and Storage Permission required for this app",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            switch (which) {
+                                                case DialogInterface.BUTTON_POSITIVE:
+                                                    checkAndRequestPermissions();
+                                                    break;
+                                                case DialogInterface.BUTTON_NEGATIVE:
+                                                    // proceed with logic by disabling the related features or quit the app.
+                                                    break;
+                                            }
+                                        }
+                                    });
+                        }
+                        //permission is denied (and never ask again is  checked)
+                        //shouldShowRequestPermissionRationale will return false
+                        else {
+                            Toast.makeText(this, "Go to settings and enable permissions", Toast.LENGTH_LONG)
+                                    .show();
+                            //                            //proceed with logic by disabling the related features or quit the app.
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    private void showDialogOK(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(this)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", okListener)
+                .create()
+                .show();
     }
 
 }

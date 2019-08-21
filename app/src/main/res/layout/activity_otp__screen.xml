@@ -30,7 +30,7 @@ Please check and verify your OTP."/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Enter OTP"
+            android:text="Enter your OTP"
             android:textStyle="bold"
             android:layout_gravity="center"
             android:gravity="center"
@@ -49,7 +49,7 @@ Please check and verify your OTP."/>
             android:id="@+id/email"
             android:layout_width="150dp"
             android:layout_gravity="center"
-
+            android:background="@drawable/rect_view_orange"
             android:layout_height="wrap_content"
             android:hint=""
             android:inputType="number"
@@ -71,7 +71,7 @@ Please check and verify your OTP."/>
         android:layout_marginLeft="120dp"
         android:layout_marginRight="120dp"
         android:onClick="resendotp"
-        android:text="Resend"
+        android:text="resend OTP"
         android:textColor="#fff"
         android:textStyle="bold" />
     <Button

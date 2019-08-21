@@ -99,7 +99,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp"
-            android:background="@drawable/post"
+            android:background="@drawable/cancel"
             android:onClick="submit_data"
             android:text="Post"
             android:textColor="#fff" />

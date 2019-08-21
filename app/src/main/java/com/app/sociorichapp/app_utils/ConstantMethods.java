@@ -65,6 +65,16 @@ public class ConstantMethods {
         SharedPreferences sharedPreferences=getPreferances(context);
         return sharedPreferences.getString("UserID", null);
     }
+
+    public static boolean saveTokenRefresh(Context context, String tokenrefresh){
+        SharedPreferences sharedPreferences=getPreferances(context);
+        return sharedPreferences.edit().putString("tokenrefresh",tokenrefresh).commit();
+    }
+    public static String getTokenRefresh(Context context){
+        SharedPreferences sharedPreferences=getPreferances(context);
+        return sharedPreferences.getString("tokenrefresh", null);
+    }
+
     public static void setStringPreference(String key, String value, Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();

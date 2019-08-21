@@ -5,17 +5,21 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.net.Uri;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -38,6 +42,7 @@ import com.app.sociorichapp.app_utils.ConstantMethods;
 import com.app.sociorichapp.modals.DashModal;
 import com.app.sociorichapp.modals.LoginActivity;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -79,8 +84,27 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
         dashBordHolder.catTxt.setText(dashModals.get(i).getCatNameStr());
         dashBordHolder.unameTxt.setText(dashModals.get(i).getUserNameStr());
         dashBordHolder.dateTxt.setText(dashModals.get(i).getDateStr());
+        String descStr = dashModals.get(i).getDesStr();
+        boolean isUrl = URLUtil.isValidUrl(descStr);
+        if(isUrl){
+            dashBordHolder.desTxt.setTextColor(Color.parseColor("#EE124FF0"));
+            dashBordHolder.desTxt.setPaintFlags(dashBordHolder.desTxt.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            dashBordHolder.desTxt.setOnClickListener(dd->{
+                Uri uri = Uri.parse(descStr);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                context.startActivity(intent);
+            });
+        }
         dashBordHolder.postDataTxt.setText(dashModals.get(i).getPostDataStr());
-        Glide.with(context).load(dashModals.get(i).getProfilePicStr()).into(dashBordHolder.userProfileImg);
+        dashBordHolder.desTxt.setText(descStr);
+//        dashBordHolder.desTxt.setText(dashModals.get(i).getDesStr());
+        Glide.with(context)
+                .load(dashModals.get(i).getProfilePicStr())
+                .placeholder(R.drawable.user_profile)
+                .error(R.drawable.user_profile)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .priority(com.bumptech.glide.Priority.HIGH)
+                .into(dashBordHolder.userProfileImg);
         dashBordHolder.insprTxt.setText(dashModals.get(i).getLikeStr() + " Inspire");
         dashBordHolder.vrfyTxt.setText(dashModals.get(i).getVerifyStr() + " Verify");
         dashBordHolder.crditTxt.setText(dashModals.get(i).getSocioCreStr() + " Socio Credits");
@@ -126,10 +150,23 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
             });
             dashBordHolder.sendRwrd.setOnClickListener(s -> {
                 String rewartQty = dashBordHolder.rwrdEdt.getText().toString();
-                sendReward(rewartQty, postId);
-                dashBordHolder.rwrdLay.setVisibility(View.GONE);
-                dashBordHolder.rwrdTxt.setText("You have reward " + rewartQty + " Equa Credits to this post.");
-                dashBordHolder.rwrdEdt.setText("");
+
+                if(rewartQty.isEmpty()){
+                    Toast.makeText(activity, "Add Some Amount", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    int rewardQtyInt = Integer.parseInt(rewartQty);
+                    if(rewardQtyInt>50){
+                        Toast.makeText(activity, "Amount between 1-50 only", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        sendReward(rewartQty, postId);
+                        dashBordHolder.rwrdLay.setVisibility(View.GONE);
+                        dashBordHolder.rwrdTxt.setText("You have reward " + rewartQty + " Equa Credits\nto this post.");
+                        dashBordHolder.rwrdEdt.setText("");
+                        Toast.makeText(activity, "Reward sent successfully", Toast.LENGTH_SHORT).show();
+                    }
+                }
             });
             dashBordHolder.shareLay.setOnClickListener(s -> sharedPostPopup());
             dashBordHolder.cnclRwrd.setOnClickListener(c -> dashBordHolder.rwrdLay.setVisibility(View.GONE));
@@ -295,14 +332,16 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
     }
 
     public class DashBordHolder extends RecyclerView.ViewHolder {
-        public TextView catTxt, unameTxt, dateTxt, postDataTxt, insprTxt, vrfyTxt, cmntTxt, crditTxt, tInsprTxt, tVrfyTxt, rwrdTxt;
+        public TextView catTxt, unameTxt, dateTxt, postDataTxt, insprTxt, vrfyTxt,
+                cmntTxt, crditTxt, tInsprTxt, tVrfyTxt, rwrdTxt,desTxt;
         public CircleImageView userProfileImg;
         private LinearLayout inspireLay, varifyLay, rwrdLay, shareLay;
         public ImageView inspireImg, verifyImg, vMenuImg;
         FrameLayout frameLayout;
-        Button rwrdBtn, sendRwrd, cnclRwrd;
+        Button sendRwrd, cnclRwrd;
         EditText rwrdEdt;
         RelativeLayout rewadrLay1;
+        private LinearLayout rwrdBtn;
 
         public DashBordHolder(@NonNull View itemView) {
             super(itemView);
@@ -331,6 +370,7 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
             cnclRwrd = itemView.findViewById(R.id.cncl_rwrd);
             shareLay = itemView.findViewById(R.id.share_lay);
             vMenuImg = itemView.findViewById(R.id.v_menu_img);
+            desTxt = itemView.findViewById(R.id.des_txt);
         }
     }
 
@@ -468,7 +508,7 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
     }
 
     private void deleteEditDialog(String identity,String jsonString) {
-        final CharSequence[] options = {"Delete Post", "Edit Post"};
+        final CharSequence[] options = {"Edit Post", "Delete Post"};
         androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(context);
         builder.setTitle("Select Option");
         builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -513,7 +553,12 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
         alert.setPositiveButton("REPORT POST", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String YouEditTextStr = edittext.getText().toString();
-                Toast.makeText(context, "Feedback save successfully", Toast.LENGTH_SHORT).show();
+                if(YouEditTextStr.isEmpty()){
+                    Toast.makeText(context, "Enter your feedback", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(context, "Successfull", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         alert.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -534,7 +579,7 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Toast.makeText(context, "Post deleted successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Post deleted", Toast.LENGTH_SHORT).show();
                         ((AppCompatActivity)context).finish();
                         Intent intent = new Intent(context, DashboardActivity.class);
                         context.startActivity(intent);

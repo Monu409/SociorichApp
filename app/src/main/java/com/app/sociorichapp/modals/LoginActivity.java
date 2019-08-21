@@ -3,6 +3,7 @@ package com.app.sociorichapp.modals;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -21,6 +22,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.app.sociorichapp.R;
 import com.app.sociorichapp.activities.AboutUsActivity;
 import com.app.sociorichapp.activities.BaseActivity;
@@ -36,15 +40,23 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
@@ -53,17 +65,33 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.Twitter;
+import com.twitter.sdk.android.core.TwitterApiClient;
+import com.twitter.sdk.android.core.TwitterAuthToken;
+import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterAuthClient;
+import com.twitter.sdk.android.core.identity.TwitterLoginButton;
+import com.twitter.sdk.android.core.models.User;
+import com.twitter.sdk.android.core.services.AccountService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import retrofit2.Call;
+
 import static com.app.sociorichapp.app_utils.AppApis.BASE_URL;
+import static com.app.sociorichapp.app_utils.AppApis.SOCIAL_LOGIN;
 
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener{
     EditText email, password;
     String url = BASE_URL + "oauth/token";
     String purl = BASE_URL + "api/v1/user/currentuserprofile";
@@ -90,6 +118,7 @@ public class LoginActivity extends BaseActivity {
 
     //creating a GoogleSignInClient object
     GoogleSignInClient mGoogleSignInClient;
+    private GoogleApiClient mGoogleApiClient;
 
     //And also a Firebase Auth object
     FirebaseAuth mAuth;
@@ -98,12 +127,37 @@ public class LoginActivity extends BaseActivity {
     private AccessTokenTracker accessTokenTracker;
     private ProfileTracker profileTracker;
 
+    private TwitterLoginButton twitterLoginButton;
+
+
     private FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
             AccessToken accessToken = loginResult.getAccessToken();
             Profile profile = Profile.getCurrentProfile();
-            displayMessage(profile);
+//            displayMessage(profile);
+
+            GraphRequest request = GraphRequest.newMeRequest(
+                    loginResult.getAccessToken(),
+                    new GraphRequest.GraphJSONObjectCallback() {
+                        @Override
+                        public void onCompleted(JSONObject object, GraphResponse response) {
+                            Log.v("LoginActivity", response.toString());
+                            try {
+                                // Application code
+                                String email = response.getJSONObject().getString("email");
+                                String displayName = profile.getName();
+                                socialLogin(email,displayName);
+                            }catch(Exception e){
+                                e.printStackTrace();;
+                            }
+                        }
+                    });
+            Bundle parameters = new Bundle();
+            parameters.putString("fields", "id,name,email,gender,birthday");
+            request.setParameters(parameters);
+            request.executeAsync();
+
         }
 
         @Override
@@ -151,9 +205,19 @@ public class LoginActivity extends BaseActivity {
         //Then we need a GoogleSignInOptions object
         //And we need to build it as below
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.action_sign_in))
                 .requestEmail()
                 .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
+//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestScopes(new Scope(Scopes.PLUS_LOGIN))
+//                .requestScopes(new Scope(Scopes.PLUS_ME))
+//                .requestEmail()
+//                .build();
 
         //Then we will get the GoogleSignInClient object from GoogleSignIn class
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
@@ -169,7 +233,7 @@ public class LoginActivity extends BaseActivity {
         });
         callbackManager = CallbackManager.Factory.create();
         LoginButton loginButton = findViewById(R.id.login_button);
-        loginButton.setReadPermissions("user_friends");
+        loginButton.setReadPermissions(Arrays.asList("user_birthday", "email"));
         loginButton.registerCallback(callbackManager, callback);
         FacebookSdk.sdkInitialize(getApplicationContext());
 
@@ -191,6 +255,68 @@ public class LoginActivity extends BaseActivity {
 
         accessTokenTracker.startTracking();
         profileTracker.startTracking();
+
+        twitterLoginButton = findViewById(R.id.default_twitter_login_button);
+        twitterLoginButton.setCallback(new Callback<TwitterSession>() {
+            @Override
+            public void success(Result<TwitterSession> result) {
+                Log.e("res",result.toString());
+            }
+
+            @Override
+            public void failure(TwitterException exception) {
+                Log.e("res",exception.toString());
+            }
+        });
+
+        twitterLoginButton.setCallback(new Callback<TwitterSession>() {
+            @Override
+            public void success(Result<TwitterSession> result) {
+                // Do something with result, which provides a TwitterSession for making API calls
+                TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient();
+                AccountService accountService = twitterApiClient.getAccountService();
+                Call<com.twitter.sdk.android.core.models.User> call = accountService.verifyCredentials(true, true, true);
+                call.enqueue(new Callback<com.twitter.sdk.android.core.models.User>() {
+                    @Override
+                    public void success(Result<com.twitter.sdk.android.core.models.User> result) {
+                        User user = result.data;
+                        String fullname = user.name;
+                        long twitterID = user.getId();
+                        String userSocialProfile = user.profileImageUrl;
+                        String userEmail = user.email;
+                        String userFirstNmae = fullname.substring(0, fullname.lastIndexOf(" "));
+                        String userLastNmae = fullname.substring(fullname.lastIndexOf(" "));
+                        String userScreenName = user.screenName;
+                        socialLogin(userEmail,fullname);
+                    }
+
+                    @Override
+                    public void failure(TwitterException exception) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void failure(TwitterException exception) {
+                // Do something on failure
+            }
+        });
+
+        TwitterSession session = TwitterCore.getInstance().getSessionManager().getActiveSession();
+//        TwitterAuthClient authClient = new TwitterAuthClient();
+//        authClient.requestEmail(session, new Callback<String>() {
+//            @Override
+//            public void success(Result<String> result) {
+//                Log.e("res",result.toString());
+//            }
+//
+//            @Override
+//            public void failure(TwitterException exception) {
+//                Log.e("res",exception.toString());
+//            }
+//        });
+
     }
 
     @Override
@@ -249,7 +375,7 @@ public class LoginActivity extends BaseActivity {
                     ConstantMethods.setStringPreference("user_token", accesstoken, LoginActivity.this);
 //                    User_Profile.usertoken=accesstoken;
 //                    Methods.saveAccessToken(LoginActivity.this,accesstoken);
-//                    Methods.saveTokenRefresh(LoginActivity.this,refresh_token);
+                    ConstantMethods.saveTokenRefresh(LoginActivity.this,refresh_token);
 //                    Methods.saveSession(LoginActivity.this,"true");
                     verifyCode_user();
                     /*if (error.equals("true")) {*/
@@ -310,8 +436,12 @@ public class LoginActivity extends BaseActivity {
                     JSONObject ob1j = new JSONObject(response);
                     username = ob1j.getString("displayName");
                     identity = ob1j.getString("identity");
-
-
+                    String displayName = ob1j.getString("displayName");
+                    String phoneNo = ob1j.getString("phoneNo");
+                    String email = ob1j.getString("email");
+                    ConstantMethods.setStringPreference("display_name_prif",displayName,LoginActivity.this);
+                    ConstantMethods.setStringPreference("phone_no_prif",phoneNo,LoginActivity.this);
+                    ConstantMethods.setStringPreference("email_prif",email,LoginActivity.this);
                     ConstantMethods.saveUserID(LoginActivity.this, identity);
                     //   Toast.makeText(getApplicationContext(),"Invalid username or password-2289",Toast.LENGTH_SHORT).show();
                     Intent intent_call = new Intent(LoginActivity.this, DashboardActivity.class);
@@ -345,7 +475,7 @@ public class LoginActivity extends BaseActivity {
 
     private void signIn() {
         //getting the google signin intent
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
 
         //starting the activity for result
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -371,22 +501,13 @@ public class LoginActivity extends BaseActivity {
         //if the requestCode is the Google Sign In code that we defined at starting
         if (requestCode == RC_SIGN_IN) {
 
-            //Getting the GoogleSignIn Task
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                //Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                String mailId = account.getEmail();
-
-                //authenticating with firebase
-                firebaseAuthWithGoogle(account);
-            } catch (ApiException e) {
-                Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
         }
         else {
             callbackManager.onActivityResult(requestCode, resultCode, data);
         }
+        twitterLoginButton.onActivityResult(requestCode, resultCode, data);
     }
 
     private void displayMessage(Profile profile){
@@ -432,6 +553,72 @@ public class LoginActivity extends BaseActivity {
                                     Toast.LENGTH_SHORT).show();
 
                         }
+                    }
+                });
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    private void handleSignInResult(GoogleSignInResult result) {
+        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        if (result.isSuccess()) {
+            // Signed in successfully, show authenticated UI.
+            GoogleSignInAccount acct = result.getSignInAccount();
+
+            Log.e(TAG, "display name: " + acct.getDisplayName());
+
+            String personName = acct.getDisplayName();
+//            String personPhotoUrl = acct.getPhotoUrl().toString();
+            String email = acct.getEmail();
+            socialLogin(email,personName);
+
+
+        } else {
+            // Signed out, show unauthenticated UI.
+
+        }
+    }
+
+    private void socialLogin(String email, String displayName){
+        ConstantMethods.showProgressbar(this);
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("email",email);
+            jsonObject.put("displayName",displayName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        AndroidNetworking
+                .post(SOCIAL_LOGIN)
+                .addJSONObjectBody(jsonObject)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        ConstantMethods.dismissProgressBar();
+                        try {
+                            String identity = response.getString("identity");
+                            String accesstoken = response.getString("accessToken");
+                            ConstantMethods.saveUserID(LoginActivity.this, identity);
+                            ConstantMethods.setStringPreference("login_status", "login", LoginActivity.this);
+                            ConstantMethods.setStringPreference("user_token", accesstoken, LoginActivity.this);
+                            Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
+                            Intent intent_call = new Intent(LoginActivity.this, DashboardActivity.class);
+                            intent_call.addFlags(intent_call.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent_call);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        ConstantMethods.dismissProgressBar();
+                        Toast.makeText(LoginActivity.this, anError.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }

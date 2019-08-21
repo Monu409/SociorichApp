@@ -46,6 +46,7 @@
                     android:background="@drawable/rect_view_orange"
                     android:paddingLeft="5dp"
                     android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:maxLength="35"
                     android:hint="Full Name *"
                     android:inputType="text"
                     android:maxLines="1"
@@ -156,6 +157,18 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="10dp"
                 android:id="@+id/already_txt"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Terms &amp; Conditions"
+                android:gravity="right"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:textSize="17sp"
+                android:id="@+id/terms_txt"
+                android:layout_marginLeft="10dp"
+                />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

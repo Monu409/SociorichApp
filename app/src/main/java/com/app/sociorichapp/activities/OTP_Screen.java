@@ -49,7 +49,6 @@ static String type,emailid,userid,emaiid;
         super.onCreate(savedInstanceState);
         ConstantMethods.setTitleAndBack(this,"OTP");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ConstantMethods.setTitleAndBack(this,"Otp");
         resend=(Button) findViewById(R.id.resend);
         email=(EditText) findViewById(R.id.email);
         Bundle bundle = getIntent().getExtras();
