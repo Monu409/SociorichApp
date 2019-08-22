@@ -18,6 +18,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -32,6 +34,7 @@ import static com.app.sociorichapp.app_utils.AppApis.BASE_URL;
 public class AdminDetail extends BaseActivity {
 static String orgname_p,orgtype_p,orgfselect_p,orgadress_p,orgyear_p,orgwebsite_p,orgtstren_p,adminname_tv,adminemail_tv,adminpassword_tv,adminconfirmpassoword;
     EditText adminname,adminemail,adminpassword,repassowrd;
+    String aboutOrgnStr,orgnRnumStr;
     private ProgressDialog pDialog;
     static String key;
     String strurl = BASE_URL+"api/v1/user/createorg";
@@ -53,6 +56,8 @@ static String orgname_p,orgtype_p,orgfselect_p,orgadress_p,orgyear_p,orgwebsite_
         orgyear_p = bundle.getString("orgeyear");
         orgwebsite_p = bundle.getString("prgwebsite");
         orgtstren_p = bundle.getString("orgstrenth");
+        aboutOrgnStr = bundle.getString("aboutor_txt");
+        orgnRnumStr = bundle.getString("orgn_rnum");
     }
 
     @Override
@@ -84,8 +89,50 @@ static String orgname_p,orgtype_p,orgfselect_p,orgadress_p,orgyear_p,orgwebsite_
             pDialog.show();
         }
         protected String doInBackground(String... urls) {
-            String url = "{\"password\":\""+adminpassword_tv+"\",\"profile\":{\"displayName\":\"" + orgname_p + "\",\"website\":\"" + orgwebsite_p + "\",\"industryId\":\"" + "org-industry-id-2" + "\",\"otherOrgTypeId\":\"" + "null" + "\",\"supportedCauses\":[],\"employeeSize\":\"" + orgtstren_p + "\",\"location\":{\"desc\":\"" + orgadress_p + "\"},\"foundationYear\":\"" + orgyear_p + "\",\"profileDesc\":\"" + orgtstren_p + "\",\"orgType\":\"" + "CSR" + "\",\"admin\":{\"name\":\"" + adminname_tv + "\",\"email\":\"" + adminemail_tv + "\",\"phoneNo\":\"" + "null" + "\",\"designation\":\"" + "null" + "\"}" +
-                    ",\"referIdentity\":\"" + "undefined" + "\",\"regNum\":\""+""+"\"}}";
+//            String url = "{\"password\":\""+adminpassword_tv+"\",\"profile\":{\"displayName\":\"" + orgname_p + "\"," +
+//                    "\"profileDesc\":\"\"" + aboutOrgnStr + "\",\"regNum\":\"\"" + orgnRnumStr
+//                    + "\"\",\"website\":\"" + orgwebsite_p + "\",\"industryId\":\"" + "org-industry-id-2" + "\",\"otherOrgTypeId\":\"" + "null"
+//                    + "\",\"supportedCauses\":[],\"employeeSize\":\"" + orgtstren_p + "\",\"location\":{\"desc\":\"" + orgadress_p + "\"}" +
+//                    ",\"foundationYear\":\"" + orgyear_p + "\",\"profileDesc\":\"" + orgtstren_p + "\",\"orgType\":\"" + "CSR" + "\",\"admin\"" +
+//                    ":{\"name\":\"" + adminname_tv + "\",\"email\":\"" + adminemail_tv + "\",\"phoneNo\":\"" + "null" + "\",\"designation\":\""
+//                    + "null" + "\"}" +
+//                    ",\"referIdentity\":\"" + "undefined" + "\",\"regNum\":\""+""+"\"}}";
+
+            JSONObject completeObj = new JSONObject();
+            JSONObject profileJson = new JSONObject();
+            JSONObject locationJson = new JSONObject();
+            JSONObject adminJson = new JSONObject();
+            JSONArray jsonArray = new JSONArray();
+            try {
+                adminJson.put("name",adminname_tv);
+                adminJson.put("email",adminemail_tv);
+                adminJson.put("phoneNo","null");
+                adminJson.put("designation","null");
+
+                locationJson.put("desc",orgadress_p);
+
+                profileJson.put("displayName",orgname_p);
+                profileJson.put("website",orgwebsite_p);
+                profileJson.put("industryId","org-industry-id-2");
+                profileJson.put("otherOrgTypeId","null");
+                profileJson.put("supportedCauses",jsonArray);
+                profileJson.put("employeeSize",orgtstren_p);
+                profileJson.put("location",locationJson);
+                profileJson.put("foundationYear",orgyear_p);
+                profileJson.put("profileDesc",aboutOrgnStr);
+                profileJson.put("orgType","CSR");
+                profileJson.put("admin",adminJson);
+                profileJson.put("regNum",orgnRnumStr);
+                profileJson.put("referIdentity","undefined");
+
+                completeObj.put("password",adminpassword_tv);
+                completeObj.put("profile",profileJson);
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
 //            String url = "{\n" +
 //                    "  \"password\": \""+adminpassword_tv+",\n" +
 //                    "  \"profile\": {\n" +
@@ -122,7 +169,7 @@ static String orgname_p,orgtype_p,orgfselect_p,orgadress_p,orgyear_p,orgwebsite_
                 HttpPost httpPost = new HttpPost(strurl);
                 //   HttpPost httpPost = new HttpPost("http://34.208.118.103/wcfserviceCustomer.svc/EBSPayment/?");
 
-                String json = url;
+                String json = completeObj.toString();
 
                 StringEntity se = new StringEntity(json);
                 httpPost.setEntity(se);

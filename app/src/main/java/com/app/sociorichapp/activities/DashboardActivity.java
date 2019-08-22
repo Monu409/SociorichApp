@@ -400,13 +400,6 @@ public class DashboardActivity extends AppCompatActivity {
         intrstTxt.setTypeface(null, Typeface.NORMAL);
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.main_menu, menu);
-//        return true;
-//    }
-
     @Override
     public boolean onCreateOptionsMenu( Menu menu) {
         getMenuInflater().inflate( R.menu.main_menu, menu);

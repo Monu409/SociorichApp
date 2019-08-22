@@ -12,9 +12,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -23,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.palette.graphics.Palette;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -54,6 +57,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -70,7 +74,7 @@ public class ProfileUpActivity extends AppCompatActivity {
     private AppBarLayout appBarLayout;
     private CircleImageView profileImg;
     public String profileDes;
-    private TextView intrextTxt,intrestAllTxt,soCrTxt,eqCrTxt,qualityTxt;
+    private TextView intrextTxt, intrestAllTxt, soCrTxt, eqCrTxt, qualityTxt, showAllTxt;
 
     private static final int PICK_IMAGE_CAMERA = 1;
     private static final int PICK_IMAGE_GALLERY = 2;
@@ -78,7 +82,7 @@ public class ProfileUpActivity extends AppCompatActivity {
     private boolean appBarExpanded = true;
     String userToken;
     private OnAboutDataReceivedListener mAboutDataListener;
-    Map<String,String> interestMap = new HashMap<>();
+    Map<String, String> interestMap = new HashMap<>();
 
 
     @Override
@@ -92,13 +96,14 @@ public class ProfileUpActivity extends AppCompatActivity {
         soCrTxt = findViewById(R.id.so_cr_txt);
         eqCrTxt = findViewById(R.id.eq_cr_txt);
         qualityTxt = findViewById(R.id.quality_txt);
+        showAllTxt = findViewById(R.id.showall_txt);
         intrestAllTxt = findViewById(R.id.intrest_all);
-        userToken = ConstantMethods.getStringPreference("user_token",this);
-        for(int i=0;i<POST_CATEGORY_PROFILE_KEYS.length;i++){
-            interestMap.put(POST_CATEGORY_PROFILE_KEYS[i],POST_CATEGORY_PROFILE_VALUES[i]);
+        userToken = ConstantMethods.getStringPreference("user_token", this);
+        for (int i = 0; i < POST_CATEGORY_PROFILE_KEYS.length; i++) {
+            interestMap.put(POST_CATEGORY_PROFILE_KEYS[i], POST_CATEGORY_PROFILE_VALUES[i]);
         }
-        qualityTxt.setOnClickListener(q->{
-            Intent intent = new Intent(this,QualityActivity.class);
+        qualityTxt.setOnClickListener(q -> {
+            Intent intent = new Intent(this, QualityActivity.class);
             startActivity(intent);
         });
         setSupportActionBar(toolbar);
@@ -107,18 +112,18 @@ public class ProfileUpActivity extends AppCompatActivity {
         collapsingToolbar.setTitle(" ");
         getProfileData();
         profileImg = findViewById(R.id.profile_img);
-        profileImg.setOnClickListener(v->{
+        profileImg.setOnClickListener(v -> {
             selectImage();
         });
-        intrextTxt.setOnClickListener(v->selectIntrest());
+        intrextTxt.setOnClickListener(v -> selectIntrest());
 
-        List<String> catVals = ConstantMethods.getArrayListShared(ProfileUpActivity.this,"interest_save");
+        List<String> catVals = ConstantMethods.getArrayListShared(ProfileUpActivity.this, "interest_save");
         String allIntrestStr = "";
-        if(catVals==null){
+        if (catVals == null) {
             catVals = new ArrayList<>();
         }
-        for(int i=0;i<catVals.size();i++){
-            allIntrestStr = allIntrestStr+catVals.get(i)+", ";
+        for (int i = 0; i < catVals.size(); i++) {
+            allIntrestStr = allIntrestStr + catVals.get(i) + ", ";
             intrestAllTxt.setText(allIntrestStr);
         }
 
@@ -145,9 +150,9 @@ public class ProfileUpActivity extends AppCompatActivity {
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if(Math.abs(verticalOffset) > 200){
+                if (Math.abs(verticalOffset) > 200) {
                     appBarExpanded = false;
-                }else{
+                } else {
                     appBarExpanded = true;
                 }
                 invalidateOptionsMenu();
@@ -158,13 +163,13 @@ public class ProfileUpActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 break;
         }
 
-        if(item.getTitle() == "Add"){
+        if (item.getTitle() == "Add") {
             Toast.makeText(this, "Add menu clicked!", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
@@ -213,8 +218,10 @@ public class ProfileUpActivity extends AppCompatActivity {
             }
         }
     }
+
     List<String> catVals = new ArrayList<>();
-    private void selectIntrest(){
+
+    private void selectIntrest() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("In which areas you are intersted?");
@@ -223,31 +230,81 @@ public class ProfileUpActivity extends AppCompatActivity {
         builder.setMultiChoiceItems(POST_CATEGORY_PROFILE_KEYS, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     String valuech = POST_CATEGORY_PROFILE_KEYS[which];
                     catVals.add(valuech);
-                }
-                else{
+                    HashSet<String> hashSet = new HashSet<>();
+                    hashSet.addAll(catVals);
+                    catVals.clear();
+                    catVals.addAll(hashSet);
+                } else {
                     String valuech = POST_CATEGORY_PROFILE_KEYS[which];
                     catVals.remove(valuech);
                 }
-                ConstantMethods.saveArrayListShared(catVals,ProfileUpActivity.this,"interest_save");
+                ConstantMethods.saveArrayListShared(catVals, ProfileUpActivity.this, "interest_save");
             }
         });
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                List<String> catVals = ConstantMethods.getArrayListShared(ProfileUpActivity.this,"interest_save");
-                if(catVals==null){
+                List<String> catVals = ConstantMethods.getArrayListShared(ProfileUpActivity.this, "interest_save");
+                if (catVals == null) {
                     catVals = new ArrayList<>();
                 }
                 String allIntrestStr = "";
-                for(int i=0;i<catVals.size();i++){
-                    allIntrestStr = allIntrestStr+catVals.get(i)+", ";
+                for (int i = 0; i < catVals.size(); i++) {
+                    allIntrestStr = allIntrestStr + catVals.get(i) + ", ";
                     intrestAllTxt.setText(allIntrestStr);
                 }
                 List<String> sendKeys = new ArrayList<>();
-                for(int j=0;j<catVals.size();j++){
+                for (int j = 0; j < catVals.size(); j++) {
+                    String firstVal = interestMap.get(catVals.get(j));
+                    sendKeys.add(firstVal);
+                }
+                setInterestValues(sendKeys);
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void deleteIntrest() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete Intrest");
+
+        boolean[] checkedItems = {false, false, false, false, false, false, false, false, false, false};
+        builder.setMultiChoiceItems(POST_CATEGORY_PROFILE_KEYS, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                if (isChecked) {
+                    String valuech = POST_CATEGORY_PROFILE_KEYS[which];
+                    catVals.add(valuech);
+                    HashSet<String> hashSet = new HashSet<>();
+                    hashSet.addAll(catVals);
+                    catVals.clear();
+                    catVals.addAll(hashSet);
+                } else {
+                    String valuech = POST_CATEGORY_PROFILE_KEYS[which];
+                    catVals.remove(valuech);
+                }
+                ConstantMethods.saveArrayListShared(catVals, ProfileUpActivity.this, "interest_save");
+            }
+        });
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                List<String> catVals = ConstantMethods.getArrayListShared(ProfileUpActivity.this, "interest_save");
+                if (catVals == null) {
+                    catVals = new ArrayList<>();
+                }
+                String allIntrestStr = "";
+                for (int i = 0; i < catVals.size(); i++) {
+                    allIntrestStr = allIntrestStr + catVals.get(i) + ", ";
+                    intrestAllTxt.setText(allIntrestStr);
+                }
+                List<String> sendKeys = new ArrayList<>();
+                for (int j = 0; j < catVals.size(); j++) {
                     String firstVal = interestMap.get(catVals.get(j));
                     sendKeys.add(firstVal);
                 }
@@ -260,30 +317,31 @@ public class ProfileUpActivity extends AppCompatActivity {
     }
 
 
-    private void updateProfilePicture(File file){
-        String usertoken = ConstantMethods.getStringPreference("user_token",this);
+    private void updateProfilePicture(File file) {
+        String usertoken = ConstantMethods.getStringPreference("user_token", this);
         AndroidNetworking
                 .upload(UPLOAD_PROFILE_PICK)
-                .addMultipartFile("file",file)
-                .addMultipartParameter("fileSize",String.valueOf(file.getTotalSpace()))
-                .addHeaders("authorization", "Bearer "+usertoken)
+                .addMultipartFile("file", file)
+                .addMultipartParameter("fileSize", String.valueOf(file.getTotalSpace()))
+                .addHeaders("authorization", "Bearer " + usertoken)
                 .setTag("uploadTest")
                 .setPriority(Priority.HIGH)
                 .build()
                 .setUploadProgressListener(new UploadProgressListener() {
                     @Override
                     public void onProgress(long bytesUploaded, long totalBytes) {
-                        Log.e("progress",""+bytesUploaded);
+                        Log.e("progress", "" + bytesUploaded);
                     }
                 })
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.e("progress",""+response);
+                        Log.e("progress", "" + response);
                     }
+
                     @Override
                     public void onError(ANError error) {
-                        Log.e("progress",""+error);
+                        Log.e("progress", "" + error);
                     }
                 });
     }
@@ -293,7 +351,7 @@ public class ProfileUpActivity extends AppCompatActivity {
             PackageManager pm = getPackageManager();
             int hasPerm = pm.checkPermission(Manifest.permission.CAMERA, getPackageName());
             if (hasPerm == PackageManager.PERMISSION_GRANTED) {
-                final CharSequence[] options = {"Take Photo", "Choose From Gallery","Cancel"};
+                final CharSequence[] options = {"Take Photo", "Choose From Gallery", "Cancel"};
                 androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
                 builder.setTitle("Select Option");
                 builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -336,7 +394,7 @@ public class ProfileUpActivity extends AppCompatActivity {
                 String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
                 String filePath = Environment.getExternalStorageDirectory() + "/" +
                         getString(R.string.app_name);
-                File destination = new File(filePath,"IMG_" + timeStamp + ".jpg");
+                File destination = new File(filePath, "IMG_" + timeStamp + ".jpg");
                 File dir = new File(filePath);
                 if (!dir.exists()) {
                     dir.mkdirs();
@@ -386,17 +444,17 @@ public class ProfileUpActivity extends AppCompatActivity {
         return cursor.getString(column_index);
     }
 
-    private void getProfileData(){
-        userToken = ConstantMethods.getStringPreference("user_token",this);
+    private void getProfileData() {
+        userToken = ConstantMethods.getStringPreference("user_token", this);
         AndroidNetworking
                 .get(GET_PROFILE_PICK)
-                .addHeaders("authorization", "Bearer "+userToken)
+                .addHeaders("authorization", "Bearer " + userToken)
                 .setPriority(Priority.MEDIUM)
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.e("test",""+response);
+                        Log.e("test", "" + response);
                         try {
                             profileDes = response.getString("profileDesc");
                             String dob = response.getString("dob");
@@ -406,11 +464,10 @@ public class ProfileUpActivity extends AppCompatActivity {
                             try {
                                 locationObj = response.getJSONObject("location");
                                 location = locationObj.getString("desc");
-                            }
-                            catch (Exception e){
+                            } catch (Exception e) {
                                 e.getStackTrace();
                             }
-                            mAboutDataListener.onDataReceived(profileDes,wrkPlace,location,dob);
+                            mAboutDataListener.onDataReceived(profileDes, wrkPlace, location, dob);
                             JSONObject profileObj = response.getJSONObject("profilePic");
                             String profileUrl = profileObj.getString("url");
                             Glide
@@ -423,52 +480,52 @@ public class ProfileUpActivity extends AppCompatActivity {
                             equaMoneyBalance = equaMoneyBalance.substring(0, equaMoneyBalance.length() - 2);
                             soCrTxt.setText(socioMoneyBalance);
                             eqCrTxt.setText(equaMoneyBalance);
-                        }
-                        catch (Exception e){
+                        } catch (Exception e) {
                             e.getStackTrace();
                         }
                     }
 
                     @Override
                     public void onError(ANError anError) {
-                        Log.e("test",""+anError);
+                        Log.e("test", "" + anError);
                     }
                 });
     }
+
     public void setAboutDataListener(OnAboutDataReceivedListener listener) {
         this.mAboutDataListener = listener;
     }
 
-    private void setInterestValues(List<String> selectedValues){
+    private void setInterestValues(List<String> selectedValues) {
         JSONObject jsonObject = new JSONObject();
         JSONArray jsonArray = new JSONArray();
-        for(int i=0;i<selectedValues.size();i++){
+        for (int i = 0; i < selectedValues.size(); i++) {
             try {
-                jsonArray.put(i,selectedValues.get(i));
+                jsonArray.put(i, selectedValues.get(i));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
         try {
-            jsonObject.put("interestCategories",jsonArray);
+            jsonObject.put("interestCategories", jsonArray);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String userToken = ConstantMethods.getStringPreference("user_token",this);
+        String userToken = ConstantMethods.getStringPreference("user_token", this);
         AndroidNetworking
                 .post(MY_INTEREST)
-                .addHeaders("authorization","Bearer "+userToken)
+                .addHeaders("authorization", "Bearer " + userToken)
                 .addJSONObjectBody(jsonObject)
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.e("test",""+response);
+                        Log.e("test", "" + response);
                     }
 
                     @Override
                     public void onError(ANError anError) {
-                        Log.e("test",""+anError);
+                        Log.e("test", "" + anError);
                     }
                 });
     }

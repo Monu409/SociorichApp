@@ -99,6 +99,7 @@ public class CommentActivity extends BaseActivity {
                         try {
                             String comment = response.getString("comment");
                             commentAdapter = new CommentAdapter(userName,userComment,CommentActivity.this);
+                            insertIndex = userName.size();
                             comntList.setAdapter(commentAdapter);
                             userComment.add(insertIndex, comment);
                             userName.add(insertIndex, "Test Developer");

@@ -3,15 +3,19 @@ package com.app.sociorichapp.adapters;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.app.sociorichapp.R;
+import com.app.sociorichapp.activities.FullImageActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryHolder> {
@@ -41,6 +45,12 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryH
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .priority(Priority.HIGH)
                 .into(galleryHolder.gImage);
+        galleryHolder.gImage.setOnClickListener(gg->{
+            Intent intent = new Intent(context, FullImageActivity.class);
+            ArrayList<String> stringArrayList = (ArrayList<String>)imgList;
+            intent.putExtra("all_images",stringArrayList);
+            context.startActivity(intent);
+        });
     }
 
     @Override

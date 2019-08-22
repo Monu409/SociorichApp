@@ -4,6 +4,7 @@ public class CommentModal {
     private String comntStr;
     private String timeDateStr;
     private String imgUrl;
+    private String userStr;
 
     public String getComntStr() {
         return comntStr;
@@ -27,5 +28,13 @@ public class CommentModal {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public String getUserStr() {
+        return userStr;
+    }
+
+    public void setUserStr(String userStr) {
+        this.userStr = userStr;
     }
 }

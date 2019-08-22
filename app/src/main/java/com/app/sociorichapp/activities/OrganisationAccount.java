@@ -32,7 +32,7 @@ public class OrganisationAccount extends BaseActivity {
     CharSequence[] values2 = {" Animals ", " Community & Development ", " Disasters ", " Education ", " Discrimination ", " Health ", " Homelessness+Poverty ", " Spiritual ", " Other ", " Environment "};
     CharSequence[] values3 = {" Educational Institutes ", " Government Department ", " Hospitals ", " Other ", " Political Parties ", " Proprietorship/Partnership "};
     AlertDialog dialog;
-    EditText org_tvname, org_tvwebsite, org_tvyear, org_tvadress;
+    EditText org_tvname, org_tvwebsite, org_tvyear, org_tvadress,aboutOrgEdt,orgnRNumEdt;
     Spinner spinner1;
     private TextView alreadyTxt;
 
@@ -49,6 +49,8 @@ public class OrganisationAccount extends BaseActivity {
         org_tvwebsite = findViewById(R.id.org_tvwebsite);
         org_tvyear = findViewById(R.id.org_tvyear);
         org_tvadress = findViewById(R.id.org_tvadress);
+        aboutOrgEdt = findViewById(R.id.about_edt);
+        orgnRNumEdt = findViewById(R.id.orgn_rnumber);
         alreadyTxt = findViewById(R.id.already_txt);
 
         radioSexGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -81,6 +83,8 @@ public class OrganisationAccount extends BaseActivity {
         org_websitE = org_tvwebsite.getText().toString();
         org_incorpo = org_tvyear.getText().toString();
         org_address = org_tvadress.getText().toString();
+        String aboutOrStr = aboutOrgEdt.getText().toString();
+        String orgnRnum = orgnRNumEdt.getText().toString();
         if (org_name.equals("") || org_websitE.equals("") || org_incorpo.equals("") || org_address.equals("")) {
             Toast.makeText(getApplicationContext(), "All field are mandatory", Toast.LENGTH_SHORT).show();
         } else {
@@ -92,6 +96,8 @@ public class OrganisationAccount extends BaseActivity {
             intent.putExtra("orgtype", org_type);
             intent.putExtra("orgtypes", select_value);
             intent.putExtra("orgstrenth", org_team);
+            intent.putExtra("aboutor_txt", aboutOrStr);
+            intent.putExtra("orgn_rnum", orgnRnum);
             startActivity(intent);
         }
 
@@ -187,7 +193,6 @@ public class OrganisationAccount extends BaseActivity {
 
                 switch (item) {
                     case 0:
-
                         Toast.makeText(OrganisationAccount.this, "Educational Institutes", Toast.LENGTH_LONG).show();
                         select_value = "Educational Institutes";
                         selectvalue.setText(select_value);

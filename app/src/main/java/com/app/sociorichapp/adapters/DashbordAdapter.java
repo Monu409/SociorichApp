@@ -37,6 +37,7 @@ import com.app.sociorichapp.R;
 import com.app.sociorichapp.activities.CommentActivity;
 import com.app.sociorichapp.activities.DashboardActivity;
 import com.app.sociorichapp.activities.Edit_Post;
+import com.app.sociorichapp.activities.FullImageActivity;
 import com.app.sociorichapp.app_utils.CircleImageView;
 import com.app.sociorichapp.app_utils.ConstantMethods;
 import com.app.sociorichapp.modals.DashModal;
@@ -48,6 +49,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.app.sociorichapp.app_utils.AppApis.DELETE_POST;
@@ -244,6 +246,12 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
             imageView.setPadding(0, 5, 0, 0);
             imageView.setLayoutParams(new FrameLayout.LayoutParams(width, 400));
             dashBordHolder.frameLayout.addView(imageView);
+            dashBordHolder.frameLayout.setOnClickListener(v->{
+                Intent intent = new Intent(context, FullImageActivity.class);
+                ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
+                intent.putExtra("all_images",stringArrayList);
+                context.startActivity(intent);
+            });
         }
         if (mediaSize == 2) {
             ImageView imageView = new ImageView(context);
@@ -259,6 +267,12 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
             imageView1.setPadding(5, 5, 0, 0);
             dashBordHolder.frameLayout.addView(imageView);
             dashBordHolder.frameLayout.addView(imageView1);
+            dashBordHolder.frameLayout.setOnClickListener(v->{
+                Intent intent = new Intent(context, FullImageActivity.class);
+                ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
+                intent.putExtra("all_images",stringArrayList);
+                context.startActivity(intent);
+            });
         }
         if (mediaSize == 3) {
             ImageView imageView = new ImageView(context);
@@ -282,6 +296,12 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
             dashBordHolder.frameLayout.addView(imageView);
             dashBordHolder.frameLayout.addView(imageView1);
             dashBordHolder.frameLayout.addView(imageView2);
+            dashBordHolder.frameLayout.setOnClickListener(v->{
+                Intent intent = new Intent(context, FullImageActivity.class);
+                ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
+                intent.putExtra("all_images",stringArrayList);
+                context.startActivity(intent);
+            });
         }
         if (mediaSize >= 4) {
             ImageView imageView = new ImageView(context);
@@ -323,6 +343,12 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
             dashBordHolder.frameLayout.addView(imageView2);
             dashBordHolder.frameLayout.addView(imageView3);
             dashBordHolder.frameLayout.addView(textView);
+            dashBordHolder.frameLayout.setOnClickListener(v->{
+                Intent intent = new Intent(context, FullImageActivity.class);
+                ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
+                intent.putExtra("all_images",stringArrayList);
+                context.startActivity(intent);
+            });
         }
     }
 
