@@ -171,7 +171,8 @@
                 android:layout_marginLeft="40dp"
                 android:textSize="19dp"
                 android:layout_height="wrap_content"
-                android:text="CREATE YOUR POST"/>
+                android:text="CREATE YOUR POST"
+                android:textColor="@color/colorPrimary"/>
             <ImageView
                 android:layout_width="30dp"
                 android:layout_gravity="center"

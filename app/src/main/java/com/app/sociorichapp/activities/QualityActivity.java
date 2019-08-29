@@ -5,8 +5,12 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
 import com.app.sociorichapp.R;
 import com.app.sociorichapp.adapters.QualityAdapter;
 import com.app.sociorichapp.app_utils.ConstantMethods;
@@ -16,6 +20,7 @@ import java.util.List;
 public class QualityActivity extends BaseActivity {
     RecyclerView qltyList;
     LinearLayout addLay;
+    List<String> qltyStrList;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,19 +34,24 @@ public class QualityActivity extends BaseActivity {
 //        }
 //        QualityAdapter qualityAdapter = new QualityAdapter(qltyStrList,this);
 //        qltyList.setAdapter(qualityAdapter);
-//        addLay.setOnClickListener(a->showEdittext());
+        addLay.setOnClickListener(a->{
+            if(qltyStrList.size()>=3){
+                Toast.makeText(this, "You can add only 3 qualities", Toast.LENGTH_SHORT).show();
+            }else {
+                showEdittext();
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        List<String> qltyStrList = ConstantMethods.getArrayListShared(QualityActivity.this,"quality_key");
+        qltyStrList = ConstantMethods.getArrayListShared(QualityActivity.this,"quality_key");
         if(qltyStrList==null){
             qltyStrList = new ArrayList<>();
         }
         QualityAdapter qualityAdapter = new QualityAdapter(qltyStrList,this);
         qltyList.setAdapter(qualityAdapter);
-        addLay.setOnClickListener(a->showEdittext());
     }
 
     @Override
@@ -54,18 +64,27 @@ public class QualityActivity extends BaseActivity {
         final EditText edittext = new EditText(this);
         alert.setMessage("You can add upto 3 qualities");
         alert.setTitle("Add more qualities");
-
         alert.setView(edittext);
-
         alert.setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String YouEditTextStr = edittext.getText().toString();
-                List<String> dataList = ConstantMethods.getArrayListShared(QualityActivity.this,"quality_key");
-                if(dataList==null){
-                    dataList = new ArrayList<>();
+                if(YouEditTextStr.isEmpty()){
+                    Toast.makeText(QualityActivity.this, "Please enter quality", Toast.LENGTH_SHORT).show();
                 }
-                dataList.add(YouEditTextStr);
-                ConstantMethods.saveArrayListShared(dataList,QualityActivity.this,"quality_key");
+                else {
+                    List<String> dataList = ConstantMethods.getArrayListShared(QualityActivity.this, "quality_key");
+                    if (dataList == null) {
+                        dataList = new ArrayList<>();
+                    }
+                    dataList.add(YouEditTextStr);
+                    ConstantMethods.saveArrayListShared(dataList, QualityActivity.this, "quality_key");
+                    List<String> qltyStrList = ConstantMethods.getArrayListShared(QualityActivity.this, "quality_key");
+                    if (qltyStrList == null) {
+                        qltyStrList = new ArrayList<>();
+                    }
+                    QualityAdapter qualityAdapter = new QualityAdapter(qltyStrList, QualityActivity.this);
+                    qltyList.setAdapter(qualityAdapter);
+                }
             }
         });
 
@@ -76,5 +95,11 @@ public class QualityActivity extends BaseActivity {
         });
 
         alert.show();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.e("test","onpause");
     }
 }

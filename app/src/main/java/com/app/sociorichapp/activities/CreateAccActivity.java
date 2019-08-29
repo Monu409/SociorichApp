@@ -29,7 +29,7 @@ public class CreateAccActivity extends BaseActivity {
         organization_view.setOnClickListener(v->startActivity(new Intent(this,OrganisationAccount.class)));
         loginTxt.setOnClickListener(v->startActivity(new Intent(this, LoginActivity.class)));
         String str1 = "Create your Account As";
-        String penalty = " INDIVISUAL";
+        String penalty = " INDIVIDUAL";
         String penalty2 = " ORGANISATION";
 
 

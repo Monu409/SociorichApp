@@ -85,7 +85,7 @@ public class OrganisationAccount extends BaseActivity {
         org_address = org_tvadress.getText().toString();
         String aboutOrStr = aboutOrgEdt.getText().toString();
         String orgnRnum = orgnRNumEdt.getText().toString();
-        if (org_name.equals("") || org_websitE.equals("") || org_incorpo.equals("") || org_address.equals("")) {
+        if (org_name.equals("") || org_websitE.equals("") || org_incorpo.equals("") || org_address.equals("")|| aboutOrStr.equals("")) {
             Toast.makeText(getApplicationContext(), "All field are mandatory", Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent(OrganisationAccount.this, AdminDetail.class);
@@ -113,62 +113,42 @@ public class OrganisationAccount extends BaseActivity {
 
                 switch (item) {
                     case 0:
-
-                        Toast.makeText(OrganisationAccount.this, "Automobile", Toast.LENGTH_LONG).show();
                         select_value = "Automobile";
                         selectvalue.setText(select_value);
                         break;
                     case 1:
-
-                        Toast.makeText(OrganisationAccount.this, "Chemical", Toast.LENGTH_LONG).show();
                         select_value = "Chemical";
                         selectvalue.setText(select_value);
                         break;
                     case 2:
-
-                        Toast.makeText(OrganisationAccount.this, "Constructio/Real Estate", Toast.LENGTH_LONG).show();
                         select_value = "Constructio/Real State";
                         selectvalue.setText(select_value);
                         break;
                     case 3:
-
-                        Toast.makeText(OrganisationAccount.this, "Education", Toast.LENGTH_LONG).show();
                         select_value = "Education";
                         selectvalue.setText(select_value);
                         break;
                     case 4:
-
-                        Toast.makeText(OrganisationAccount.this, "Entertainment", Toast.LENGTH_LONG).show();
                         select_value = "Entertainment";
                         selectvalue.setText(select_value);
                         break;
                     case 5:
-
-                        Toast.makeText(OrganisationAccount.this, "Fashion/E-Commerce", Toast.LENGTH_LONG).show();
                         select_value = "Fashion/E-Commerce";
                         selectvalue.setText(select_value);
                         break;
                     case 6:
-
-                        Toast.makeText(OrganisationAccount.this, "Food", Toast.LENGTH_LONG).show();
                         select_value = "Food";
                         selectvalue.setText(select_value);
                         break;
                     case 7:
-
-                        Toast.makeText(OrganisationAccount.this, "Healthcare", Toast.LENGTH_LONG).show();
                         select_value = "Healthcare";
                         selectvalue.setText(select_value);
                         break;
                     case 8:
-
-                        Toast.makeText(OrganisationAccount.this, "IT / Software", Toast.LENGTH_LONG).show();
                         select_value = "IT Software";
                         selectvalue.setText(select_value);
                         break;
                     case 9:
-
-                        Toast.makeText(OrganisationAccount.this, "Others", Toast.LENGTH_LONG).show();
                         select_value = "Others";
                         selectvalue.setText(select_value);
                         break;
@@ -193,37 +173,26 @@ public class OrganisationAccount extends BaseActivity {
 
                 switch (item) {
                     case 0:
-                        Toast.makeText(OrganisationAccount.this, "Educational Institutes", Toast.LENGTH_LONG).show();
                         select_value = "Educational Institutes";
                         selectvalue.setText(select_value);
                         break;
                     case 1:
-
-                        Toast.makeText(OrganisationAccount.this, "Government Department", Toast.LENGTH_LONG).show();
                         select_value = "Government Department";
                         selectvalue.setText(select_value);
                         break;
                     case 2:
-
-                        Toast.makeText(OrganisationAccount.this, "Hospitals", Toast.LENGTH_LONG).show();
                         select_value = "Hospitals";
                         selectvalue.setText(select_value);
                         break;
                     case 3:
-
-                        Toast.makeText(OrganisationAccount.this, "Other", Toast.LENGTH_LONG).show();
                         select_value = "Other";
                         selectvalue.setText(select_value);
                         break;
                     case 4:
-
-                        Toast.makeText(OrganisationAccount.this, "Political Parties", Toast.LENGTH_LONG).show();
                         select_value = "Political Parties";
                         selectvalue.setText(select_value);
                         break;
                     case 5:
-
-                        Toast.makeText(OrganisationAccount.this, "Proprietorship/Partnership", Toast.LENGTH_LONG).show();
                         select_value = "Proprietorship/Partnership";
                         selectvalue.setText(select_value);
                         break;

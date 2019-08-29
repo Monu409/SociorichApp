@@ -89,7 +89,8 @@
                     android:maxLines="1"
                     android:paddingLeft="5dp"
                     android:singleLine="true"
-                    android:textColor="#000" />
+                    android:textColor="#000"
+                    android:maxLength="30"/>
 
 
                 <EditText
@@ -103,7 +104,8 @@
                     android:maxLines="1"
                     android:paddingLeft="5dp"
                     android:singleLine="true"
-                    android:textColor="#000" />
+                    android:textColor="#000"
+                    android:maxLength="30"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -145,7 +147,8 @@
                     android:inputType="numberSigned"
                     android:maxLines="1"
                     android:paddingLeft="5dp"
-                    android:textColor="#000" />
+                    android:textColor="#000"
+                    android:maxLength="4"/>
 
 
                 <EditText
@@ -159,7 +162,8 @@
                     android:maxLines="1"
                     android:paddingLeft="5dp"
                     android:singleLine="true"
-                    android:textColor="#000" />
+                    android:textColor="#000"
+                    android:maxLength="50"/>
 
                 <EditText
                     android:id="@+id/about_edt"
@@ -172,7 +176,8 @@
                     android:maxLines="1"
                     android:paddingLeft="5dp"
                     android:singleLine="true"
-                    android:textColor="#000" />
+                    android:textColor="#000"
+                    android:maxLength="50"/>
 
                 <EditText
                     android:id="@+id/orgn_rnumber"
@@ -185,7 +190,8 @@
                     android:maxLines="1"
                     android:paddingLeft="5dp"
                     android:singleLine="true"
-                    android:textColor="#000" />
+                    android:textColor="#000"
+                    android:maxLength="10"/>
 
 
                 <Button

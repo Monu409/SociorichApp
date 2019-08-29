@@ -161,8 +161,8 @@ public class Create_Post extends BaseActivity implements AdapterView.OnItemSelec
         if(selectedValue.equals("Select Category")){
             Toast.makeText(this, "Please select category", Toast.LENGTH_SHORT).show();
         }
-        else if(titleStr.isEmpty()||descStr.isEmpty()){
-            Toast.makeText(this, "Please enter all fields", Toast.LENGTH_SHORT).show();
+        else if(titleStr.isEmpty()){
+            Toast.makeText(this, "Please enter title fields", Toast.LENGTH_SHORT).show();
         }
         else {
             dialog2 = new ProgressDialog(Create_Post.this);
@@ -262,12 +262,17 @@ public class Create_Post extends BaseActivity implements AdapterView.OnItemSelec
                                 Log.d("Multiple File Selected", path);
                                 pathlist.add(path);
                                 arrayList.add(imageUri);
-                                MyAdapter mAdapter = new MyAdapter(Create_Post.this, arrayList);
-                                listView.setAdapter(mAdapter);
-
                             } catch (Exception e) {
                                 Log.e(TAG, "File select error", e);
                             }
+                        }
+                        if(arrayList.size()>10){
+                            Toast.makeText(this, "Can't select more then 10 images", Toast.LENGTH_SHORT).show();
+                            arrayList.clear();
+                        }
+                        else {
+                            MyAdapter mAdapter = new MyAdapter(Create_Post.this, arrayList);
+                            listView.setAdapter(mAdapter);
                         }
                     } else if (data.getData() != null) {
                         //do something with the image (save it to some directory or whatever you need to do with it here)

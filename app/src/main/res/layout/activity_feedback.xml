@@ -11,6 +11,7 @@
         android:layout_height="40dp"
         android:background="@drawable/rect_view_orange"
         android:hint="Name"
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         android:paddingLeft="5dp"/>
     <EditText
         android:id="@+id/email_edt"
@@ -26,6 +27,7 @@
         android:layout_height="40dp"
         android:background="@drawable/rect_view_orange"
         android:hint="Mobile"
+        android:inputType="numberSigned"
         android:paddingLeft="5dp"
         android:layout_marginTop="10dp"/>
     <EditText

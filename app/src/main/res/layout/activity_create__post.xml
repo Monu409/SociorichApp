@@ -62,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="90dp"
             android:layout_marginTop="10dp"
-            android:hint="Description"
+            android:hint="Type and share your thoughts here..."
             android:background="@drawable/rect_view_orange"
             android:paddingLeft="5dp"
             android:textAppearance="?android:attr/textAppearanceMedium" />

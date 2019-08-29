@@ -119,18 +119,21 @@ public class IndivisualSignupActivity extends BaseActivity {
             cnfrmPassEdt.setError("Enter Confirm Password");
         }
         else if(!passwordStr.equals(cnfrmPassStr)){
-            passwordEdt.setError("Password not match");
-            cnfrmPassEdt.setError("Password not match");
+            cnfrmPassEdt.setError("Password doesn't match.");
         }
         else{
             ConstantMethods.showProgressbar(this);
             JSONObject jsonObject = new JSONObject();
             try {
-                jsonObject.put("emailId",emailStr);
+                if(!emailStr.isEmpty()) {
+                    jsonObject.put("emailId", emailStr);
+                }
                 jsonObject.put("name",nameStr);
                 jsonObject.put("password",passwordStr);
                 jsonObject.put("phoneCountryCode",cntryCodStr);
-                jsonObject.put("phoneNo",mobileStr);
+                if(!mobileStr.isEmpty()) {
+                    jsonObject.put("phoneNo", mobileStr);
+                }
                 jsonObject.put("re_password",passwordStr);
                 jsonObject.put("refer_identity",refer);
             } catch (JSONException e) {

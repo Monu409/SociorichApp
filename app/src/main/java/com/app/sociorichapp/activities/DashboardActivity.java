@@ -197,7 +197,7 @@ public class DashboardActivity extends AppCompatActivity {
                                     String pageNoStr = String.valueOf(current_page);
                                     if (checkLogin.equals("login")) {
                                         if (tabTag.equals("Global")) {
-                                            getHomePageData(HOMEPAGE_URL_LOGIN, pageNoStr);
+                                            getHomePageData(HOMEPAGE_URL_LOGIN, String.valueOf(i));
                                         } else if (tabTag.equals("Network")) {
                                             getHomePageData(MY_NETWORK_URL, pageNoStr);
                                         } else if (tabTag.equals("Intrest")) {

@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
@@ -28,6 +29,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;;import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -62,6 +64,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import static com.app.sociorichapp.app_utils.AppApis.BANNER_DELETE;
+import static com.app.sociorichapp.app_utils.AppApis.BANNER_EDIT;
 import static com.app.sociorichapp.app_utils.AppApis.GET_PROFILE_PICK;
 import static com.app.sociorichapp.app_utils.AppApis.MY_INTEREST;
 import static com.app.sociorichapp.app_utils.AppApis.UPLOAD_PROFILE_PICK;
@@ -74,7 +78,7 @@ public class ProfileUpActivity extends AppCompatActivity {
     private AppBarLayout appBarLayout;
     private CircleImageView profileImg;
     public String profileDes;
-    private TextView intrextTxt, intrestAllTxt, soCrTxt, eqCrTxt, qualityTxt, showAllTxt;
+    private TextView intrextTxt, intrestAllTxt, soCrTxt, eqCrTxt, qualityTxt;
 
     private static final int PICK_IMAGE_CAMERA = 1;
     private static final int PICK_IMAGE_GALLERY = 2;
@@ -83,6 +87,9 @@ public class ProfileUpActivity extends AppCompatActivity {
     String userToken;
     private OnAboutDataReceivedListener mAboutDataListener;
     Map<String, String> interestMap = new HashMap<>();
+    private ImageView showAllTxt;
+    private ImageView deleteBnrImg,edtBnrImg,bannerImg;
+    private String clickImageView = "";
 
 
     @Override
@@ -96,12 +103,20 @@ public class ProfileUpActivity extends AppCompatActivity {
         soCrTxt = findViewById(R.id.so_cr_txt);
         eqCrTxt = findViewById(R.id.eq_cr_txt);
         qualityTxt = findViewById(R.id.quality_txt);
-        showAllTxt = findViewById(R.id.showall_txt);
+        showAllTxt = findViewById(R.id.showall_img);
         intrestAllTxt = findViewById(R.id.intrest_all);
+        deleteBnrImg = findViewById(R.id.dlt_bnr_img);
+        edtBnrImg = findViewById(R.id.edt_bnr_img);
+        bannerImg = findViewById(R.id.header);
         userToken = ConstantMethods.getStringPreference("user_token", this);
         for (int i = 0; i < POST_CATEGORY_PROFILE_KEYS.length; i++) {
             interestMap.put(POST_CATEGORY_PROFILE_KEYS[i], POST_CATEGORY_PROFILE_VALUES[i]);
         }
+        deleteBnrImg.setOnClickListener(db->deleteBannerImage());
+        edtBnrImg.setOnClickListener(db-> {
+            selectImage();
+            clickImageView = "banner";
+        });
         qualityTxt.setOnClickListener(q -> {
             Intent intent = new Intent(this, QualityActivity.class);
             startActivity(intent);
@@ -114,10 +129,15 @@ public class ProfileUpActivity extends AppCompatActivity {
         profileImg = findViewById(R.id.profile_img);
         profileImg.setOnClickListener(v -> {
             selectImage();
+            clickImageView = "profile";
         });
         intrextTxt.setOnClickListener(v -> selectIntrest());
+        showAllTxt.setOnClickListener(v -> deleteIntrest());
 
         List<String> catVals = ConstantMethods.getArrayListShared(ProfileUpActivity.this, "interest_save");
+        if(catVals==null) {
+            Toast.makeText(this, "Please select any intrest", Toast.LENGTH_SHORT).show();
+        }
         String allIntrestStr = "";
         if (catVals == null) {
             catVals = new ArrayList<>();
@@ -384,7 +404,6 @@ public class ProfileUpActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_CAMERA) {
             try {
-                Uri selectedImage = data.getData();
                 Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
@@ -412,9 +431,16 @@ public class ProfileUpActivity extends AppCompatActivity {
                 }
 
                 String imgPath = destination.getAbsolutePath();
-                profileImg.setImageBitmap(bitmap);
-                File file = new File(imgPath);
-                updateProfilePicture(file);
+                if(clickImageView.equals("profile")) {
+                    profileImg.setImageBitmap(bitmap);
+                    File file = new File(imgPath);
+                    updateProfilePicture(file);
+                }
+                else if(clickImageView.equals("banner")){
+                    bannerImg.setImageBitmap(bitmap);
+                    File file = new File(imgPath);
+                    editBannerImage(file);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -424,12 +450,16 @@ public class ProfileUpActivity extends AppCompatActivity {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
-                Log.e("Activity", "Pick from Gallery::>>> ");
-
                 String imgPath = getRealPathFromURI(selectedImage);
                 File destination = new File(imgPath);
-                profileImg.setImageBitmap(bitmap);
-                updateProfilePicture(destination);
+                if(clickImageView.equals("profile")) {
+                    profileImg.setImageBitmap(bitmap);
+                    updateProfilePicture(destination);
+                }
+                else if(clickImageView.equals("banner")){
+                    bannerImg.setImageBitmap(bitmap);
+                    editBannerImage(destination);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -467,12 +497,31 @@ public class ProfileUpActivity extends AppCompatActivity {
                             } catch (Exception e) {
                                 e.getStackTrace();
                             }
+                            JSONObject bannerObj = null;
+                            String bannerStr = "";
+                            try {
+                                bannerObj = response.getJSONObject("coverPhoto");
+                                bannerStr = bannerObj.getString("url");
+                                Glide.with(ProfileUpActivity.this)
+                                        .load(bannerStr)
+                                        .placeholder(R.drawable.user_profile)
+                                        .error(R.drawable.user_profile)
+                                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                        .priority(com.bumptech.glide.Priority.HIGH)
+                                        .into(bannerImg);
+                            } catch (Exception e) {
+                                e.getStackTrace();
+                            }
                             mAboutDataListener.onDataReceived(profileDes, wrkPlace, location, dob);
                             JSONObject profileObj = response.getJSONObject("profilePic");
                             String profileUrl = profileObj.getString("url");
-                            Glide
-                                    .with(ProfileUpActivity.this)
+                            Glide.with(ProfileUpActivity.this)
                                     .load(profileUrl)
+                                    .placeholder(R.drawable.user_profile)
+                                    .error(R.drawable.user_profile)
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                    .priority(com.bumptech.glide.Priority.HIGH)
+
                                     .into(profileImg);
                             String socioMoneyBalance = response.getString("socioMoneyBalance");
                             String equaMoneyBalance = response.getString("equaMoneyBalance");
@@ -526,6 +575,64 @@ public class ProfileUpActivity extends AppCompatActivity {
                     @Override
                     public void onError(ANError anError) {
                         Log.e("test", "" + anError);
+                    }
+                });
+    }
+
+    private void editBannerImage(File file){
+        String usertoken = ConstantMethods.getStringPreference("user_token", this);
+        AndroidNetworking
+                .upload(BANNER_EDIT)
+                .addMultipartFile("file", file)
+                .addMultipartParameter("fileSize", String.valueOf(file.getTotalSpace()))
+                .addHeaders("authorization", "Bearer " + usertoken)
+                .setTag("uploadTest")
+                .setPriority(Priority.HIGH)
+                .build()
+                .setUploadProgressListener(new UploadProgressListener() {
+                    @Override
+                    public void onProgress(long bytesUploaded, long totalBytes) {
+                        Log.e("progress", "" + bytesUploaded);
+                    }
+                })
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.e("progress", "" + response);
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        Log.e("progress", "" + error);
+                    }
+                });
+    }
+
+    private void deleteBannerImage(){
+        ConstantMethods.showProgressbar(this);
+        String token = ConstantMethods.getStringPreference("user_token", this);
+        AndroidNetworking
+                .delete(BANNER_DELETE)
+                .addHeaders("authorization", "Bearer " + token)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        ConstantMethods.dismissProgressBar();
+                        try {
+                            String result = response.getString("result");
+                            if(result.equals("success")){
+                                Toast.makeText(ProfileUpActivity.this, "Cover page deleted", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        ConstantMethods.dismissProgressBar();
+                        Toast.makeText(ProfileUpActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

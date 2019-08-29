@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.app.sociorichapp.R;
+import com.app.sociorichapp.activities.QualityActivity;
 import com.app.sociorichapp.app_utils.ConstantMethods;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class QualityAdapter extends RecyclerView.Adapter<QualityAdapter.QtyHolde
 
     public QualityAdapter(List<String> qltyList, Context context){
         this.qltyList = qltyList;
+        this.context = context;
         layoutInflater = LayoutInflater.from(context);
     }
     @NonNull
@@ -35,8 +37,8 @@ public class QualityAdapter extends RecyclerView.Adapter<QualityAdapter.QtyHolde
         qtyHolder.deleteImg.setOnClickListener(d->{
             List<String> qltyList = ConstantMethods.getArrayListShared(context,"quality_key");
             qltyList.remove(i);
+            ConstantMethods.saveArrayListShared(qltyList, context,"quality_key");
             notifyItemRemoved(i);
-
         });
     }
 

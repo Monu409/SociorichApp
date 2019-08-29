@@ -1,6 +1,8 @@
 package com.app.sociorichapp.adapters;
 
 import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,6 +40,7 @@ import com.app.sociorichapp.activities.CommentActivity;
 import com.app.sociorichapp.activities.DashboardActivity;
 import com.app.sociorichapp.activities.Edit_Post;
 import com.app.sociorichapp.activities.FullImageActivity;
+import com.app.sociorichapp.activities.ProfileUpActivity;
 import com.app.sociorichapp.app_utils.CircleImageView;
 import com.app.sociorichapp.app_utils.ConstantMethods;
 import com.app.sociorichapp.modals.DashModal;
@@ -52,6 +55,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.app.sociorichapp.app_utils.AppApis.BASE_URL;
 import static com.app.sociorichapp.app_utils.AppApis.DELETE_POST;
 import static com.app.sociorichapp.app_utils.AppApis.MY_INSPIRE_VERIFY;
 import static com.app.sociorichapp.app_utils.AppApis.SEND_REWARD;
@@ -162,7 +166,7 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
                         Toast.makeText(activity, "Amount between 1-50 only", Toast.LENGTH_SHORT).show();
                     }
                     else {
-                        sendReward(rewartQty, postId);
+                        sendReward(rewartQty, postId,dashBordHolder);
                         dashBordHolder.rwrdLay.setVisibility(View.GONE);
                         dashBordHolder.rwrdTxt.setText("You have reward " + rewartQty + " Equa Credits\nto this post.");
                         dashBordHolder.rwrdEdt.setText("");
@@ -170,7 +174,7 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
                     }
                 }
             });
-            dashBordHolder.shareLay.setOnClickListener(s -> sharedPostPopup());
+            dashBordHolder.shareLay.setOnClickListener(s -> sharedPostPopup(i));
             dashBordHolder.cnclRwrd.setOnClickListener(c -> dashBordHolder.rwrdLay.setVisibility(View.GONE));
         } else {
             dashBordHolder.rewadrLay1.setVisibility(View.GONE);
@@ -236,6 +240,8 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
 //               sendReward(rwrdStr,postId);
 //            });
         });
+        dashBordHolder.userProfileImg.setOnClickListener(up->context.startActivity(new Intent(context, ProfileUpActivity.class)));
+        dashBordHolder.unameTxt.setOnClickListener(up->context.startActivity(new Intent(context, ProfileUpActivity.class)));
         int mediaSize = dashModals.get(i).getMediaList().size();
         if (mediaSize == 0) {
             dashBordHolder.frameLayout.setVisibility(View.GONE);
@@ -447,7 +453,7 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
                 });
     }
 
-    private void sendReward(String reward, String postId) {
+    private void sendReward(String reward, String postId,DashBordHolder dashBordHolder) {
         String token = ConstantMethods.getStringPreference("user_token", context);
         String userId = ConstantMethods.getUserID(context);
         JSONObject jsonObject = new JSONObject();
@@ -472,6 +478,12 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
                             String result = response.getString("result");
                             if (result.equals("success")) {
                                 Toast.makeText(context, "Send reward successfully", Toast.LENGTH_SHORT).show();
+                                String totalRewrd = dashBordHolder.crditTxt.getText().toString();
+//                                totalRewrd = totalRewrd.substring(0, totalRewrd.length() - 2);
+                                String []totalRewrd1 = totalRewrd.split("\\.");
+                                int trInt = Integer.parseInt(totalRewrd1[0]);
+                                trInt = trInt+ Integer.parseInt(reward);
+                                dashBordHolder.crditTxt.setText(trInt+".0 Socio Credits");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -485,13 +497,19 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
                 });
     }
 
-    private void sharedPostPopup() {
+    private void sharedPostPopup(int position) {
+        String identity = dashModals.get(position).getPostIdStr();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage("Share this post to your social network");
+        builder.setTitle("Share post");
+        String message = BASE_URL+"shared-post/"+identity;
+        builder.setMessage(message);
         builder.setPositiveButton("Copy to clipboard", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Toast.makeText(context, "Copied", Toast.LENGTH_SHORT).show();
+                ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("", message);
+                clipboard.setPrimaryClip(clip);
             }
         });
         builder.setNegativeButton("Share Post", new DialogInterface.OnClickListener() {
