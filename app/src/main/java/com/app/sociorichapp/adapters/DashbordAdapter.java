@@ -44,7 +44,7 @@ import com.app.sociorichapp.activities.ProfileUpActivity;
 import com.app.sociorichapp.app_utils.CircleImageView;
 import com.app.sociorichapp.app_utils.ConstantMethods;
 import com.app.sociorichapp.modals.DashModal;
-import com.app.sociorichapp.modals.LoginActivity;
+import com.app.sociorichapp.activities.LoginActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
@@ -167,8 +167,12 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
                     }
                     else {
                         sendReward(rewartQty, postId,dashBordHolder);
+                        String crntReward = dashBordHolder.rwrdTxt.getText().toString();
+                        int rewrdNo = Integer.parseInt(crntReward.replaceAll("[\\D]", ""));
+                        int giveReward = Integer.parseInt(rewartQty);
+                        int total = rewrdNo+giveReward;
                         dashBordHolder.rwrdLay.setVisibility(View.GONE);
-                        dashBordHolder.rwrdTxt.setText("You have reward " + rewartQty + " Equa Credits\nto this post.");
+                        dashBordHolder.rwrdTxt.setText("You have reward " + total + " Equa Credits\nto this post.");
                         dashBordHolder.rwrdEdt.setText("");
                         Toast.makeText(activity, "Reward sent successfully", Toast.LENGTH_SHORT).show();
                     }
@@ -477,7 +481,7 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
                         try {
                             String result = response.getString("result");
                             if (result.equals("success")) {
-                                Toast.makeText(context, "Send reward successfully", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(context, "Send reward successfully", Toast.LENGTH_SHORT).show();
                                 String totalRewrd = dashBordHolder.crditTxt.getText().toString();
 //                                totalRewrd = totalRewrd.substring(0, totalRewrd.length() - 2);
                                 String []totalRewrd1 = totalRewrd.split("\\.");
@@ -560,7 +564,7 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals("Delete Post")) {
                     dialog.dismiss();
-                    deletePost(identity);
+                    alertDialogForLogout(identity);
                 } else if (options[item].equals("Edit Post")) {
                     dialog.dismiss();
                     Intent intent = new Intent(context, Edit_Post.class);
@@ -601,7 +605,7 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
                     Toast.makeText(context, "Enter your feedback", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(context, "Successfull", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Successfully Sent", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -634,6 +638,32 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
 
                     }
                 });
+    }
+
+    private void alertDialogForLogout(String identity){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+        builder1.setTitle("Delete Post");
+        builder1.setMessage("Do you want to delete this post?");
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        deletePost(identity);
+                    }
+                });
+
+        builder1.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
 
 }

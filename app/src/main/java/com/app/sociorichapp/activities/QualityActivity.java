@@ -35,7 +35,7 @@ public class QualityActivity extends BaseActivity {
 //        QualityAdapter qualityAdapter = new QualityAdapter(qltyStrList,this);
 //        qltyList.setAdapter(qualityAdapter);
         addLay.setOnClickListener(a->{
-            if(qltyStrList.size()>=3){
+            if(qltyStrList.size()>=2){
                 Toast.makeText(this, "You can add only 3 qualities", Toast.LENGTH_SHORT).show();
             }else {
                 showEdittext();
@@ -70,6 +70,7 @@ public class QualityActivity extends BaseActivity {
                 String YouEditTextStr = edittext.getText().toString();
                 if(YouEditTextStr.isEmpty()){
                     Toast.makeText(QualityActivity.this, "Please enter quality", Toast.LENGTH_SHORT).show();
+                    alert.setCancelable(false);
                 }
                 else {
                     List<String> dataList = ConstantMethods.getArrayListShared(QualityActivity.this, "quality_key");
@@ -84,6 +85,7 @@ public class QualityActivity extends BaseActivity {
                     }
                     QualityAdapter qualityAdapter = new QualityAdapter(qltyStrList, QualityActivity.this);
                     qltyList.setAdapter(qualityAdapter);
+                    Toast.makeText(QualityActivity.this, "Successfully Added", Toast.LENGTH_SHORT).show();
                 }
             }
         });

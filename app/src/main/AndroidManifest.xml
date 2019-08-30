@@ -68,7 +68,7 @@
         <activity android:name=".activities.OtpSendActivity"/>
         <activity android:name=".activities.SuccessActvity"/>
         <activity android:name=".activities.CreatePostActivity"/>
-        <activity android:name=".modals.LoginActivity"/>
+        <activity android:name=".activities.LoginActivity"/>
         <activity android:name=".activities.CustomPhotoGalleryActivity"/>
         <activity android:name=".activities.Create_Post"/>
         <activity android:name=".activities.OrganisationAccount"/>
@@ -90,6 +90,7 @@
         <activity android:name=".activities.SearchResultActivity"/>
         <activity android:name=".activities.NotificationActivity"/>
         <activity android:name=".activities.FullImageActivity"/>
+        <activity android:name=".activities.DeleteIntrestActivity"/>
     </application>
 
 </manifest>

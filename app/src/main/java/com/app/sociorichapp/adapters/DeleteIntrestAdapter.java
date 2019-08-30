@@ -2,27 +2,27 @@ package com.app.sociorichapp.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.app.sociorichapp.R;
-import com.app.sociorichapp.activities.QualityActivity;
 import com.app.sociorichapp.app_utils.ConstantMethods;
 
 import java.util.List;
 
-public class QualityAdapter extends RecyclerView.Adapter<QualityAdapter.QtyHolder> {
+public class DeleteIntrestAdapter extends RecyclerView.Adapter<DeleteIntrestAdapter.QtyHolder> {
     private List<String> qltyList;
     private Context context;
     private LayoutInflater layoutInflater;
 
-    public QualityAdapter(List<String> qltyList, Context context){
+    public DeleteIntrestAdapter(List<String> qltyList, Context context){
         this.qltyList = qltyList;
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
@@ -30,7 +30,7 @@ public class QualityAdapter extends RecyclerView.Adapter<QualityAdapter.QtyHolde
     @NonNull
     @Override
     public QtyHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = layoutInflater.inflate(R.layout.adapter_quality,null);
+        View view = layoutInflater.inflate(R.layout.adapter_dlt_intrst,null);
         return new QtyHolder(view);
     }
 
@@ -59,8 +59,8 @@ public class QualityAdapter extends RecyclerView.Adapter<QualityAdapter.QtyHolde
     }
     private void alertDialogForDelete(int i){
         AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
-        builder1.setTitle("Delete Quality");
-        builder1.setMessage("Do you want to delete this quality?");
+        builder1.setTitle("Delete Interest");
+        builder1.setMessage("Do you want to delete this interest?");
         builder1.setCancelable(true);
 
         builder1.setPositiveButton(
@@ -70,7 +70,7 @@ public class QualityAdapter extends RecyclerView.Adapter<QualityAdapter.QtyHolde
                         qltyList.remove(i);
                         notifyItemRemoved(i);
                         notifyItemRangeChanged(i, qltyList.size());
-                        ConstantMethods.saveArrayListShared(qltyList, context,"quality_key");
+                        ConstantMethods.saveArrayListShared(qltyList, context,"interest_save");
                     }
                 });
 

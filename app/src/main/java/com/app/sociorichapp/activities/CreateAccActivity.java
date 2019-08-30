@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.app.sociorichapp.R;
 import com.app.sociorichapp.app_utils.ConstantMethods;
-import com.app.sociorichapp.modals.LoginActivity;
 
 /**
  * Created by PC on 7/1/2019.

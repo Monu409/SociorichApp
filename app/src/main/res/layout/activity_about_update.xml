@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:hint="DOB"
-        android:inputType="number"
+        android:inputType="date"
         android:maxLines="1"
         android:singleLine="true"
         android:textColor="#000"

@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 
+import com.app.sociorichapp.adapters.DeleteIntrestAdapter;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -132,7 +133,10 @@ public class ProfileUpActivity extends AppCompatActivity {
             clickImageView = "profile";
         });
         intrextTxt.setOnClickListener(v -> selectIntrest());
-        showAllTxt.setOnClickListener(v -> deleteIntrest());
+        showAllTxt.setOnClickListener(v -> {
+            Intent intent = new Intent(this, DeleteIntrestActivity.class);
+            startActivity(intent);
+        });
 
         List<String> catVals = ConstantMethods.getArrayListShared(ProfileUpActivity.this, "interest_save");
         if(catVals==null) {
@@ -179,6 +183,20 @@ public class ProfileUpActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        List<String> catVals = ConstantMethods.getArrayListShared(ProfileUpActivity.this, "interest_save");
+        if (catVals == null) {
+            catVals = new ArrayList<>();
+        }
+        String allIntrestStr = "";
+        for (int i = 0; i < catVals.size(); i++) {
+            allIntrestStr = allIntrestStr + catVals.get(i) + ", ";
+            intrestAllTxt.setText(allIntrestStr);
+        }
     }
 
     @Override
@@ -623,6 +641,7 @@ public class ProfileUpActivity extends AppCompatActivity {
                             String result = response.getString("result");
                             if(result.equals("success")){
                                 Toast.makeText(ProfileUpActivity.this, "Cover page deleted", Toast.LENGTH_SHORT).show();
+                                bannerImg.setImageResource(R.drawable.banner);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

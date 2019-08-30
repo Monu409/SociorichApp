@@ -36,10 +36,8 @@ import com.app.sociorichapp.R;
 import com.app.sociorichapp.adapters.DashbordAdapter;
 import com.app.sociorichapp.app_utils.ConstantMethods;
 import com.app.sociorichapp.app_utils.DbHelper;
-import com.app.sociorichapp.app_utils.MainSliderAdapter;
 import com.app.sociorichapp.app_utils.PicassoImageLoadingService;
 import com.app.sociorichapp.modals.DashModal;
-import com.app.sociorichapp.modals.LoginActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -447,7 +445,7 @@ public class DashboardActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.logout_menu:
-                alertDialog(this);
+                alertDialogForLogout(this);
                 return true;
             case R.id.badge:
                 Intent intentNo = new Intent(this,NotificationActivity.class);
@@ -458,7 +456,7 @@ public class DashboardActivity extends AppCompatActivity {
         }
     }
 
-    private void alertDialog(Context context){
+    private void alertDialogForLogout(Context context){
         AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
         builder1.setTitle("Logout");
         builder1.setMessage("Do you want to logout?");
@@ -485,6 +483,8 @@ public class DashboardActivity extends AppCompatActivity {
         AlertDialog alert11 = builder1.create();
         alert11.show();
     }
+
+
 
     @Override
     public void onBackPressed() {

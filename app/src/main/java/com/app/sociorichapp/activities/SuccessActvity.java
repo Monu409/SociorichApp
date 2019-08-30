@@ -6,7 +6,6 @@ import android.widget.Button;
 
 import com.app.sociorichapp.R;
 import com.app.sociorichapp.app_utils.ConstantMethods;
-import com.app.sociorichapp.modals.LoginActivity;
 
 public class SuccessActvity extends BaseActivity {
     private Button goToLogin;

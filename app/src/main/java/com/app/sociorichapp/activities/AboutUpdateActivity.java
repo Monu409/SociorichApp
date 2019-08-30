@@ -84,13 +84,15 @@ public class AboutUpdateActivity extends BaseActivity {
                         ConstantMethods.dismissProgressBar();
                         Log.e("response",""+response);
                         Toast.makeText(AboutUpdateActivity.this, "Updated successfully", Toast.LENGTH_SHORT).show();
+                        onBackPressed();
                     }
 
                     @Override
                     public void onError(ANError anError) {
                         Log.e("response",""+anError);
                         ConstantMethods.dismissProgressBar();
-                        Toast.makeText(AboutUpdateActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AboutUpdateActivity.this, "Updated successfully", Toast.LENGTH_SHORT).show();
+                        onBackPressed();
                     }
                 });
     }

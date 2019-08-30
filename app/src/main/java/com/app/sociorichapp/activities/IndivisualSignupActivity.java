@@ -3,7 +3,6 @@ package com.app.sociorichapp.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,7 +19,6 @@ import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.app.sociorichapp.R;
 import com.app.sociorichapp.app_utils.ConstantMethods;
-import com.app.sociorichapp.modals.LoginActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -26,7 +26,7 @@ import com.app.sociorichapp.activities.CommentActivity;
 import com.app.sociorichapp.app_utils.CircleImageView;
 import com.app.sociorichapp.app_utils.ConstantMethods;
 import com.app.sociorichapp.modals.DashModal;
-import com.app.sociorichapp.modals.LoginActivity;
+import com.app.sociorichapp.activities.LoginActivity;
 import com.bumptech.glide.Glide;
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -20,7 +20,6 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.app.sociorichapp.R;
 import com.app.sociorichapp.app_utils.ConstantMethods;
-import com.app.sociorichapp.modals.LoginActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;

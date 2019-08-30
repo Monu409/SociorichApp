@@ -101,7 +101,7 @@ public class AboutFragment extends Fragment implements OnAboutDataReceivedListen
                         try {
                             String desStr = response.getString("profileDesc");
                             if(desStr.equals(intro)) {
-                                Toast.makeText(getActivity(), "Update successfull", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Updated Successfully", Toast.LENGTH_SHORT).show();
                                 introTxt.setText(desStr);
                                 introLay.setVisibility(View.GONE);
                             }
