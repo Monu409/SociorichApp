@@ -1,5 +1,6 @@
 package com.app.sociorichapp.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.app.sociorichapp.R;
+import com.app.sociorichapp.activities.ChangeNumberActivity;
 import com.app.sociorichapp.app_utils.ConstantMethods;
 
 import org.json.JSONException;
@@ -143,7 +145,7 @@ public class AccountFragment extends Fragment {
         ConstantMethods.showProgressbar(getActivity());
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("displayName",phn);
+            jsonObject.put("phoneNo",phn);
             jsonObject.put("phoneCountryCode","91");
         } catch (JSONException e) {
             e.printStackTrace();
@@ -159,9 +161,13 @@ public class AccountFragment extends Fragment {
                     public void onResponse(JSONObject response) {
                         ConstantMethods.dismissProgressBar();
                         try {
-                            String phoneNo = response.getString("phoneNo");
-                            ConstantMethods.setStringPreference("phone_no_prif",phoneNo,getActivity());
-                            phoneTxt.setText(phoneNo);
+                            String result = response.getString("result");
+                            if(result.equals("success")){
+                                String phoneNo = phoneEdt.getText().toString();
+                                ConstantMethods.setStringPreference("phone_no_prif",phoneNo,getActivity());
+                                phoneTxt.setText(phoneNo);
+                                startActivity(new Intent(getActivity(), ChangeNumberActivity.class));
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

@@ -41,6 +41,7 @@ import com.app.sociorichapp.activities.DashboardActivity;
 import com.app.sociorichapp.activities.Edit_Post;
 import com.app.sociorichapp.activities.FullImageActivity;
 import com.app.sociorichapp.activities.ProfileUpActivity;
+import com.app.sociorichapp.activities.ShowProfileActivity;
 import com.app.sociorichapp.app_utils.CircleImageView;
 import com.app.sociorichapp.app_utils.ConstantMethods;
 import com.app.sociorichapp.modals.DashModal;
@@ -91,14 +92,37 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
         dashBordHolder.unameTxt.setText(dashModals.get(i).getUserNameStr());
         dashBordHolder.dateTxt.setText(dashModals.get(i).getDateStr());
         String descStr = dashModals.get(i).getDesStr();
-        boolean isUrl = URLUtil.isValidUrl(descStr);
-        if(isUrl){
+        String postStr = dashModals.get(i).getPostDataStr();
+        boolean isDescStrUrl = URLUtil.isValidUrl(descStr);
+        boolean isPostStr = URLUtil.isValidUrl(postStr);
+        String loginStatus = ConstantMethods.getStringPreference("login_status", context);
+        if(isDescStrUrl){
             dashBordHolder.desTxt.setTextColor(Color.parseColor("#EE124FF0"));
             dashBordHolder.desTxt.setPaintFlags(dashBordHolder.desTxt.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             dashBordHolder.desTxt.setOnClickListener(dd->{
-                Uri uri = Uri.parse(descStr);
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                context.startActivity(intent);
+                if (loginStatus.equals("login")) {
+                    Uri uri = Uri.parse(descStr);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    context.startActivity(intent);
+                }
+                else {
+                    context.startActivity(new Intent(context, LoginActivity.class));
+                }
+            });
+        }
+
+        if(isPostStr){
+            dashBordHolder.postDataTxt.setTextColor(Color.parseColor("#EE124FF0"));
+            dashBordHolder.postDataTxt.setPaintFlags(dashBordHolder.postDataTxt.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            dashBordHolder.postDataTxt.setOnClickListener(dd->{
+                if (loginStatus.equals("login")) {
+                    Uri uri = Uri.parse(descStr);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    context.startActivity(intent);
+                }
+                else {
+                    context.startActivity(new Intent(context, LoginActivity.class));
+                }
             });
         }
         dashBordHolder.postDataTxt.setText(dashModals.get(i).getPostDataStr());
@@ -113,12 +137,21 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
                 .into(dashBordHolder.userProfileImg);
         dashBordHolder.insprTxt.setText(dashModals.get(i).getLikeStr() + " Inspire");
         dashBordHolder.vrfyTxt.setText(dashModals.get(i).getVerifyStr() + " Verify");
-        dashBordHolder.crditTxt.setText(dashModals.get(i).getSocioCreStr() + " Socio Credits");
+        String intSocioCredit = dashModals.get(i).getSocioCreStr();
+        String remove0 = intSocioCredit.substring(0, intSocioCredit.length() - 2);
+        dashBordHolder.crditTxt.setText(remove0 + " Socio Credits");
         dashBordHolder.cmntTxt.setText(dashModals.get(i).getCommentStr() + " Comments");
         String postId = dashModals.get(i).getPostIdStr();
-        String loginStatus = ConstantMethods.getStringPreference("login_status", context);
+
         String mVerify = dashModals.get(i).getmVeryfyStr();
         String mLike = dashModals.get(i).getmLikeStr();
+
+        dashBordHolder.vMenuImg.setOnClickListener(v-> {
+            if (loginStatus.equals("logout")) {
+                context.startActivity(new Intent(context, LoginActivity.class));
+            }
+        });
+
 
         if (loginStatus.equals("login")) {
             String userIdentity = ConstantMethods.getUserID(context);
@@ -235,19 +268,33 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
                 }
             } else {
                 context.startActivity(new Intent(context, LoginActivity.class));
-            }
-//            dashBordHolder.rwrdBtn.setOnClickListener(s->{
-//                dashBordHolder.rwrdLay.setVisibility(View.VISIBLE);
-//            });
-//            dashBordHolder.sendRwrd.setOnClickListener(s->{
-//               String rwrdStr = dashBordHolder.rwrdEdt.getText().toString();
-//               sendReward(rwrdStr,postId);
-//            });
+        }
+
         });
-        dashBordHolder.userProfileImg.setOnClickListener(up->context.startActivity(new Intent(context, ProfileUpActivity.class)));
-        dashBordHolder.unameTxt.setOnClickListener(up->context.startActivity(new Intent(context, ProfileUpActivity.class)));
+        dashBordHolder.userProfileImg.setOnClickListener(up->{
+            if (loginStatus.equals("login")) {
+                String identity = dashModals.get(i).getPostOwnerUserId();
+                Intent intent = new Intent(context, ShowProfileActivity.class);
+                intent.putExtra("user_identity", identity);
+                context.startActivity(intent);
+            }
+            else{
+                context.startActivity(new Intent(context, LoginActivity.class));
+            }
+        });
+        dashBordHolder.unameTxt.setOnClickListener(up->{
+            if (loginStatus.equals("login")) {
+                String identity = dashModals.get(i).getPostOwnerUserId();
+                Intent intent = new Intent(context, ShowProfileActivity.class);
+                intent.putExtra("user_identity",identity);
+                context.startActivity(intent);
+            }
+            else{
+                context.startActivity(new Intent(context, LoginActivity.class));
+            }
+        });
         int mediaSize = dashModals.get(i).getMediaList().size();
-        if (mediaSize == 0) {
+        if (mediaSize==0) {
             dashBordHolder.frameLayout.setVisibility(View.GONE);
         }
         if (mediaSize == 1) {
@@ -257,10 +304,16 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
             imageView.setLayoutParams(new FrameLayout.LayoutParams(width, 400));
             dashBordHolder.frameLayout.addView(imageView);
             dashBordHolder.frameLayout.setOnClickListener(v->{
-                Intent intent = new Intent(context, FullImageActivity.class);
-                ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
-                intent.putExtra("all_images",stringArrayList);
-                context.startActivity(intent);
+                if (loginStatus.equals("login")) {
+                    Intent intent = new Intent(context, FullImageActivity.class);
+                    ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
+                    intent.putExtra("all_images",stringArrayList);
+                    intent.putExtra("header_name","Media Post");
+                    context.startActivity(intent);
+                }
+                else{
+                    context.startActivity(new Intent(context, LoginActivity.class));
+                }
             });
         }
         if (mediaSize == 2) {
@@ -278,10 +331,16 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
             dashBordHolder.frameLayout.addView(imageView);
             dashBordHolder.frameLayout.addView(imageView1);
             dashBordHolder.frameLayout.setOnClickListener(v->{
-                Intent intent = new Intent(context, FullImageActivity.class);
-                ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
-                intent.putExtra("all_images",stringArrayList);
-                context.startActivity(intent);
+                if (loginStatus.equals("login")) {
+                    Intent intent = new Intent(context, FullImageActivity.class);
+                    ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
+                    intent.putExtra("all_images",stringArrayList);
+                    intent.putExtra("header_name","Media Post");
+                    context.startActivity(intent);
+                }
+                else{
+                    context.startActivity(new Intent(context, LoginActivity.class));
+                }
             });
         }
         if (mediaSize == 3) {
@@ -307,10 +366,16 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
             dashBordHolder.frameLayout.addView(imageView1);
             dashBordHolder.frameLayout.addView(imageView2);
             dashBordHolder.frameLayout.setOnClickListener(v->{
-                Intent intent = new Intent(context, FullImageActivity.class);
-                ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
-                intent.putExtra("all_images",stringArrayList);
-                context.startActivity(intent);
+                if (loginStatus.equals("login")) {
+                    Intent intent = new Intent(context, FullImageActivity.class);
+                    ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
+                    intent.putExtra("all_images",stringArrayList);
+                    intent.putExtra("header_name","Media Post");
+                    context.startActivity(intent);
+                }
+                else{
+                    context.startActivity(new Intent(context, LoginActivity.class));
+                }
             });
         }
         if (mediaSize >= 4) {
@@ -340,9 +405,10 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
             imageView3.setLayoutParams(new FrameLayout.LayoutParams(sst / 2, 400 / 3));
 
             TextView textView = new TextView(context);
-            textView.setText("+ 6");
+            int plusImages = dashModals.get(i).getMediaList().size()-4;
+            textView.setText("+ "+plusImages);
             textView.setX(sst / 2);
-            textView.setTextColor(Color.parseColor("#ffffff"));
+            textView.setTextColor(Color.parseColor("#ef633f"));
             textView.setTypeface(null, Typeface.BOLD);
             textView.setY(400 / 3 + 400 / 3);
             textView.setGravity(Gravity.CENTER);
@@ -354,10 +420,16 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
             dashBordHolder.frameLayout.addView(imageView3);
             dashBordHolder.frameLayout.addView(textView);
             dashBordHolder.frameLayout.setOnClickListener(v->{
-                Intent intent = new Intent(context, FullImageActivity.class);
-                ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
-                intent.putExtra("all_images",stringArrayList);
-                context.startActivity(intent);
+                if (loginStatus.equals("login")) {
+                    Intent intent = new Intent(context, FullImageActivity.class);
+                    ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
+                    intent.putExtra("all_images",stringArrayList);
+                    intent.putExtra("header_name","Media Post");
+                    context.startActivity(intent);
+                }
+                else{
+                    context.startActivity(new Intent(context, LoginActivity.class));
+                }
             });
         }
     }
@@ -483,11 +555,11 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
                             if (result.equals("success")) {
 //                                Toast.makeText(context, "Send reward successfully", Toast.LENGTH_SHORT).show();
                                 String totalRewrd = dashBordHolder.crditTxt.getText().toString();
-//                                totalRewrd = totalRewrd.substring(0, totalRewrd.length() - 2);
-                                String []totalRewrd1 = totalRewrd.split("\\.");
-                                int trInt = Integer.parseInt(totalRewrd1[0]);
+////                                totalRewrd = totalRewrd.substring(0, totalRewrd.length() - 2);
+//                                String []totalRewrd1 = totalRewrd.split("\\.");
+                                int trInt = Integer.parseInt(totalRewrd.replaceAll("[^0-9]", ""));
                                 trInt = trInt+ Integer.parseInt(reward);
-                                dashBordHolder.crditTxt.setText(trInt+".0 Socio Credits");
+                                dashBordHolder.crditTxt.setText(""+trInt+" Socio Credits");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

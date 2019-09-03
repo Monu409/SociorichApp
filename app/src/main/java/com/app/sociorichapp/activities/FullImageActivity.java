@@ -15,7 +15,8 @@ public class FullImageActivity extends BaseActivity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ConstantMethods.setTitleAndBack(this,"Gallery Images");
+        String headerName = getIntent().getStringExtra("header_name");
+        ConstantMethods.setTitleAndBack(this,headerName);
         ViewPager viewPager = findViewById(R.id.view_pager);
         Intent intent = getIntent();
         ArrayList allImages = intent.getStringArrayListExtra("all_images");

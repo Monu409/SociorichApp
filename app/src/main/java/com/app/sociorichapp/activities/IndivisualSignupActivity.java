@@ -41,7 +41,7 @@ public class IndivisualSignupActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ConstantMethods.setTitleAndBack(this,"Signup as Indivisual");
+        ConstantMethods.setTitleAndBack(this,"Signup as Individual");
         nameEdt = findViewById(R.id.name);
         mobileEdt = findViewById(R.id.mobile);
         emailEdt = findViewById(R.id.email);
@@ -57,6 +57,11 @@ public class IndivisualSignupActivity extends BaseActivity {
         String strb2 = "<u><b><font color='#ef633f'>"+ penalty +"</font></b></u>";
         String strd = str1 +strb2;
         alreadyTxt.setText(Html.fromHtml(strd));
+        String str2 = "By clicking Join now, you agree to the SocioRich ";
+        String penalty2 = "Terms and Conditions";
+        String strb3 = "<u><b><font color='#ef633f'>"+ penalty2 +"</font></b></u>";
+        String strd1 = str2 +strb3;
+        termsTxt.setText(Html.fromHtml(strd1));
         termsTxt.setOnClickListener(t->{
             Intent intent = new Intent(this, AboutUsActivity.class);
             intent.putExtra("url_is","http://dev.sociorich.com/terms");

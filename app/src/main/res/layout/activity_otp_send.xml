@@ -24,44 +24,37 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_height="wrap_content"
-            android:text="We sent you the OTP on your email/ phone.
-Please check and verify your OTP."/>
+            android:text="We sent you the OTP on your email/ phone.\nPlease check and verify your OTP."/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Enter OTP"
+            android:text="Enter your OTP"
             android:textStyle="bold"
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_marginTop="20dp"
             android:textSize="20dp"/>
     </LinearLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_below="@+id/l1"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:id="@+id/asl"
-        android:layout_marginTop="30dp"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/otp_edt"
-            android:layout_width="150dp"
-            android:layout_gravity="center"
-            android:layout_height="40dp"
-            android:background="@drawable/rect_view_orange"
-            android:hint="Enter Otp"
-            android:inputType="number"
-            android:maxLength="8"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:textColor="#000" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+    <EditText
+        android:id="@+id/otp_edt"
+        android:layout_width="150dp"
+        android:layout_gravity="center"
+        android:layout_height="40dp"
+        android:background="@drawable/rect_view_orange"
+        android:hint="Enter OTP"
+        android:inputType="number"
+        android:maxLength="8"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:layout_below="@id/l1"
+        android:textColor="#000"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="5dp"/>
     <Button
         android:id="@+id/resend"
         style="?android:textAppearanceSmall"
-        android:layout_below="@+id/asl"
+        android:layout_below="@+id/otp_edt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
@@ -77,12 +70,11 @@ Please check and verify your OTP."/>
         android:id="@+id/submit_otp"
         style="?android:textAppearanceSmall"
         android:layout_below="@+id/resend"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="40dp"
         android:layout_marginTop="16dp"
         android:background="@color/colorPrimary"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_centerHorizontal="true"
         android:onClick="submit"
         android:text="Submit"
         android:textColor="#fff"

@@ -32,8 +32,8 @@ public class CreateAccActivity extends BaseActivity {
         String penalty2 = " ORGANISATION";
 
 
-        String strb = "<u><b><font color='#ef633f'>"+ penalty +"</font></b></u>";
-        String strb2 = "<u><b><font color='#ef633f'>"+ penalty2 +"</font></b></u>";
+        String strb = "<b><font color='#ef633f'>"+ penalty +"</font></b>";
+        String strb2 = "<b><font color='#ef633f'>"+ penalty2 +"</font></b>";
 //        String strc = "<u><b><font color='#081137'>"+ promise + "</font></b></u>";
         String strd = str1 +strb;
         String strd2 = str1 +strb2;

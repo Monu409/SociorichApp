@@ -30,7 +30,7 @@
 
     <item
         android:id="@+id/action_search"
-        android:icon="@drawable/search_icn"
+        android:icon="@drawable/ttsearch"
         app:showAsAction="always|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         android:title="Search"/>
@@ -38,8 +38,9 @@
     <item
         android:id="@+id/badge"
         android:actionLayout="@layout/feed_update_count"
-        android:icon="@drawable/notification"
+        android:icon="@drawable/ttnotification"
         app:showAsAction="always"
         android:title="notification">
     </item>
+
 </menu>

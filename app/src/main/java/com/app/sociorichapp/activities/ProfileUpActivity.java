@@ -140,7 +140,7 @@ public class ProfileUpActivity extends AppCompatActivity {
 
         List<String> catVals = ConstantMethods.getArrayListShared(ProfileUpActivity.this, "interest_save");
         if(catVals==null) {
-            Toast.makeText(this, "Please select any intrest", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Please select any intrest", Toast.LENGTH_SHORT).show();
         }
         String allIntrestStr = "";
         if (catVals == null) {

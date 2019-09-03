@@ -1,7 +1,8 @@
 package com.app.sociorichapp.app_utils;
 
 public interface AppApis {
-    String BASE_URL = "http://dev.sociorich.com/";
+//    String BASE_URL = "http://dev.sociorich.com/";
+    String BASE_URL = "https://www.sociorich.com/";
     String INDIVISUAL_SIGNUP = BASE_URL+"api/v1/user/create";
     String HOMEPAGE_URL_2 = BASE_URL+"api/v1/postcategory/all";
     String HOMEPAGE_URL_LOGOUT = BASE_URL+"api/v1/post/featured";
@@ -13,7 +14,7 @@ public interface AppApis {
     String MY_NETWORK_URL = BASE_URL+"api/v1/post/usernetwork?pageno=";
     String MY_POST_URL = BASE_URL+"api/v1/post/byuser/";
     String MY_COMMENT = BASE_URL+"api/v1/post/comment/create";
-    String MY_UPDATE_COMMENT = BASE_URL+"v1/post/ffad5032-0144-4d24-a9fc-6529c16adfa3/comments?pageno=4";
+    String MY_UPDATE_COMMENT = BASE_URL+"v1/post/ffad5032-0144-4d24-a9fc-6529c16adfa3/comments?pageno=8";
     String MY_INSPIRE_VERIFY = BASE_URL+"api/v1/expr/create";
     String UPLOAD_PROFILE_PICK = BASE_URL+"api/v1/user/profilepic";
     String GET_PROFILE_PICK = BASE_URL+"api/v1/user/currentuserprofile";
@@ -37,8 +38,11 @@ public interface AppApis {
     String SOCIAL_LOGIN = BASE_URL+"api/v1/user/signup/mobile";
     String BANNER_EDIT = BASE_URL+"api/v1/user/coverpic";
     String BANNER_DELETE = BASE_URL+"api/v1/user//coverpic";
+    String CHANGE_NUMBER = BASE_URL+"api/v1/user/verifyphoneupdate";
+    String SHOW_PROFILE = BASE_URL+"api/v1/user/profile/";
+    String MY_NETWORK = BASE_URL+"api/v1/connections/my?pageno=0";
 //    api/v1/conn/request/cancel
 
-//    http://dev.sociorich.com/api/v1/post/global?pageno=
+//    http://dev.sociorich.com/api/v1/post/global?pageno=http://dev.sociorich.com/api/v1/user/profile/5f73505f-4b5a-4beb-bad6-5060b549bd42/
 //    http://dev.sociorich.com/api/v1/user//coverpic
 }

@@ -98,11 +98,12 @@ public class CommentActivity extends BaseActivity {
                         Log.e("ghg",""+response);
                         try {
                             String comment = response.getString("comment");
+                            String firstName = ConstantMethods.getStringPreference("first_name",CommentActivity.this);
                             commentAdapter = new CommentAdapter(userName,userComment,CommentActivity.this);
                             insertIndex = userName.size();
                             comntList.setAdapter(commentAdapter);
                             userComment.add(insertIndex, comment);
-                            userName.add(insertIndex, "Test Developer");
+                            userName.add(insertIndex, firstName);
                             commentAdapter.notifyItemInserted(insertIndex);
                             insertIndex = insertIndex+1;
                             comntEdt.setText("");

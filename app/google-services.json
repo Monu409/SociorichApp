@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "819598392807-hp70hnj15muri42marnhsqc1rkib5b7s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.sociorichapp",
+            "certificate_hash": "cc4c1b0e3396e6ff5ee006ad17007116efb2304d"
+          }
+        },
+        {
           "client_id": "819598392807-02vqj5860omrr9n0192d1teis7mmi9a1.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

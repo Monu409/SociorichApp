@@ -38,7 +38,7 @@ public class OrganisationAccount extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ConstantMethods.setTitleAndBack(this, "Organization Signup");
+        ConstantMethods.setTitleAndBack(this, "Signup as Organisation");
         radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);
         spinner1 = (Spinner) findViewById(R.id.spinner1);
         radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);

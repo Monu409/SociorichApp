@@ -49,10 +49,10 @@ public class FeedbackActivity extends BaseActivity {
         if(nameStr.isEmpty()||emailStr.isEmpty()||mobileStr.isEmpty()||cityStr.isEmpty()||messageStr.isEmpty()){
             Toast.makeText(this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
         }
-        else if(ConstantMethods.isValidMail(emailStr)){
+        else if(!ConstantMethods.isValidMail(emailStr)){
             Toast.makeText(this, "Enter valid email", Toast.LENGTH_SHORT).show();
         }
-        else if(ConstantMethods.isValidMobile(mobileStr)){
+        else if(!ConstantMethods.isValidMobile(mobileStr)){
             Toast.makeText(this, "Enter valid mobile number", Toast.LENGTH_SHORT).show();
         }
         else {

@@ -18,7 +18,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SearchView;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,18 +37,14 @@ import com.app.sociorichapp.app_utils.ConstantMethods;
 import com.app.sociorichapp.app_utils.DbHelper;
 import com.app.sociorichapp.app_utils.PicassoImageLoadingService;
 import com.app.sociorichapp.modals.DashModal;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import ss.com.bannerslider.Slider;
-
 import static com.app.sociorichapp.app_utils.AppApis.GET_BANNER_DATA;
 import static com.app.sociorichapp.app_utils.AppApis.HOMEPAGE_URL_2;
 import static com.app.sociorichapp.app_utils.AppApis.HOMEPAGE_URL_LOGIN;
@@ -195,7 +190,7 @@ public class DashboardActivity extends AppCompatActivity {
                                     String pageNoStr = String.valueOf(current_page);
                                     if (checkLogin.equals("login")) {
                                         if (tabTag.equals("Global")) {
-                                            getHomePageData(HOMEPAGE_URL_LOGIN, String.valueOf(i));
+                                            getHomePageData(HOMEPAGE_URL_LOGIN, "2");
                                         } else if (tabTag.equals("Network")) {
                                             getHomePageData(MY_NETWORK_URL, pageNoStr);
                                         } else if (tabTag.equals("Intrest")) {
@@ -210,6 +205,19 @@ public class DashboardActivity extends AppCompatActivity {
                     }
                 }
             });
+//            homeList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//                @Override
+//                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                    LinearLayoutManager layoutManager=LinearLayoutManager.class.cast(recyclerView.getLayoutManager());
+//                    int totalItemCount = layoutManager.getItemCount();
+//                    int lastVisible = layoutManager.findLastVisibleItemPosition();
+//
+//                    boolean endHasBeenReached = lastVisible + 5 >= totalItemCount;
+//                    if (totalItemCount > 0 && endHasBeenReached) {
+//                        getHomePageData(HOMEPAGE_URL_LOGIN, "2");
+//                    }
+//                }
+//            });
             createPostView.setOnClickListener(v -> {
                 Intent intent = new Intent(this, Create_Post.class);
                 startActivity(intent);
@@ -233,10 +241,21 @@ public class DashboardActivity extends AppCompatActivity {
     private void getHomePageData(String url,String pageNo){
         ConstantMethods.showProgressbar(this);
         String userToken = ConstantMethods.getStringPreference("user_token",this);
+        String checkLogin = ConstantMethods.getStringPreference("login_status", this);
+        String authStr;
+        String barToken;
+        if(checkLogin.equals("login")){
+            authStr = "authorization";
+            barToken = "Bearer "+userToken;
+        }
+        else {
+            authStr = "";
+            barToken = "";
+        }
         AndroidNetworking
                 .get(url+pageNo)
                 .setPriority(Priority.MEDIUM)
-//                .addHeaders("authorization","Bearer "+userToken)
+                .addHeaders(authStr,barToken)
                 .build()
                 .getAsJSONArray(new JSONArrayRequestListener() {
                     @Override
@@ -259,6 +278,7 @@ public class DashboardActivity extends AppCompatActivity {
                                 String socioCrdt = postJsonObj.getString("socioMoneyDonated");
                                 String catId = postJsonObj.getString("categoryId");
                                 String desStr = postJsonObj.getString("desc");
+                                String postOwnerUserId = postJsonObj.getString("ownerUserId");
                                 JSONObject profilePicObj = null;
                                 dashModal.setCategoryId(catId);
                                 try{
@@ -272,7 +292,8 @@ public class DashboardActivity extends AppCompatActivity {
                                 for(int j=0;j<mediaArr.length();j++){
                                     JSONObject mediaObj = mediaArr.getJSONObject(j);
                                     String mediaStr = mediaObj.getString("url");
-                                    mediaList.add(mediaStr);
+                                    if(!mediaStr.equals(""))
+                                        mediaList.add(mediaStr);
                                 }
                                 dashModal.setMediaList(mediaList);
 
@@ -343,6 +364,7 @@ public class DashboardActivity extends AppCompatActivity {
                                 dashModal.setSocioCreStr(socioCrdt);
                                 dashModal.setCommentStr(totalComntStr);
                                 dashModal.setDesStr(desStr);
+                                dashModal.setPostOwnerUserId(postOwnerUserId);
                                 dashModals.add(dashModal);
 
                             } catch (JSONException e) {
@@ -466,6 +488,7 @@ public class DashboardActivity extends AppCompatActivity {
                 "Yes",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        //deleteAppData();
                         ConstantMethods.setStringPreference("login_status","logout",context);
                         finish();
                         startActivity(getIntent());
@@ -619,6 +642,18 @@ public class DashboardActivity extends AppCompatActivity {
                 .setNegativeButton("Cancel", okListener)
                 .create()
                 .show();
+    }
+
+    private void deleteAppData() {
+        try {
+            // clearing app data
+            String packageName = getApplicationContext().getPackageName();
+            Runtime runtime = Runtime.getRuntime();
+            runtime.exec("pm clear "+packageName);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

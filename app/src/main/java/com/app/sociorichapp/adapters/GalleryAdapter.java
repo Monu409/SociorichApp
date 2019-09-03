@@ -49,6 +49,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryH
             Intent intent = new Intent(context, FullImageActivity.class);
             ArrayList<String> stringArrayList = (ArrayList<String>)imgList;
             intent.putExtra("all_images",stringArrayList);
+            intent.putExtra("header_name","Gallery Images");
             context.startActivity(intent);
         });
     }

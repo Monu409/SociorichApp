@@ -26,6 +26,7 @@ public class DashModal implements Serializable {
     private List<String> testComments;
 
     private String desStr;
+    private String postOwnerUserId;
 
     public List<String> getTestUsers() {
         return testUsers;
@@ -175,5 +176,13 @@ public class DashModal implements Serializable {
 
     public void setDesStr(String desStr) {
         this.desStr = desStr;
+    }
+
+    public String getPostOwnerUserId() {
+        return postOwnerUserId;
+    }
+
+    public void setPostOwnerUserId(String postOwnerUserId) {
+        this.postOwnerUserId = postOwnerUserId;
     }
 }

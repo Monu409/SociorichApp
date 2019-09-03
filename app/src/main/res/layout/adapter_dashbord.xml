@@ -124,7 +124,6 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
-                    android:background="@drawable/line_view"
                     android:gravity="center"
                     android:paddingRight="1dp"
                     android:text="0 Inspire" />
@@ -134,7 +133,6 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
-                    android:background="@drawable/line_view"
                     android:gravity="center"
                     android:text="0 Verify" />
 
@@ -143,7 +141,6 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="3"
-                    android:background="@drawable/line_view"
                     android:gravity="center"
                     android:text="0 Comments" />
 
@@ -189,7 +186,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:background="@drawable/line_view"
                         android:divider="?android:dividerVertical"
                         android:gravity="center"
                         android:paddingRight="10dp"
@@ -214,7 +210,6 @@
                         android:id="@+id/t_vrfy_txt"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:background="@drawable/line_view"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:paddingRight="10dp"
@@ -316,7 +311,7 @@
                     android:layout_width="50dp"
                     android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="7dp"
                     android:background="@color/colorPrimary"
                     android:text="reward"
                     android:textColor="@color/white"
@@ -327,7 +322,7 @@
                     android:layout_width="50dp"
                     android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="7dp"
                     android:background="@color/colorPrimary"
                     android:text="cancel"
                     android:textColor="@color/white"

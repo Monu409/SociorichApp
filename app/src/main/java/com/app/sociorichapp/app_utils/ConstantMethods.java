@@ -96,7 +96,7 @@ public class ConstantMethods {
 
     public static String currentDate(){
         Date d = new Date();
-        CharSequence s  = DateFormat.format("dd/MM/yyyy", d.getTime());
+        CharSequence s  = DateFormat.format("dd/MM/yyyy,hh:mm a", d.getTime());
         return String.valueOf(s);
     }
 

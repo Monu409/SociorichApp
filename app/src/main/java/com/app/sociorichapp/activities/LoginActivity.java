@@ -23,6 +23,7 @@ import com.android.volley.toolbox.Volley;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.app.sociorichapp.BuildConfig;
 import com.app.sociorichapp.R;
 import com.app.sociorichapp.app_utils.ConstantMethods;
 import com.app.sociorichapp.app_utils.UserRequestCustom;
@@ -34,6 +35,7 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.LoggingBehavior;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
@@ -55,8 +57,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.DefaultLogger;
 import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterApiClient;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterConfig;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
@@ -132,11 +138,27 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                             try {
                                 // Application code
                                 String email = response.getJSONObject().getString("email");
-                                String displayName = profile.getName();
+//                                String displayName = profile.getName();
+                                String displayName = object.getString("name");
                                 socialLogin(email,displayName);
                             }catch(Exception e){
                                 e.printStackTrace();;
                             }
+//                            if (BuildConfig.DEBUG) {
+//                                FacebookSdk.setIsDebugEnabled(true);
+//                                FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
+//
+//                                System.out
+//                                        .println("AccessToken.getCurrentAccessToken()"
+//                                                + AccessToken
+//                                                .getCurrentAccessToken()
+//                                                .toString());
+//                                Profile.getCurrentProfile().getId();
+//                                Profile.getCurrentProfile().getFirstName();
+//                                Profile.getCurrentProfile().getLastName();
+//                                Profile.getCurrentProfile().getProfilePictureUri(50, 50);
+//                                //String email=UserManager.asMap().get(“email”).toString();
+//                            }
                         }
                     });
             Bundle parameters = new Bundle();
@@ -164,6 +186,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Login");
         ConstantMethods.printHashKey(this);
+        init();
         email = (EditText) findViewById(R.id.email_edt);
         password = (EditText) findViewById(R.id.password_edt);
         createAccTxt = findViewById(R.id.create_acc_txt);
@@ -199,12 +222,6 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestScopes(new Scope(Scopes.PLUS_LOGIN))
-//                .requestScopes(new Scope(Scopes.PLUS_ME))
-//                .requestEmail()
-//                .build();
-
         //Then we will get the GoogleSignInClient object from GoogleSignIn class
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
@@ -220,6 +237,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
         callbackManager = CallbackManager.Factory.create();
         LoginButton loginButton = findViewById(R.id.login_button);
         loginButton.setReadPermissions(Arrays.asList("user_birthday", "email"));
+        //loginButton.setReadPermissions("user_friends");
         loginButton.registerCallback(callbackManager, callback);
         FacebookSdk.sdkInitialize(getApplicationContext());
 
@@ -267,12 +285,12 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                     public void success(Result<com.twitter.sdk.android.core.models.User> result) {
                         User user = result.data;
                         String fullname = user.name;
-                        long twitterID = user.getId();
-                        String userSocialProfile = user.profileImageUrl;
+//                        long twitterID = user.getId();
+//                        String userSocialProfile = user.profileImageUrl;
                         String userEmail = user.email;
-                        String userFirstNmae = fullname.substring(0, fullname.lastIndexOf(" "));
-                        String userLastNmae = fullname.substring(fullname.lastIndexOf(" "));
-                        String userScreenName = user.screenName;
+//                        String userFirstNmae = fullname.substring(0, fullname.lastIndexOf(" "));
+//                        String userLastNmae = fullname.substring(fullname.lastIndexOf(" "));
+//                        String userScreenName = user.screenName;
                         socialLogin(userEmail,fullname);
                     }
 
@@ -425,6 +443,8 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                     String displayName = ob1j.getString("displayName");
                     String phoneNo = ob1j.getString("phoneNo");
                     String email = ob1j.getString("email");
+                    String firstName = ob1j.getString("firstName");
+                    ConstantMethods.setStringPreference("first_name",firstName,LoginActivity.this);
                     ConstantMethods.setStringPreference("display_name_prif",displayName,LoginActivity.this);
                     ConstantMethods.setStringPreference("phone_no_prif",phoneNo,LoginActivity.this);
                     ConstantMethods.setStringPreference("email_prif",email,LoginActivity.this);
@@ -509,12 +529,12 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
         profileTracker.stopTracking();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Profile profile = Profile.getCurrentProfile();
-        displayMessage(profile);
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        Profile profile = Profile.getCurrentProfile();
+//        displayMessage(profile);
+//    }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
@@ -587,6 +607,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                     public void onResponse(JSONObject response) {
                         ConstantMethods.dismissProgressBar();
                         try {
+                            ConstantMethods.setStringPreference("email_prif",email,LoginActivity.this);
                             String identity = response.getString("identity");
                             String accesstoken = response.getString("accessToken");
                             ConstantMethods.saveUserID(LoginActivity.this, identity);
@@ -608,4 +629,17 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                     }
                 });
     }
+
+    private void init(){
+
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(getResources().getString(R.string.com_twitter_sdk_android_CONSUMER_KEY), getResources().getString(R.string.com_twitter_sdk_android_CONSUMER_SECRET));
+        TwitterConfig config = new TwitterConfig.Builder(this)
+                .logger(new DefaultLogger(Log.DEBUG))
+                .twitterAuthConfig(authConfig)
+                .debug(true)
+                .build();
+        Twitter.initialize(config);
+
+    }
+
 }
