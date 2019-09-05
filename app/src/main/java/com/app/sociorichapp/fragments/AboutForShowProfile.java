@@ -2,6 +2,7 @@ package com.app.sociorichapp.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,8 @@ import com.app.sociorichapp.app_utils.OnAboutDataReceivedListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Date;
 
 import static com.app.sociorichapp.app_utils.AppApis.SAVE_PROFILE_INTRO;
 
@@ -123,22 +126,24 @@ public class AboutForShowProfile extends Fragment implements OnAboutDataReceived
                 });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        String workSpc = ConstantMethods.getStringPreference("location_prif",getActivity());
-        String location = ConstantMethods.getStringPreference("work_prif",getActivity());
-        String dob = ConstantMethods.getStringPreference("dob_prif",getActivity());
-        workTxt.setText(workSpc);
-        locationTxt.setText(location);
-        dobTxt.setText(dob);
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        String workSpc = ConstantMethods.getStringPreference("location_prif",getActivity());
+//        String location = ConstantMethods.getStringPreference("work_prif",getActivity());
+//        String dob = ConstantMethods.getStringPreference("dob_prif",getActivity());
+//        workTxt.setText(workSpc);
+//        locationTxt.setText(location);
+//        dobTxt.setText(dob);
+//    }
 
     @Override
     public void onDataReceived(String intro, String workSpc, String location, String dob) {
         introTxt.setText(intro);
         workTxt.setText(workSpc);
         locationTxt.setText(location);
-        dobTxt.setText(dob);
+        long millisecond = Long.parseLong(dob);
+        String dateString = DateFormat.format("MMMM dd, yyyy", new Date(millisecond)).toString();
+        dobTxt.setText(dateString);
     }
 }

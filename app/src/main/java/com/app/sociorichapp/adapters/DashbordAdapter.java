@@ -147,7 +147,7 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
         String mLike = dashModals.get(i).getmLikeStr();
 
         dashBordHolder.vMenuImg.setOnClickListener(v-> {
-            if (loginStatus.equals("logout")) {
+            if (loginStatus.equals("logout")||loginStatus.equals("")) {
                 context.startActivity(new Intent(context, LoginActivity.class));
             }
         });
@@ -736,6 +736,11 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
 
         AlertDialog alert11 = builder1.create();
         alert11.show();
+    }
+
+    public void addMoreData(List<DashModal> dashModalsNew){
+        dashModals.addAll(dashModalsNew);
+        notifyDataSetChanged();
     }
 
 }

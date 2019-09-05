@@ -770,7 +770,7 @@ public class Create_Post extends BaseActivity implements AdapterView.OnItemSelec
             InputStream inputStream = null;
             try {
                 HttpClient httpclient = new DefaultHttpClient();
-                HttpPost httpPost = new HttpPost("http://dev.sociorich.com/api/v1/post/create");
+                HttpPost httpPost = new HttpPost(BASE_URL+"api/v1/post/create");
                 //   HttpPost httpPost = new HttpPost("http://34.208.118.103/wcfserviceCustomer.svc/EBSPayment/?");
 
                 String json = url;

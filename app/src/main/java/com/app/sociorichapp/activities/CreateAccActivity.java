@@ -41,6 +41,12 @@ public class CreateAccActivity extends BaseActivity {
         TextView orgnTxt = findViewById(R.id.orgn_txt);
         indvTxt.setText(Html.fromHtml(strd));
         orgnTxt.setText(Html.fromHtml(strd2));
+
+        String str11 = "Existing user? ";
+        String penalty1 = "Login here";
+        String strb21 = "<u><b><font color='#ef633f'>"+ penalty1 +"</font></b></u>";
+        String strd1 = str11 +strb21;
+        loginTxt.setText(Html.fromHtml(strd1));
     }
 
     @Override

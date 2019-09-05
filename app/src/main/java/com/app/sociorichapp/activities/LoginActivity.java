@@ -47,6 +47,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -202,7 +203,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
         });
         termsTxt.setOnClickListener(t->{
             Intent intent = new Intent(this, AboutUsActivity.class);
-            intent.putExtra("url_is","http://dev.sociorich.com/terms");
+            intent.putExtra("url_is",BASE_URL+"terms");
             intent.putExtra("title_is","Terms & Conditions");
             startActivity(intent);
         });
@@ -228,6 +229,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
         //Now we will attach a click listener to the sign_in_button
         //and inside onClick() method we are calling the signIn() method that will open
         //google sign in intent
+
         findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -320,6 +322,17 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
 //                Log.e("res",exception.toString());
 //            }
 //        });
+
+        SignInButton signInButton = findViewById(R.id.sign_in_button);
+        for (int i = 0; i < signInButton.getChildCount(); i++) {
+            View v = signInButton.getChildAt(i);
+
+            if (v instanceof TextView) {
+                TextView tv = (TextView) v;
+                tv.setPadding(0, 0, 20, 0);
+                return;
+            }
+        }
 
     }
 
@@ -482,7 +495,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
     private void signIn() {
         //getting the google signin intent
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-
+        mGoogleApiClient.clearDefaultAccountAndReconnect();
         //starting the activity for result
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }

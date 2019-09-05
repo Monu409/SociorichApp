@@ -11,6 +11,8 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -37,14 +39,20 @@ import com.app.sociorichapp.app_utils.ConstantMethods;
 import com.app.sociorichapp.app_utils.DbHelper;
 import com.app.sociorichapp.app_utils.PicassoImageLoadingService;
 import com.app.sociorichapp.modals.DashModal;
+import com.facebook.login.LoginManager;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import ss.com.bannerslider.Slider;
+
+import static com.app.sociorichapp.app_utils.AppApis.BASE_URL;
 import static com.app.sociorichapp.app_utils.AppApis.GET_BANNER_DATA;
 import static com.app.sociorichapp.app_utils.AppApis.HOMEPAGE_URL_2;
 import static com.app.sociorichapp.app_utils.AppApis.HOMEPAGE_URL_LOGIN;
@@ -120,6 +128,7 @@ public class DashboardActivity extends AppCompatActivity {
                 getCatName(HOMEPAGE_URL_2);
                 globlTxt.setTextColor(Color.parseColor("#ef633f"));
                 globalView.setOnClickListener(v -> {
+                    dashModals.clear();
                     tabTag = "Global";
                     changeTextColor();
                     globlTxt.setTypeface(null, Typeface.BOLD);
@@ -127,6 +136,7 @@ public class DashboardActivity extends AppCompatActivity {
                     getCatName(HOMEPAGE_URL_2);
                 });
                 networkView.setOnClickListener(v -> {
+                    dashModals.clear();
                     tabTag = "Network";
                     changeTextColor();
                     netwrkTxt.setTypeface(null, Typeface.BOLD);
@@ -134,6 +144,7 @@ public class DashboardActivity extends AppCompatActivity {
                     getCatName(HOMEPAGE_URL_2);
                 });
                 intrestView.setOnClickListener(v -> {
+                    dashModals.clear();
                     tabTag = "Intrest";
                     changeTextColor();
                     intrstTxt.setTypeface(null, Typeface.BOLD);
@@ -142,7 +153,7 @@ public class DashboardActivity extends AppCompatActivity {
                 });
                 aboutBtn.setText("Feedback");
                 aboutBtn.setOnClickListener(view -> startActivity(new Intent(this, FeedbackActivity.class)));
-            } else if (checkLogin.equals("logout")) {
+            } else if (checkLogin.equals("logout")||checkLogin.equals("")) {
 //            withLoginHeader.setVisibility(View.GONE);
                 createPostView.setVisibility(View.GONE);
                 tabView.setVisibility(View.GONE);
@@ -152,7 +163,7 @@ public class DashboardActivity extends AppCompatActivity {
                 aboutBtn.setText("About");
                 aboutBtn.setOnClickListener(view -> {
                     Intent intent = new Intent(this, AboutUsActivity.class);
-                    intent.putExtra("url_is", "http://dev.sociorich.com/about");
+                    intent.putExtra("url_is", BASE_URL+"about");
                     intent.putExtra("title_is", "About Us");
                     startActivity(intent);
                 });
@@ -166,7 +177,10 @@ public class DashboardActivity extends AppCompatActivity {
             }
             linearLayoutManager = new LinearLayoutManager(this);
             homeList.setLayoutManager(linearLayoutManager);
-            homeList.setNestedScrollingEnabled(false);
+            dashbordAdapter = new DashbordAdapter(dashModals,DashboardActivity.this);
+            homeList.setAdapter(dashbordAdapter);
+
+//            homeList.setNestedScrollingEnabled(false);
 
             homeList.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
@@ -186,11 +200,11 @@ public class DashboardActivity extends AppCompatActivity {
 
                                     whichPosition=itemLimit;
                                     itemLimit = itemLimit+10;
-                                    i = +i;
+                                    i =i+1;
                                     String pageNoStr = String.valueOf(current_page);
                                     if (checkLogin.equals("login")) {
                                         if (tabTag.equals("Global")) {
-                                            getHomePageData(HOMEPAGE_URL_LOGIN, "2");
+                                            getHomePageData(HOMEPAGE_URL_LOGIN, String.valueOf(i));
                                         } else if (tabTag.equals("Network")) {
                                             getHomePageData(MY_NETWORK_URL, pageNoStr);
                                         } else if (tabTag.equals("Intrest")) {
@@ -205,19 +219,6 @@ public class DashboardActivity extends AppCompatActivity {
                     }
                 }
             });
-//            homeList.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//                @Override
-//                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                    LinearLayoutManager layoutManager=LinearLayoutManager.class.cast(recyclerView.getLayoutManager());
-//                    int totalItemCount = layoutManager.getItemCount();
-//                    int lastVisible = layoutManager.findLastVisibleItemPosition();
-//
-//                    boolean endHasBeenReached = lastVisible + 5 >= totalItemCount;
-//                    if (totalItemCount > 0 && endHasBeenReached) {
-//                        getHomePageData(HOMEPAGE_URL_LOGIN, "2");
-//                    }
-//                }
-//            });
             createPostView.setOnClickListener(v -> {
                 Intent intent = new Intent(this, Create_Post.class);
                 startActivity(intent);
@@ -238,7 +239,14 @@ public class DashboardActivity extends AppCompatActivity {
         }
     }
 
-    private void getHomePageData(String url,String pageNo){
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getHomePageData(HOMEPAGE_URL_LOGIN, "0");
+        getCatName(HOMEPAGE_URL_2);
+    }
+
+    private void getHomePageData(String url, String pageNo){
         ConstantMethods.showProgressbar(this);
         String userToken = ConstantMethods.getStringPreference("user_token",this);
         String checkLogin = ConstantMethods.getStringPreference("login_status", this);
@@ -260,8 +268,8 @@ public class DashboardActivity extends AppCompatActivity {
                 .getAsJSONArray(new JSONArrayRequestListener() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        List<DashModal> dashModalsNew = new ArrayList<>();
                         ConstantMethods.dismissProgressBar();
-                        dashModals.clear();
                         for (int i=0;i<response.length();i++){
                             DashModal dashModal = new DashModal();
                             try {
@@ -271,9 +279,8 @@ public class DashboardActivity extends AppCompatActivity {
                                 String displayName = uProfileJsonObj.getString("displayName");
                                 String postId = postJsonObj.getString("identity");
                                 dashModal.setPostIdStr(postId);
-                                String createdAt = uProfileJsonObj.getString("modifiedAt");
-                                Long longTime = Long.parseLong(createdAt);
-                                String theDate = ConstantMethods.getDate(longTime);
+                                String createdAt = postJsonObj.getString("modifiedAt");
+                                String theDate = ConstantMethods.getDateAsWeb(createdAt);
                                 String title = postJsonObj.getString("title");
                                 String socioCrdt = postJsonObj.getString("socioMoneyDonated");
                                 String catId = postJsonObj.getString("categoryId");
@@ -365,17 +372,19 @@ public class DashboardActivity extends AppCompatActivity {
                                 dashModal.setCommentStr(totalComntStr);
                                 dashModal.setDesStr(desStr);
                                 dashModal.setPostOwnerUserId(postOwnerUserId);
-                                dashModals.add(dashModal);
-
+                                dashModalsNew.add(dashModal);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
+                        if(dashModalsNew.size()==0){
+                            Toast.makeText(DashboardActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
+                        }
+                        dashbordAdapter.addMoreData(dashModalsNew);
+                        canLoadMoreData = true;
 
-                        dashbordAdapter = new DashbordAdapter(dashModals,DashboardActivity.this);
-                        homeList.setAdapter(dashbordAdapter);
-                        homeList.scrollToPosition(whichPosition);
-                        dashbordAdapter.notifyDataSetChanged();
+//                        homeList.scrollToPosition(whichPosition);
+//                        dashbordAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -462,7 +471,7 @@ public class DashboardActivity extends AppCompatActivity {
                 return true;
             case R.id.help_guide:
                 Intent intent = new Intent(this, AboutUsActivity.class);
-                intent.putExtra("url_is","http://dev.sociorich.com/tutorial");
+                intent.putExtra("url_is",BASE_URL+"tutorial");
                 intent.putExtra("title_is","Help & Guide");
                 startActivity(intent);
                 return true;
@@ -489,6 +498,8 @@ public class DashboardActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         //deleteAppData();
+                        //deleteCache(DashboardActivity.this);
+                        LoginManager.getInstance().logOut();
                         ConstantMethods.setStringPreference("login_status","logout",context);
                         finish();
                         startActivity(getIntent());
@@ -644,17 +655,6 @@ public class DashboardActivity extends AppCompatActivity {
                 .show();
     }
 
-    private void deleteAppData() {
-        try {
-            // clearing app data
-            String packageName = getApplicationContext().getPackageName();
-            Runtime runtime = Runtime.getRuntime();
-            runtime.exec("pm clear "+packageName);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 }
 

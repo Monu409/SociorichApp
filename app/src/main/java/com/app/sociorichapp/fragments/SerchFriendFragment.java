@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
@@ -81,6 +82,10 @@ public class SerchFriendFragment extends Fragment {
                             }
                             FriendsAdapter friendsAdapter = new FriendsAdapter(getActivity(),frndModals);
                             friendRcylList.setAdapter(friendsAdapter);
+                            ConstantMethods.dismissProgressBar();
+                            if(frndModals.size()==0){
+                                Toast.makeText(getActivity(), "No Data Found", Toast.LENGTH_SHORT).show();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

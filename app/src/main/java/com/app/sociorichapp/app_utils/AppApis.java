@@ -1,8 +1,8 @@
 package com.app.sociorichapp.app_utils;
 
 public interface AppApis {
-//    String BASE_URL = "http://dev.sociorich.com/";
-    String BASE_URL = "https://www.sociorich.com/";
+    String BASE_URL = "http://dev.sociorich.com/";
+//    String BASE_URL = "https://www.sociorich.com/";
     String INDIVISUAL_SIGNUP = BASE_URL+"api/v1/user/create";
     String HOMEPAGE_URL_2 = BASE_URL+"api/v1/postcategory/all";
     String HOMEPAGE_URL_LOGOUT = BASE_URL+"api/v1/post/featured";
@@ -41,6 +41,7 @@ public interface AppApis {
     String CHANGE_NUMBER = BASE_URL+"api/v1/user/verifyphoneupdate";
     String SHOW_PROFILE = BASE_URL+"api/v1/user/profile/";
     String MY_NETWORK = BASE_URL+"api/v1/connections/my?pageno=0";
+    String POST_CATEGORY = BASE_URL+"api/v1/postcategory/all";
 //    api/v1/conn/request/cancel
 
 //    http://dev.sociorich.com/api/v1/post/global?pageno=http://dev.sociorich.com/api/v1/user/profile/5f73505f-4b5a-4beb-bad6-5060b549bd42/

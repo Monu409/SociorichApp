@@ -93,6 +93,12 @@ public class ConstantMethods {
         String date = DateFormat.format("dd/MM/yyyy", cal).toString();
         return date;
     }
+    public static String getDateAsWeb(String time) {
+        long millisecond = Long.parseLong(time);
+        String dateString = DateFormat.format("MMM dd, yyyy", new Date(millisecond)).toString();
+        return dateString;
+    }
+
 
     public static String currentDate(){
         Date d = new Date();

@@ -174,6 +174,10 @@ public class SearchPostFragment extends Fragment {
 
                             DashbordAdapter dashbordAdapter = new DashbordAdapter(dashModals, getActivity());
                             searchPostList.setAdapter(dashbordAdapter);
+                            if(dashModals.size()==0){
+                                Toast.makeText(getActivity(), "No Data Found", Toast.LENGTH_SHORT).show();
+                            }
+                            ConstantMethods.dismissProgressBar();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -181,7 +185,7 @@ public class SearchPostFragment extends Fragment {
 
                     @Override
                     public void onError(ANError anError) {
-
+                        ConstantMethods.dismissProgressBar();
                     }
                 });
     }
@@ -195,6 +199,7 @@ public class SearchPostFragment extends Fragment {
                 .getAsJSONArray(new JSONArrayRequestListener() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        ConstantMethods.dismissProgressBar();
                         for(int i=0;i<response.length();i++){
                             try {
                                 JSONObject jsonObject = response.getJSONObject(i);
@@ -209,6 +214,7 @@ public class SearchPostFragment extends Fragment {
 
                     @Override
                     public void onError(ANError anError) {
+                        ConstantMethods.dismissProgressBar();
                         Toast.makeText(getActivity(), "Some data is not there", Toast.LENGTH_SHORT).show();
                     }
                 });

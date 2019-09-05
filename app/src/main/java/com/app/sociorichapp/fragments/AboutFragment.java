@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,8 @@ import com.app.sociorichapp.app_utils.OnAboutDataReceivedListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Date;
 
 import static com.app.sociorichapp.app_utils.AppApis.SAVE_PROFILE_INTRO;
 
@@ -137,6 +141,8 @@ public class AboutFragment extends Fragment implements OnAboutDataReceivedListen
         introTxt.setText(intro);
         workTxt.setText(workSpc);
         locationTxt.setText(location);
-        dobTxt.setText(dob);
+        long millisecond = Long.parseLong(dob);
+        String dateString = DateFormat.format("MMMM dd, yyyy", new Date(millisecond)).toString();
+        dobTxt.setText(dateString);
     }
 }

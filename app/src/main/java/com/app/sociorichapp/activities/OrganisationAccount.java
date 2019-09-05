@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -51,6 +52,11 @@ public class OrganisationAccount extends BaseActivity {
         aboutOrgEdt = findViewById(R.id.about_edt);
         orgnRNumEdt = findViewById(R.id.orgn_rnumber);
         alreadyTxt = findViewById(R.id.already_txt);
+        String str11 = "Already Registered, ";
+        String penalty1 = "Click here";
+        String strb21 = "<u><b><font color='#ef633f'>"+ penalty1 +"</font></b></u>";
+        String strd1 = str11 +strb21;
+        alreadyTxt.setText(Html.fromHtml(strd1));
 
         radioSexGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {

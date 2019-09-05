@@ -1,10 +1,13 @@
 package com.app.sociorichapp.activities;
 
 import android.os.Bundle;
+import android.widget.Button;
+
 import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.app.sociorichapp.R;
@@ -14,6 +17,8 @@ import com.app.sociorichapp.fragments.SerchFriendFragment;
 
 public class SearchResultActivity extends BaseActivity {
     public String queryKeywords = "";
+    private Button pplBt,postBtn;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,8 +26,19 @@ public class SearchResultActivity extends BaseActivity {
         queryKeywords = getIntent().getStringExtra("search_key");
         ViewPager viewPager = findViewById(R.id.pager);
         TabLayout tabLayout = findViewById(R.id.tab_layout);
-        viewPager.setAdapter(new SectionPagerAdapter(getSupportFragmentManager()));
-        tabLayout.setupWithViewPager(viewPager);
+        pplBt = findViewById(R.id.people_btn);
+        postBtn = findViewById(R.id.post_btn);
+        loadFragment(new SerchFriendFragment());
+        pplBt.setOnClickListener(v->{
+            loadFragment(new SerchFriendFragment());
+            pplBt.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            postBtn.setBackgroundColor(getResources().getColor(R.color.black_trans80));
+        });
+        postBtn.setOnClickListener(v->{
+            loadFragment(new SearchPostFragment());
+            pplBt.setBackgroundColor(getResources().getColor(R.color.black_trans80));
+            postBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        });
     }
 
     @Override
@@ -30,39 +46,13 @@ public class SearchResultActivity extends BaseActivity {
         return R.layout.activity_srch_rslt;
     }
 
-    public class SectionPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            switch (position) {
-                case 0:
-                    return new SerchFriendFragment();
-                case 1:
-                    return new SearchPostFragment();
-                default:
-                    return new SerchFriendFragment();
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return 2;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "Peoples";
-                case 1:
-                    return "Post";
-                default:
-                    return "Peoples";
-            }
-        }
+    private void loadFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.load_fragment,fragment);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        fragmentTransaction.commit();
     }
+
 }

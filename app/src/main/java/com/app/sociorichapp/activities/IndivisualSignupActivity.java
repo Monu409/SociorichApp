@@ -27,6 +27,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.app.sociorichapp.app_utils.AppApis.BASE_URL;
 import static com.app.sociorichapp.app_utils.AppApis.COUNTRY_URL;
 import static com.app.sociorichapp.app_utils.AppApis.INDIVISUAL_SIGNUP;
 
@@ -52,8 +53,8 @@ public class IndivisualSignupActivity extends BaseActivity {
         alreadyTxt = findViewById(R.id.already_txt);
         termsTxt = findViewById(R.id.terms_txt);
 
-        String str1 = "Already Registered,";
-        String penalty = " Click here";
+        String str1 = "Already Registered, ";
+        String penalty = "Click here";
         String strb2 = "<u><b><font color='#ef633f'>"+ penalty +"</font></b></u>";
         String strd = str1 +strb2;
         alreadyTxt.setText(Html.fromHtml(strd));
@@ -63,9 +64,8 @@ public class IndivisualSignupActivity extends BaseActivity {
         String strd1 = str2 +strb3;
         termsTxt.setText(Html.fromHtml(strd1));
         termsTxt.setOnClickListener(t->{
-            Intent intent = new Intent(this, AboutUsActivity.class);
-            intent.putExtra("url_is","http://dev.sociorich.com/terms");
-            intent.putExtra("title_is","Terms & Conditions");
+            Intent intent = new Intent(this, TermsAndCondition.class);
+
             startActivity(intent);
         });
         getCountries();
@@ -112,9 +112,6 @@ public class IndivisualSignupActivity extends BaseActivity {
             mobileEdt.setError("Enter Mobile or Email");
             emailEdt.setError("Enter Mobile or Email");
         }
-//        else if(emailStr.isEmpty()){
-//            emailEdt.setError("Enter Email");
-//        }
         else if(passwordStr.isEmpty()){
             passwordEdt.setError("Enter Password");
         }

@@ -34,6 +34,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import static com.app.sociorichapp.app_utils.AppApis.SHOW_PROFILE;
 
@@ -193,14 +194,20 @@ public class ShowProfileActivity extends BaseActivity{
                                     .priority(com.bumptech.glide.Priority.HIGH)
 
                                     .into(profileImg);
-                            String socioMoneyBalance = response.getString("socioMoneyBalance");
-                            String equaMoneyBalance = response.getString("equaMoneyBalance");
+                        } catch (Exception e) {
+                            e.getStackTrace();
+                        }
+                        String socioMoneyBalance = null;
+                        String equaMoneyBalance = null;
+                        try {
+                            socioMoneyBalance = response.getString("socioMoneyBalance");
+                            equaMoneyBalance = response.getString("equaMoneyBalance");
                             socioMoneyBalance = socioMoneyBalance.substring(0, socioMoneyBalance.length() - 2);
                             equaMoneyBalance = equaMoneyBalance.substring(0, equaMoneyBalance.length() - 2);
                             soCrTxt.setText(socioMoneyBalance);
                             eqCrTxt.setText(equaMoneyBalance);
-                        } catch (Exception e) {
-                            e.getStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
                     }
 
