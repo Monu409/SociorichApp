@@ -9,9 +9,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.app.sociorichapp.R;
+import com.app.sociorichapp.app_utils.CircleImageView;
 import com.app.sociorichapp.app_utils.ConstantMethods;
 import com.app.sociorichapp.modals.CommentModal;
+import com.app.sociorichapp.modals.DashModal;
 import com.app.sociorichapp.modals.UserCommentModal;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
 
@@ -24,7 +28,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ComntHol
     List<String> testUsers;
     List<String> testComments;
 
-    public CommentAdapter(List<CommentModal> commentModals, Context context,String s){
+    public CommentAdapter(List<CommentModal> commentModals, Context context){
         this.commentModals = commentModals;
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
@@ -36,11 +40,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ComntHol
         layoutInflater = LayoutInflater.from(context);
     }
 
-    public CommentAdapter(List<CommentModal> commentModals, Context context){
-        this.commentModals = commentModals;
-        this.context = context;
-        layoutInflater = LayoutInflater.from(context);
-    }
+//    public CommentAdapter(List<CommentModal> commentModals, Context context){
+//        this.commentModals = commentModals;
+//        this.context = context;
+//        layoutInflater = LayoutInflater.from(context);
+//    }
 
 
     @NonNull
@@ -52,23 +56,36 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ComntHol
 
     @Override
     public void onBindViewHolder(@NonNull ComntHolder comntHolder, int i) {
-        comntHolder.comntTxt.setText(testComments.get(i));
-        comntHolder.userTxt.setText(testUsers.get(i));
-        comntHolder.dateTxt.setText(ConstantMethods.currentDate());
+        comntHolder.comntTxt.setText(commentModals.get(i).getComntStr());
+        comntHolder.userTxt.setText(commentModals.get(i).getUserStr());
+        comntHolder.dateTxt.setText(commentModals.get(i).getTimeDateStr());
+//        Glide.with(context)
+//                .load(commentModals.get(i).getImgUrl())
+//                .placeholder(R.drawable.user_profile)
+//                .error(R.drawable.user_profile)
+//                .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                .priority(com.bumptech.glide.Priority.HIGH)
+//                .into(comntHolder.userImg);
     }
 
     @Override
     public int getItemCount() {
-        return testComments.size();
+        return commentModals.size();
     }
 
     class ComntHolder extends RecyclerView.ViewHolder {
         public TextView comntTxt,dateTxt,userTxt;
+        public CircleImageView userImg;
         public ComntHolder(@NonNull View itemView) {
             super(itemView);
             comntTxt = itemView.findViewById(R.id.comment_txt);
             dateTxt = itemView.findViewById(R.id.date_txt);
             userTxt = itemView.findViewById(R.id.user_txt);
+            userImg = itemView.findViewById(R.id.user_img);
         }
+    }
+    public void addMoreData(List<CommentModal> commentModals){
+        commentModals.addAll(commentModals);
+        notifyDataSetChanged();
     }
 }

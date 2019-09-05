@@ -1,6 +1,8 @@
 package com.app.sociorichapp.modals;
 
-public class CommentModal {
+import java.io.Serializable;
+
+public class CommentModal implements Serializable {
     private String comntStr;
     private String timeDateStr;
     private String imgUrl;

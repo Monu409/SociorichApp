@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
@@ -17,8 +18,8 @@ import com.app.sociorichapp.R;
 import com.app.sociorichapp.adapters.CommentAdapter;
 import com.app.sociorichapp.app_utils.ConstantMethods;
 import com.app.sociorichapp.modals.CommentModal;
-import com.app.sociorichapp.modals.DashModal;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,6 +28,7 @@ import java.util.List;
 
 import static com.app.sociorichapp.app_utils.AppApis.MY_COMMENT;
 import static com.app.sociorichapp.app_utils.AppApis.MY_INSPIRE_VERIFY;
+import static com.app.sociorichapp.app_utils.AppApis.MY_LOAD_COMMENT;
 import static com.app.sociorichapp.app_utils.AppApis.MY_UPDATE_COMMENT;
 
 public class CommentActivity extends BaseActivity {
@@ -40,6 +42,8 @@ public class CommentActivity extends BaseActivity {
     String token;
     List<String> userComment;
     List<String> userName;
+    private TextView loadMoreTxt;
+    List<CommentModal> commentModals;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,13 +52,16 @@ public class CommentActivity extends BaseActivity {
         comntList.setLayoutManager(new LinearLayoutManager(this));
         comntEdt = findViewById(R.id.commnet_edt);
         comntBtn = findViewById(R.id.comment_btn);
+        loadMoreTxt = findViewById(R.id.load_more_txt);
+        loadMoreTxt.setOnClickListener(v->{
+            loadMoreComents("1");
+            commentAdapter.notifyDataSetChanged();
+        });
         token = ConstantMethods.getStringPreference("user_token",this);
 
         Intent intent = getIntent();
-        DashModal dashModal = (DashModal) intent.getSerializableExtra("dash_modal");
-        userComment = dashModal.getTestComments();
-        userName = dashModal.getTestUsers();
-        commentAdapter = new CommentAdapter(userName,userComment,CommentActivity.this);
+        commentModals = (List<CommentModal>) intent.getSerializableExtra("dash_modal");
+        commentAdapter = new CommentAdapter(commentModals,CommentActivity.this);
         comntList.setAdapter(commentAdapter);
 
         comntBtn.setOnClickListener(v->{
@@ -99,11 +106,14 @@ public class CommentActivity extends BaseActivity {
                         try {
                             String comment = response.getString("comment");
                             String firstName = ConstantMethods.getStringPreference("first_name",CommentActivity.this);
-                            commentAdapter = new CommentAdapter(userName,userComment,CommentActivity.this);
-                            insertIndex = userName.size();
+                            commentAdapter = new CommentAdapter(commentModals,CommentActivity.this);
+                            insertIndex = commentModals.size();
                             comntList.setAdapter(commentAdapter);
-                            userComment.add(insertIndex, comment);
-                            userName.add(insertIndex, firstName);
+                            CommentModal commentModal1 = new CommentModal();
+                            commentModal1.setComntStr(comment);
+                            commentModal1.setUserStr(firstName);
+                            commentModal1.setTimeDateStr(ConstantMethods.currentDate());
+                            commentModals.add(insertIndex,commentModal1);
                             commentAdapter.notifyItemInserted(insertIndex);
                             insertIndex = insertIndex+1;
                             comntEdt.setText("");
@@ -177,5 +187,58 @@ public class CommentActivity extends BaseActivity {
 
                     }
                 });
+    }
+
+    private void loadMoreComents(String pageNo){
+        AndroidNetworking
+                .get(MY_LOAD_COMMENT+pageNo)
+                .addHeaders("authorization","Bearer "+token)
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("content");
+                            List<CommentModal> commentModals = new ArrayList<>();
+                            for(int i=0;i<jsonArray.length();i++){
+                                JSONObject childObj = jsonArray.getJSONObject(i);
+                                JSONObject user = childObj.getJSONObject("user");
+                                JSONObject comment = childObj.getJSONObject("comment");
+                                String commentStr = comment.getString("comment");
+                                String displayName = user.getString("displayName");
+                                String dateTime = comment.getString("createdAt");
+                                String comntDate = ConstantMethods.getDateForComment(dateTime);
+
+                                CommentModal commentModal = new CommentModal();
+                                commentModal.setComntStr(commentStr);
+                                commentModal.setUserStr(displayName);
+                                commentModal.setTimeDateStr(comntDate);
+                                commentModals.add(commentModal);
+                            }
+                            List<CommentModal> finalData = new ArrayList<>();
+                            finalData.addAll(commentModals);
+                            finalData.addAll(CommentActivity.this.commentModals);
+                            commentAdapter = new CommentAdapter(finalData,CommentActivity.this);
+                            comntList.setAdapter(commentAdapter);
+//                            commentAdapter.addMoreData(commentModals);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        Toast.makeText(CommentActivity.this, anError.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this,DashboardActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

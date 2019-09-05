@@ -98,6 +98,11 @@ public class ConstantMethods {
         String dateString = DateFormat.format("MMM dd, yyyy", new Date(millisecond)).toString();
         return dateString;
     }
+    public static String getDateForComment(String time) {
+        long millisecond = Long.parseLong(time);
+        String dateString = DateFormat.format("MM/dd/yyyy hh:mm a", new Date(millisecond)).toString();
+        return dateString;
+    }
 
 
     public static String currentDate(){

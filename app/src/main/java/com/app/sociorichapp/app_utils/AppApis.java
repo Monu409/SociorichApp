@@ -14,7 +14,7 @@ public interface AppApis {
     String MY_NETWORK_URL = BASE_URL+"api/v1/post/usernetwork?pageno=";
     String MY_POST_URL = BASE_URL+"api/v1/post/byuser/";
     String MY_COMMENT = BASE_URL+"api/v1/post/comment/create";
-    String MY_UPDATE_COMMENT = BASE_URL+"v1/post/ffad5032-0144-4d24-a9fc-6529c16adfa3/comments?pageno=8";
+    String MY_UPDATE_COMMENT = BASE_URL+"v1/post/ffad5032-0144-4d24-a9fc-6529c16adfa3/comments?pageno=0";
     String MY_INSPIRE_VERIFY = BASE_URL+"api/v1/expr/create";
     String UPLOAD_PROFILE_PICK = BASE_URL+"api/v1/user/profilepic";
     String GET_PROFILE_PICK = BASE_URL+"api/v1/user/currentuserprofile";
@@ -42,6 +42,7 @@ public interface AppApis {
     String SHOW_PROFILE = BASE_URL+"api/v1/user/profile/";
     String MY_NETWORK = BASE_URL+"api/v1/connections/my?pageno=0";
     String POST_CATEGORY = BASE_URL+"api/v1/postcategory/all";
+    String MY_LOAD_COMMENT = BASE_URL+"api/v1/post/7c836a7c-ff7c-41cc-a2c8-8afe032d59d7/comments?pageno=";
 //    api/v1/conn/request/cancel
 
 //    http://dev.sociorich.com/api/v1/post/global?pageno=http://dev.sociorich.com/api/v1/user/profile/5f73505f-4b5a-4beb-bad6-5060b549bd42/

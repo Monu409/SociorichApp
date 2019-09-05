@@ -53,6 +53,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,6 +94,12 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
         dashBordHolder.dateTxt.setText(dashModals.get(i).getDateStr());
         String descStr = dashModals.get(i).getDesStr();
         String postStr = dashModals.get(i).getPostDataStr();
+        String shrNameStr = dashModals.get(i).getShareUsrName();
+        String shrDateStr = dashModals.get(i).getShareDate();
+        String shrCatStr = dashModals.get(i).getShareCat();
+        dashBordHolder.shrNameTxt.setText(shrNameStr);
+        dashBordHolder.shrDateTxt.setText(shrDateStr);
+        dashBordHolder.shrCatTxt.setText(shrCatStr);
         boolean isDescStrUrl = URLUtil.isValidUrl(descStr);
         boolean isPostStr = URLUtil.isValidUrl(postStr);
         String loginStatus = ConstantMethods.getStringPreference("login_status", context);
@@ -230,7 +237,7 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
             if (loginStatus.equals("login")) {
                 Intent intent = new Intent(context, CommentActivity.class);
                 intent.putExtra("post_id", postId);
-                intent.putExtra("dash_modal", dashModals.get(i));
+                intent.putExtra("dash_modal", (Serializable) dashModals.get(i).getCommentModals());
                 context.startActivity(intent);
             } else {
                 context.startActivity(new Intent(context, LoginActivity.class));
@@ -441,7 +448,8 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
 
     public class DashBordHolder extends RecyclerView.ViewHolder {
         public TextView catTxt, unameTxt, dateTxt, postDataTxt, insprTxt, vrfyTxt,
-                cmntTxt, crditTxt, tInsprTxt, tVrfyTxt, rwrdTxt,desTxt;
+                cmntTxt, crditTxt, tInsprTxt, tVrfyTxt, rwrdTxt,desTxt,shrNameTxt,
+                shrDateTxt,shrCatTxt;
         public CircleImageView userProfileImg;
         private LinearLayout inspireLay, varifyLay, rwrdLay, shareLay;
         public ImageView inspireImg, verifyImg, vMenuImg;
@@ -450,6 +458,7 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
         EditText rwrdEdt;
         RelativeLayout rewadrLay1;
         private LinearLayout rwrdBtn;
+
 
         public DashBordHolder(@NonNull View itemView) {
             super(itemView);
@@ -479,6 +488,9 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
             shareLay = itemView.findViewById(R.id.share_lay);
             vMenuImg = itemView.findViewById(R.id.v_menu_img);
             desTxt = itemView.findViewById(R.id.des_txt);
+            shrNameTxt = itemView.findViewById(R.id.sr_uname_txt);
+            shrDateTxt = itemView.findViewById(R.id.sr_date_txt);
+            shrCatTxt = itemView.findViewById(R.id.sr_category_txt);
         }
     }
 

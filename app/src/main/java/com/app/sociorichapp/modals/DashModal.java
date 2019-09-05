@@ -1,5 +1,7 @@
 package com.app.sociorichapp.modals;
 
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,10 @@ public class DashModal implements Serializable {
 
     private String desStr;
     private String postOwnerUserId;
+    private String shareUsrName;
+    private String shareDate;
+    private String shareCat;
+    private JSONObject shrObj;
 
     public List<String> getTestUsers() {
         return testUsers;
@@ -47,6 +53,8 @@ public class DashModal implements Serializable {
     public List<UserCommentModal> getUserCommentModals() {
         return userCommentModals;
     }
+
+    public List<CommentModal> commentModals;
 
     public void setUserCommentModals(List<UserCommentModal> userCommentModals) {
         this.userCommentModals = userCommentModals;
@@ -184,5 +192,45 @@ public class DashModal implements Serializable {
 
     public void setPostOwnerUserId(String postOwnerUserId) {
         this.postOwnerUserId = postOwnerUserId;
+    }
+
+    public List<CommentModal> getCommentModals() {
+        return commentModals;
+    }
+
+    public void setCommentModals(List<CommentModal> commentModals) {
+        this.commentModals = commentModals;
+    }
+
+    public String getShareUsrName() {
+        return shareUsrName;
+    }
+
+    public void setShareUsrName(String shareUsrName) {
+        this.shareUsrName = shareUsrName;
+    }
+
+    public String getShareDate() {
+        return shareDate;
+    }
+
+    public void setShareDate(String shareDate) {
+        this.shareDate = shareDate;
+    }
+
+    public String getShareCat() {
+        return shareCat;
+    }
+
+    public void setShareCat(String shareCat) {
+        this.shareCat = shareCat;
+    }
+
+    public JSONObject getShrObj() {
+        return shrObj;
+    }
+
+    public void setShrObj(JSONObject shrObj) {
+        this.shrObj = shrObj;
     }
 }

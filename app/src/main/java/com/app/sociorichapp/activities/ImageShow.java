@@ -30,7 +30,7 @@ public class ImageShow extends AppCompatActivity {
                 Log.d("Width is",String.valueOf(width));
                 int i=2;
                 String imgUrl = "https://s3.ap-south-1.amazonaws.com/srch-dev-media/c771bf42-00bf-4828-81f5-0370deb19f41/c384419a-9efd-4299-a008-6748df91dfcd.jpg";
-                FrameLayout frameLayout=(FrameLayout)findViewById(R.id.imgframe);
+                FrameLayout frameLayout=new FrameLayout(this);
                 if(i==1)
                 {    ImageView imageView = new ImageView(this);
                     Glide.with(this).load(imgUrl).into(imageView);

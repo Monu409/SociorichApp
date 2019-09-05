@@ -38,6 +38,7 @@ import com.app.sociorichapp.adapters.DashbordAdapter;
 import com.app.sociorichapp.app_utils.ConstantMethods;
 import com.app.sociorichapp.app_utils.DbHelper;
 import com.app.sociorichapp.app_utils.PicassoImageLoadingService;
+import com.app.sociorichapp.modals.CommentModal;
 import com.app.sociorichapp.modals.DashModal;
 import com.facebook.login.LoginManager;
 
@@ -239,13 +240,6 @@ public class DashboardActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        getHomePageData(HOMEPAGE_URL_LOGIN, "0");
-        getCatName(HOMEPAGE_URL_2);
-    }
-
     private void getHomePageData(String url, String pageNo){
         ConstantMethods.showProgressbar(this);
         String userToken = ConstantMethods.getStringPreference("user_token",this);
@@ -307,19 +301,50 @@ public class DashboardActivity extends AppCompatActivity {
 
 
                                 JSONObject commentObj = allObjs.getJSONObject("comments");
-                                String totalComntStr = commentObj.getString("numberOfElements");
+                                String totalComntStr = commentObj.getString("totalElements");
                                 JSONArray contentArr = commentObj.getJSONArray("content");
                                 List<String> userList = new ArrayList<>();
                                 List<String> comentList = new ArrayList<>();
+                                List<CommentModal> commentModals = new ArrayList<>();
                                 for(int k=0;k<contentArr.length();k++){
+                                    CommentModal commentModal = new CommentModal();
                                     JSONObject contentObj = contentArr.getJSONObject(k);
                                     JSONObject userObject = contentObj.getJSONObject("user");
                                     JSONObject comentObject = contentObj.getJSONObject("comment");
+
                                     String userStr = userObject.getString("displayName");
                                     String commentStr = comentObject.getString("comment");
-                                    userList.add(userStr);
-                                    comentList.add(commentStr);
+                                    String dateTime = comentObject.getString("createdAt");
+                                    String comntDate = ConstantMethods.getDateForComment(dateTime);
+                                    commentModal.setComntStr(commentStr);
+                                    commentModal.setUserStr(userStr);
+                                    commentModal.setTimeDateStr(comntDate);
+                                    commentModals.add(commentModal);
+                                    dashModal.setCommentModals(commentModals);
                                 }
+
+
+                                JSONObject sharedProfile = null;
+                                try{
+                                    sharedProfile = allObjs.getJSONObject("sharedProfile");
+                                    String shrName = sharedProfile.getString("displayName");
+                                    String shrDateTime = sharedProfile.getString("modifiedAt");
+//                                    String shrCat = sharedProfile.getString("categoryId");
+                                    JSONObject profilePicObjShr = null;
+                                    try{
+                                        profilePicObj = uProfileJsonObj.getJSONObject("profilePic");
+                                    }catch(JSONException je){
+                                        //json object not found
+                                    }
+                                    String shrCat = "Descrimination";
+                                    String shrTheDate = ConstantMethods.getDateAsWeb(shrDateTime);
+                                    dashModal.setShareUsrName(shrName);
+                                    dashModal.setShareDate(shrTheDate);
+                                    dashModal.setShareCat(shrCat);
+                                }catch(JSONException je){
+                                    //json object not found
+                                }
+
 
                                 dashModal.setTestComments(comentList);
                                 dashModal.setTestUsers(userList);
