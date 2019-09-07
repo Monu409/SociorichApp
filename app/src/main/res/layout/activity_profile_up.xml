@@ -137,7 +137,7 @@
             android:orientation="vertical"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp">
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -151,11 +151,13 @@
                     android:textStyle="bold"
                     />
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:src="@drawable/edit_icon"
-                    android:layout_marginLeft="5dp"/>
-            </LinearLayout>
+                    android:layout_marginLeft="5dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"/>
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"

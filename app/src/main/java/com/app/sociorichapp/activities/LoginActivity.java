@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
@@ -148,7 +149,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                                 socialLogin(email,displayName);
                             }catch(Exception e){
                                 e.printStackTrace();
-                                noEmailPopup();
+                                noEmailPopup("Facebook");
                             }
                         }
                     });
@@ -288,7 +289,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
 
                     @Override
                     public void failure(TwitterException exception) {
-
+                        noEmailPopup("Twitter");
                     }
                 });
             }
@@ -319,7 +320,10 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
 
             if (v instanceof TextView) {
                 TextView tv = (TextView) v;
-                tv.setPadding(0, 0, 20, 0);
+                tv.setText("Log in with Google");
+                tv.setTextSize(16);
+                tv.setTypeface(null, Typeface.BOLD);
+                tv.setPadding(30, 0, 0, 0);
                 return;
             }
         }
@@ -625,6 +629,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                             e.printStackTrace();
                         }
                     }
+
                     @Override
                     public void onError(ANError anError) {
                         ConstantMethods.dismissProgressBar();
@@ -634,6 +639,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
     }
 
     private void init(){
+
         TwitterAuthConfig authConfig = new TwitterAuthConfig(getResources().getString(R.string.com_twitter_sdk_android_CONSUMER_KEY), getResources().getString(R.string.com_twitter_sdk_android_CONSUMER_SECRET));
         TwitterConfig config = new TwitterConfig.Builder(this)
                 .logger(new DefaultLogger(Log.DEBUG))
@@ -641,13 +647,14 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                 .debug(true)
                 .build();
         Twitter.initialize(config);
+
     }
 
-    private String noEmailPopup(){
+    private String noEmailPopup(String socialType){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setCancelable(false);
         final EditText emailEdt = new EditText(this);
-        alert.setMessage("You don't have email id on Facebook");
+        alert.setMessage("You don't have email id on "+socialType);
         alert.setTitle("Enter Your Email");
 
         alert.setView(emailEdt);
@@ -655,22 +662,13 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
         alert.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 emailIdFacebook = emailEdt.getText().toString();
-                Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
-                button.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View view) {
-                        // TODO Do something
-                        if(ConstantMethods.isValidMail(emailIdFacebook)){
-                            socialLogin(emailIdFacebook,displayName);
-                            dialog.dismiss();
-                        }
-                        else {
-                            Toast.makeText(LoginActivity.this, "Please enter valid email address", Toast.LENGTH_SHORT).show();
-                            LoginManager.getInstance().logOut();
-                        }
-                    }
-                });
+                if(ConstantMethods.isValidMail(emailIdFacebook)){
+                    socialLogin(emailIdFacebook,displayName);
+                }
+                else {
+                    Toast.makeText(LoginActivity.this, "Please enter valid email address", Toast.LENGTH_SHORT).show();
+                    LoginManager.getInstance().logOut();
+                }
             }
         });
         alert.show();

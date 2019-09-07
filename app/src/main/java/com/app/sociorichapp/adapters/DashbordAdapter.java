@@ -217,7 +217,7 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
                         int giveReward = Integer.parseInt(rewartQty);
                         int total = rewrdNo+giveReward;
                         dashBordHolder.rwrdLay.setVisibility(View.GONE);
-                        dashBordHolder.rwrdTxt.setText("You have reward " + total + " Equa Credits\nto this post.");
+                        dashBordHolder.rwrdTxt.setText("You have been rewarded\n" + total + " Equa Credits to this post.");
                         dashBordHolder.rwrdEdt.setText("");
                         Toast.makeText(activity, "Reward sent successfully", Toast.LENGTH_SHORT).show();
                     }
