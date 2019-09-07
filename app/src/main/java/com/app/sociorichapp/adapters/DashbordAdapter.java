@@ -103,6 +103,11 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
         boolean isDescStrUrl = URLUtil.isValidUrl(descStr);
         boolean isPostStr = URLUtil.isValidUrl(postStr);
         String loginStatus = ConstantMethods.getStringPreference("login_status", context);
+        JSONObject shrObj = dashModals.get(i).getShrObj();
+        if(shrObj!=null){
+            dashBordHolder.shareView.setVisibility(View.VISIBLE);
+            dashBordHolder.sharedTxt.setVisibility(View.VISIBLE);
+        }
         if(isDescStrUrl){
             dashBordHolder.desTxt.setTextColor(Color.parseColor("#EE124FF0"));
             dashBordHolder.desTxt.setPaintFlags(dashBordHolder.desTxt.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -449,15 +454,16 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
     public class DashBordHolder extends RecyclerView.ViewHolder {
         public TextView catTxt, unameTxt, dateTxt, postDataTxt, insprTxt, vrfyTxt,
                 cmntTxt, crditTxt, tInsprTxt, tVrfyTxt, rwrdTxt,desTxt,shrNameTxt,
-                shrDateTxt,shrCatTxt;
+                shrDateTxt,shrCatTxt,sharedTxt;
         public CircleImageView userProfileImg;
         private LinearLayout inspireLay, varifyLay, rwrdLay, shareLay;
         public ImageView inspireImg, verifyImg, vMenuImg;
         FrameLayout frameLayout;
         Button sendRwrd, cnclRwrd;
         EditText rwrdEdt;
-        RelativeLayout rewadrLay1;
+        RelativeLayout rewadrLay1,shareView;
         private LinearLayout rwrdBtn;
+
 
 
         public DashBordHolder(@NonNull View itemView) {
@@ -491,6 +497,8 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
             shrNameTxt = itemView.findViewById(R.id.sr_uname_txt);
             shrDateTxt = itemView.findViewById(R.id.sr_date_txt);
             shrCatTxt = itemView.findViewById(R.id.sr_category_txt);
+            shareView = itemView.findViewById(R.id.share_view);
+            sharedTxt = itemView.findViewById(R.id.shared_txt);
         }
     }
 
@@ -603,7 +611,37 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
         builder.setNegativeButton("Share Post", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(context, "Successfully Shared", Toast.LENGTH_SHORT).show();
+                JSONObject shareJSON = dashModals.get(position).getPostObj();
+                shareJSON.remove("identity");
+                shareJSON.remove("createdBy");
+                shareJSON.remove("createdAt");
+                shareJSON.remove("modifiedBy");
+                shareJSON.remove("modifiedAt");
+                shareJSON.remove("socioMoneyDonated");
+                shareJSON.remove("expressions");
+                shareJSON.remove("taggedUserIds");
+                shareJSON.remove("sharedTitle");
+                shareJSON.remove("type");
+                shareJSON.remove("status");
+                shareJSON.remove("sharedId");
+                shareJSON.remove("sharedDate");
+                shareJSON.remove("postedBy");
+                shareJSON.remove("ownerUserId");
+
+                try {
+                    String userIdentity = ConstantMethods.getUserID(context);
+                    String sharedId = dashModals.get(position).getUserIdentity();
+                    String modifiedAt = dashModals.get(position).getLongTime();
+                    shareJSON.put("sharedId",sharedId);
+                    shareJSON.put("postedBy",userIdentity);
+                    shareJSON.put("ownerUserId",userIdentity);
+                    shareJSON.put("sharedDate",modifiedAt);
+                    sharePost(shareJSON);
+                }
+                catch (Exception e){
+                    e.getStackTrace();
+                }
+
             }
         });
         builder.show();
@@ -619,12 +657,12 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject response) {
-
+                        Toast.makeText(context, "Successfully Shared", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onError(ANError anError) {
-
+                        Toast.makeText(context, anError.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }

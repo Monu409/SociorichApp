@@ -134,8 +134,14 @@ public class ProfileUpActivity extends AppCompatActivity {
         });
         intrextTxt.setOnClickListener(v -> selectIntrest());
         showAllTxt.setOnClickListener(v -> {
-            Intent intent = new Intent(this, DeleteIntrestActivity.class);
-            startActivity(intent);
+            List<String> catVals = ConstantMethods.getArrayListShared(ProfileUpActivity.this, "interest_save");
+            if(catVals==null) {
+                Toast.makeText(this, "No interest is selected", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Intent intent = new Intent(this, DeleteIntrestActivity.class);
+                startActivity(intent);
+            }
         });
 
         List<String> catVals = ConstantMethods.getArrayListShared(ProfileUpActivity.this, "interest_save");

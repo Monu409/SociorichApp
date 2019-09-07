@@ -32,7 +32,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.sociorichapp.R;
@@ -123,6 +125,9 @@ public class Create_Post extends BaseActivity implements AdapterView.OnItemSelec
     public static final int PERMISSION_CAMERA_CODE = 121;
     Spinner spin;
     String[] category = {"Select Category","Animals", "Community & Development", "Discrimination", "Disasters", "Education", "Environment", "Health", "Homelessness+Poverty", "Spiritual", "Other", "Social News", "Social Discussions", "Social Suggestions", "Social Tasks"};
+    private TextView slctCatTxt;
+    private String catID;
+    private RelativeLayout spinrView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -130,8 +135,8 @@ public class Create_Post extends BaseActivity implements AdapterView.OnItemSelec
         ConstantMethods.setTitleAndBack(this, "Create Post");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         spin = findViewById(R.id.spinner);
-        tv_titel = (EditText) findViewById(R.id.titel);
-        tv_dec = (EditText) findViewById(R.id.edittext1);
+        tv_titel = findViewById(R.id.titel);
+        tv_dec = findViewById(R.id.edittext1);
         spin.setOnItemSelectedListener(this);
         usertoken = ConstantMethods.getStringPreference("user_token", this);
         userID = ConstantMethods.getUserID(Create_Post.this);
@@ -146,6 +151,12 @@ public class Create_Post extends BaseActivity implements AdapterView.OnItemSelec
         pathlist = new ArrayList<>();
         Button cnclBtn = findViewById(R.id.cancel_btn);
         cnclBtn.setOnClickListener(c->onBackPressed());
+        slctCatTxt = findViewById(R.id.slct_cat_txt);
+        spinrView = findViewById(R.id.spiner_view);
+        spinrView.setOnClickListener(v->{
+            Intent intent = new Intent(this, CategoryActivity.class);
+            startActivityForResult(intent,10);
+        });
     }
 
     @Override
@@ -158,7 +169,7 @@ public class Create_Post extends BaseActivity implements AdapterView.OnItemSelec
         titleStr = tv_titel.getText().toString();
         descStr = tv_dec.getText().toString();
         String selectedValue = spin.getSelectedItem().toString();
-        if(selectedValue.equals("Select Category")){
+        if(slctCatTxt.getText().toString().equals("Select Category")){
             Toast.makeText(this, "Please select category", Toast.LENGTH_SHORT).show();
         }
         else if(titleStr.isEmpty()){
@@ -229,6 +240,11 @@ public class Create_Post extends BaseActivity implements AdapterView.OnItemSelec
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 10 && resultCode == Activity.RESULT_OK){
+            String message = data.getStringExtra("cat_name");
+            catID = data.getStringExtra("cat_id");
+            slctCatTxt.setText(message);
+        }
         if (requestCode == CAMERA_PHOTO && resultCode == Activity.RESULT_OK) {
             if (imageToUploadUri != null) {
                 Uri selectedImage = imageToUploadUri;
@@ -763,7 +779,9 @@ public class Create_Post extends BaseActivity implements AdapterView.OnItemSelec
         }
 
         protected String doInBackground(String... urls) {
-            String url = "{\"mediaList\":" + medilalist + ",\"postedBy\":\"" + userID + "\",\"ownerUserId\":\"" + userID + "\",\"title\":\"" + value_titel + "\",\"desc\":\"" + value_description + "\",\"categoryId\":\"" + "post-category-40" + "\",\"sharedId\":\"" + "" + "\",\"location\":{}}";
+            String url = "{\"mediaList\":" + medilalist + ",\"postedBy\":\"" + userID + "\",\"ownerUserId\":\"" + userID + "\",\"title\":\""
+                    + value_titel + "\",\"desc\":\"" + value_description + "\",\"categoryId\":\""
+                    + catID + "\",\"sharedId\":\"" + "" + "\",\"location\":{}}";
 
 
             //  System.out.print("JSON-DATA"+url1);

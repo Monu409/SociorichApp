@@ -19,6 +19,7 @@
             android:text="Choose Category" />
 
         <RelativeLayout
+            android:id="@+id/spiner_view"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@drawable/rect_view_orange"
@@ -33,7 +34,16 @@
                 android:background="@android:color/transparent"
                 android:gravity="center"
                 android:layout_marginLeft="5dp"
-                android:spinnerMode="dropdown" />
+                android:spinnerMode="dropdown"
+                android:visibility="gone"/>
+            <TextView
+                android:id="@+id/slct_cat_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Category"
+                android:textSize="16sp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"/>
 
             <ImageView
                 android:layout_width="25dp"

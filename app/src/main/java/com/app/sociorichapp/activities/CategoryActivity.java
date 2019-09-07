@@ -1,5 +1,6 @@
 package com.app.sociorichapp.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
@@ -22,6 +23,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.app.sociorichapp.app_utils.AppApis.CHANGE_PASSWORD;
 import static com.app.sociorichapp.app_utils.AppApis.POST_CATEGORY;
@@ -31,22 +33,22 @@ public class CategoryActivity extends BaseActivity{
     ExpandableListAdapter expandableListAdapter;
     List<String> expandableListTitle;
     HashMap<String, List<String>> expandableListDetail;
+    private Map<String, String> nameIdentityMap = new HashMap<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         expandableListView = findViewById(R.id.expandableListView);
-        expandableListDetail = ExpandableListDataPump.getData();
-        expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
-        expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail);
-        expandableListView.setAdapter(expandableListAdapter);
+//        expandableListDetail = ExpandableListDataPump.getData();
+        ConstantMethods.setTitleAndBack(this,"Select Category");
+
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
             @Override
             public void onGroupExpand(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        expandableListTitle.get(groupPosition) + " List Expanded.",
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(),
+//                        expandableListTitle.get(groupPosition) + " List Expanded.",
+//                        Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -54,9 +56,9 @@ public class CategoryActivity extends BaseActivity{
 
             @Override
             public void onGroupCollapse(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        expandableListTitle.get(groupPosition) + " List Collapsed.",
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(),
+//                        expandableListTitle.get(groupPosition) + " List Collapsed.",
+//                        Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -65,17 +67,16 @@ public class CategoryActivity extends BaseActivity{
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-                Toast.makeText(
-                        getApplicationContext(),
-                        expandableListTitle.get(groupPosition)
-                                + " -> "
-                                + expandableListDetail.get(
-                                expandableListTitle.get(groupPosition)).get(
-                                childPosition), Toast.LENGTH_SHORT
-                ).show();
+                Intent i = new Intent();
+                String catName = expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition);
+                i.putExtra("cat_name",catName);
+                i.putExtra("cat_id", nameIdentityMap.get(catName));
+                setResult(RESULT_OK, i);
+                finish();
                 return false;
             }
         });
+        getCatData();
     }
 
     @Override
@@ -92,15 +93,39 @@ public class CategoryActivity extends BaseActivity{
                 .getAsJSONArray(new JSONArrayRequestListener() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        List<String> campList = new ArrayList<>();
+                        List<String> causList = new ArrayList<>();
+                        List<String> activityList = new ArrayList<>();
+                        List<String> donationList = new ArrayList<>();
                         for(int i=0;i<response.length();i++){
                             try {
                                 JSONObject childObj = response.getJSONObject(i);
                                 String type = childObj.getString("type");
                                 String name = childObj.getString("name");
+                                String identity = childObj.getString("identity");
+                                nameIdentityMap.put(name,identity);
+                                String displayOrder = childObj.getString("displayOrder");
+                                if(displayOrder.equals("3")){
+                                    donationList.add(name);
+                                }
+                                else if(type.equals("ACTIVITY")&&!displayOrder.equals("3")){
+                                    activityList.add(name);
+                                }
+                                else if(type.equals("CAUSE")){
+                                    causList.add(name);
+                                }
+                                else if(displayOrder.equals("1")){
+                                    campList.add(name);
+                                }
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
+                        expandableListDetail = getData(campList,causList,activityList,donationList);
+                        expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
+                        expandableListAdapter = new CustomExpandableListAdapter(CategoryActivity.this, expandableListTitle, expandableListDetail);
+                        expandableListView.setAdapter(expandableListAdapter);
                     }
 
                     @Override
@@ -110,4 +135,14 @@ public class CategoryActivity extends BaseActivity{
                 });
 
     }
+
+    public static HashMap<String, List<String>> getData(List<String> campList,List<String> causList,List<String> activityList,List<String> donationList) {
+        HashMap<String, List<String>> expandableListDetail = new HashMap<String, List<String>>();
+        expandableListDetail.put("CAMPAIGN", campList);
+        expandableListDetail.put("CAUSES", causList);
+        expandableListDetail.put("ACTIVITIES", activityList);
+        expandableListDetail.put("DONATION IN KIND", donationList);
+        return expandableListDetail;
+    }
+
 }

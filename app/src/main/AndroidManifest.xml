@@ -97,7 +97,7 @@
         <activity android:name=".activities.ChangeNumberActivity"/>
         <activity android:name=".activities.ShowProfileActivity"/>
         <activity android:name=".activities.TermsAndCondition"/>
-        <!--<activity android:name=".activities.CategoryActivity"/>-->
+        <activity android:name=".activities.CategoryActivity"/>
     </application>
 
 </manifest>

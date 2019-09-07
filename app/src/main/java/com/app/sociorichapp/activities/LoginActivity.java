@@ -1,9 +1,12 @@
 package com.app.sociorichapp.activities;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,6 +41,7 @@ import com.facebook.GraphResponse;
 import com.facebook.LoggingBehavior;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -99,6 +103,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
     //private String TAG = JsonRequestActivity.class.getSimpleName();
     UserRequestCustom stringRequest12;
     private ProgressDialog pDialog;
+    private String emailIdFacebook;
 
     // These tags will be used to cancel the requests
     private String tag_json_obj = "jobj_req", tag_json_arry = "jarray_req";
@@ -121,6 +126,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
     private ProfileTracker profileTracker;
 
     private TwitterLoginButton twitterLoginButton;
+    String displayName = "";
 
 
     private FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
@@ -137,29 +143,13 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                         public void onCompleted(JSONObject object, GraphResponse response) {
                             Log.v("LoginActivity", response.toString());
                             try {
-                                // Application code
+                                displayName = object.getString("name");
                                 String email = response.getJSONObject().getString("email");
-//                                String displayName = profile.getName();
-                                String displayName = object.getString("name");
                                 socialLogin(email,displayName);
                             }catch(Exception e){
-                                e.printStackTrace();;
+                                e.printStackTrace();
+                                noEmailPopup();
                             }
-//                            if (BuildConfig.DEBUG) {
-//                                FacebookSdk.setIsDebugEnabled(true);
-//                                FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
-//
-//                                System.out
-//                                        .println("AccessToken.getCurrentAccessToken()"
-//                                                + AccessToken
-//                                                .getCurrentAccessToken()
-//                                                .toString());
-//                                Profile.getCurrentProfile().getId();
-//                                Profile.getCurrentProfile().getFirstName();
-//                                Profile.getCurrentProfile().getLastName();
-//                                Profile.getCurrentProfile().getProfilePictureUri(50, 50);
-//                                //String email=UserManager.asMap().get(“email”).toString();
-//                            }
                         }
                     });
             Bundle parameters = new Bundle();
@@ -621,6 +611,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                         ConstantMethods.dismissProgressBar();
                         try {
                             ConstantMethods.setStringPreference("email_prif",email,LoginActivity.this);
+                            ConstantMethods.setStringPreference("first_name",displayName,LoginActivity.this);
                             String identity = response.getString("identity");
                             String accesstoken = response.getString("accessToken");
                             ConstantMethods.saveUserID(LoginActivity.this, identity);
@@ -634,7 +625,6 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                             e.printStackTrace();
                         }
                     }
-
                     @Override
                     public void onError(ANError anError) {
                         ConstantMethods.dismissProgressBar();
@@ -644,7 +634,6 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
     }
 
     private void init(){
-
         TwitterAuthConfig authConfig = new TwitterAuthConfig(getResources().getString(R.string.com_twitter_sdk_android_CONSUMER_KEY), getResources().getString(R.string.com_twitter_sdk_android_CONSUMER_SECRET));
         TwitterConfig config = new TwitterConfig.Builder(this)
                 .logger(new DefaultLogger(Log.DEBUG))
@@ -652,7 +641,40 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                 .debug(true)
                 .build();
         Twitter.initialize(config);
+    }
 
+    private String noEmailPopup(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setCancelable(false);
+        final EditText emailEdt = new EditText(this);
+        alert.setMessage("You don't have email id on Facebook");
+        alert.setTitle("Enter Your Email");
+
+        alert.setView(emailEdt);
+
+        alert.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                emailIdFacebook = emailEdt.getText().toString();
+                Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        // TODO Do something
+                        if(ConstantMethods.isValidMail(emailIdFacebook)){
+                            socialLogin(emailIdFacebook,displayName);
+                            dialog.dismiss();
+                        }
+                        else {
+                            Toast.makeText(LoginActivity.this, "Please enter valid email address", Toast.LENGTH_SHORT).show();
+                            LoginManager.getInstance().logOut();
+                        }
+                    }
+                });
+            }
+        });
+        alert.show();
+        return emailIdFacebook;
     }
 
 }

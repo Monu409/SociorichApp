@@ -61,6 +61,9 @@ public class CommentActivity extends BaseActivity {
 
         Intent intent = getIntent();
         commentModals = (List<CommentModal>) intent.getSerializableExtra("dash_modal");
+        if(commentModals==null){
+            commentModals = new ArrayList<>();
+        }
         commentAdapter = new CommentAdapter(commentModals,CommentActivity.this);
         comntList.setAdapter(commentAdapter);
 

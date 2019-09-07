@@ -269,6 +269,7 @@ public class DashboardActivity extends AppCompatActivity {
                             try {
                                 JSONObject allObjs = response.getJSONObject(i);
                                 JSONObject postJsonObj = allObjs.getJSONObject("post");
+                                dashModal.setPostObj(postJsonObj);
                                 JSONObject uProfileJsonObj = allObjs.getJSONObject("userProfile");
                                 String displayName = uProfileJsonObj.getString("displayName");
                                 String postId = postJsonObj.getString("identity");
@@ -311,10 +312,10 @@ public class DashboardActivity extends AppCompatActivity {
                                     JSONObject contentObj = contentArr.getJSONObject(k);
                                     JSONObject userObject = contentObj.getJSONObject("user");
                                     JSONObject comentObject = contentObj.getJSONObject("comment");
-
                                     String userStr = userObject.getString("displayName");
                                     String commentStr = comentObject.getString("comment");
                                     String dateTime = comentObject.getString("createdAt");
+                                    dashModal.setLongTime(dateTime);
                                     String comntDate = ConstantMethods.getDateForComment(dateTime);
                                     commentModal.setComntStr(commentStr);
                                     commentModal.setUserStr(userStr);
@@ -332,9 +333,10 @@ public class DashboardActivity extends AppCompatActivity {
 //                                    String shrCat = sharedProfile.getString("categoryId");
                                     JSONObject profilePicObjShr = null;
                                     try{
-                                        profilePicObj = uProfileJsonObj.getJSONObject("profilePic");
+                                        profilePicObjShr = uProfileJsonObj.getJSONObject("profilePic");
+                                        dashModal.setShrObj(sharedProfile);
                                     }catch(JSONException je){
-                                        //json object not found
+                                        dashModal.setShrObj(sharedProfile);
                                     }
                                     String shrCat = "Descrimination";
                                     String shrTheDate = ConstantMethods.getDateAsWeb(shrDateTime);

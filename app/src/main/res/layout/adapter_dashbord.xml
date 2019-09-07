@@ -45,7 +45,8 @@
             android:padding="5dp"
             android:layout_marginTop="8dp"
             android:layout_marginLeft="20dp"
-            android:layout_below="@+id/profil_pic">
+            android:layout_below="@+id/profil_pic"
+            android:visibility="gone">
             <TextView
                 android:id="@+id/sr_category_txt"
                 android:layout_width="wrap_content"
@@ -64,7 +65,7 @@
                 android:layout_height="70dp"
                 android:layout_marginTop="5dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/logo2" />
+                android:src="@drawable/profile_icon" />
 
             <TextView
                 android:id="@+id/sr_uname_txt"
@@ -102,6 +103,18 @@
             android:textStyle="bold"
             android:textColor="#3B98E9"
             android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/shared_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="shared a post"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/colorAccent"
+            android:layout_toRightOf="@+id/uname_txt"
+            android:layout_marginLeft="5dp"
+            android:textStyle="bold"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/date_txt"

@@ -33,6 +33,8 @@ public class DashModal implements Serializable {
     private String shareDate;
     private String shareCat;
     private JSONObject shrObj;
+    private JSONObject postObj;
+    private String longTime;
 
     public List<String> getTestUsers() {
         return testUsers;
@@ -232,5 +234,21 @@ public class DashModal implements Serializable {
 
     public void setShrObj(JSONObject shrObj) {
         this.shrObj = shrObj;
+    }
+
+    public JSONObject getPostObj() {
+        return postObj;
+    }
+
+    public void setPostObj(JSONObject postObj) {
+        this.postObj = postObj;
+    }
+
+    public String getLongTime() {
+        return longTime;
+    }
+
+    public void setLongTime(String longTime) {
+        this.longTime = longTime;
     }
 }
