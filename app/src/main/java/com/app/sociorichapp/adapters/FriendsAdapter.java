@@ -3,6 +3,8 @@ package com.app.sociorichapp.adapters;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.app.sociorichapp.R;
+import com.app.sociorichapp.activities.ShowProfileActivity;
 import com.app.sociorichapp.app_utils.ConstantMethods;
 import com.app.sociorichapp.modals.FrndModal;
 import com.bumptech.glide.Glide;
@@ -71,6 +74,18 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FrndHold
             else if(buttonTxt.equals("Cancel Request")){
                 sendRequest(userIdentuty, frndHolder,CANCEL_REQUEST);
             }
+        });
+        frndHolder.nameTxt.setOnClickListener(v->{
+            String identity = frndModalList.get(i).getIdentity();
+            Intent intent = new Intent(context, ShowProfileActivity.class);
+            intent.putExtra("user_identity", identity);
+            context.startActivity(intent);
+        });
+        frndHolder.frndImg.setOnClickListener(v->{
+            String identity = frndModalList.get(i).getIdentity();
+            Intent intent = new Intent(context, ShowProfileActivity.class);
+            intent.putExtra("user_identity", identity);
+            context.startActivity(intent);
         });
     }
 

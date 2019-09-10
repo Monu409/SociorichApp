@@ -25,6 +25,8 @@
             android:layout_marginTop="20dp"
             android:layout_height="wrap_content"
             android:text="@string/login_text"
+            android:gravity="center"
+            android:textSize="17sp"
             />
         <TextView
             android:layout_width="wrap_content"

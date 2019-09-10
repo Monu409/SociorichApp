@@ -31,6 +31,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;;import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -91,6 +92,7 @@ public class ProfileUpActivity extends AppCompatActivity {
     private ImageView showAllTxt;
     private ImageView deleteBnrImg,edtBnrImg,bannerImg;
     private String clickImageView = "";
+    private RelativeLayout qltyRel;
 
 
     @Override
@@ -109,6 +111,7 @@ public class ProfileUpActivity extends AppCompatActivity {
         deleteBnrImg = findViewById(R.id.dlt_bnr_img);
         edtBnrImg = findViewById(R.id.edt_bnr_img);
         bannerImg = findViewById(R.id.header);
+        qltyRel = findViewById(R.id.qlty_rel);
         userToken = ConstantMethods.getStringPreference("user_token", this);
         for (int i = 0; i < POST_CATEGORY_PROFILE_KEYS.length; i++) {
             interestMap.put(POST_CATEGORY_PROFILE_KEYS[i], POST_CATEGORY_PROFILE_VALUES[i]);
@@ -118,7 +121,7 @@ public class ProfileUpActivity extends AppCompatActivity {
             selectImage();
             clickImageView = "banner";
         });
-        qualityTxt.setOnClickListener(q -> {
+        qltyRel.setOnClickListener(q -> {
             Intent intent = new Intent(this, QualityActivity.class);
             startActivity(intent);
         });

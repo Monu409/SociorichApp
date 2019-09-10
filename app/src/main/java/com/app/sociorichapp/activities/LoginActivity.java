@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -128,6 +129,8 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
 
     private TwitterLoginButton twitterLoginButton;
     String displayName = "";
+    private RelativeLayout facebookRel,googleRel,twitterRel;
+    LoginButton loginButton;
 
 
     private FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
@@ -187,6 +190,14 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
         termsTxt = findViewById(R.id.terms_txt);
         pDialog.setMessage("Loading...");
         pDialog.setCancelable(false);
+        facebookRel = findViewById(R.id.facebook_rel);
+        googleRel = findViewById(R.id.google_rel);
+        twitterRel = findViewById(R.id.twitter_rel);
+        facebookRel.setOnClickListener(v->{
+            loginButton.performClick();
+        });
+        googleRel.setOnClickListener(v->signIn());
+        twitterRel.setOnClickListener(v->twitterLoginButton.performClick());
         //Context.context=this.context;
         Button loginBtn = findViewById(R.id.login_btn);
         loginBtn.setOnClickListener(v -> {
@@ -228,7 +239,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
             }
         });
         callbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton = findViewById(R.id.login_button);
+        loginButton = findViewById(R.id.login_button);
         loginButton.setReadPermissions(Arrays.asList("user_birthday", "email"));
         //loginButton.setReadPermissions("user_friends");
         loginButton.registerCallback(callbackManager, callback);
@@ -254,17 +265,17 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
         profileTracker.startTracking();
 
         twitterLoginButton = findViewById(R.id.default_twitter_login_button);
-        twitterLoginButton.setCallback(new Callback<TwitterSession>() {
-            @Override
-            public void success(Result<TwitterSession> result) {
-                Log.e("res",result.toString());
-            }
-
-            @Override
-            public void failure(TwitterException exception) {
-                Log.e("res",exception.toString());
-            }
-        });
+//        twitterLoginButton.setCallback(new Callback<TwitterSession>() {
+//            @Override
+//            public void success(Result<TwitterSession> result) {
+//                Log.e("res",result.toString());
+//            }
+//
+//            @Override
+//            public void failure(TwitterException exception) {
+//                Log.e("res",exception.toString());
+//            }
+//        });
 
         twitterLoginButton.setCallback(new Callback<TwitterSession>() {
             @Override

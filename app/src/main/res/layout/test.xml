@@ -55,4 +55,110 @@
             android:textSize="16sp" />
     </RelativeLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal"
+        android:layout_below="@+id/share_view"
+        android:weightSum="3"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        >
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:background="@drawable/round_btn_fb"
+            android:layout_margin="2dp"
+            >
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_centerInParent="true">
+                <ImageView
+                    android:id="@+id/f_img"
+                    android:layout_width="35dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/facebook_ch"
+                    android:layout_centerVertical="true" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Facebook"
+                    android:layout_centerInParent="true"
+                    android:textColor="#ffffff"
+                    android:textSize="17sp"
+                    android:layout_toRightOf="@+id/f_img"
+                    />
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:background="@drawable/round_btn_ggl"
+            android:layout_margin="2dp"
+            >
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_centerInParent="true">
+                <ImageView
+                    android:id="@+id/g_img"
+                    android:layout_width="35dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/google_ch"
+                    android:layout_centerVertical="true" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Google"
+                    android:layout_centerInParent="true"
+                    android:textColor="#ffffff"
+                    android:textSize="17sp"
+                    android:layout_toRightOf="@+id/g_img"
+                    />
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:background="@drawable/round_btn_twtr"
+            android:layout_margin="2dp"
+            >
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_centerInParent="true">
+                <ImageView
+                    android:id="@+id/t_img"
+                    android:layout_width="35dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/twitter_ch"
+                    android:layout_centerVertical="true" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Twitter"
+                    android:layout_centerInParent="true"
+                    android:textColor="#ffffff"
+                    android:textSize="17sp"
+                    android:layout_toRightOf="@+id/t_img"
+                    />
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+    </LinearLayout>
+
 </RelativeLayout>

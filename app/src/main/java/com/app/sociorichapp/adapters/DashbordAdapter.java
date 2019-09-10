@@ -169,11 +169,11 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
             String userIdentity = ConstantMethods.getUserID(context);
             String currentUsrIdntty = dashModals.get(i).getUserIdentity();
             if (!userIdentity.equals(currentUsrIdntty)) {
-                dashBordHolder.rewadrLay1.setVisibility(View.VISIBLE);
+                dashBordHolder.rwrdBtn.setVisibility(View.VISIBLE);
                 dashBordHolder.shareLay.setVisibility(View.VISIBLE);
                 dashBordHolder.vMenuImg.setOnClickListener(v->reportDialog());
             } else {
-                dashBordHolder.rewadrLay1.setVisibility(View.GONE);
+                dashBordHolder.rwrdBtn.setVisibility(View.GONE);
                 dashBordHolder.shareLay.setVisibility(View.GONE);
                 String identity = dashModals.get(i).getPostIdStr();
                 String postedId = dashModals.get(i).getUserIdentity();
