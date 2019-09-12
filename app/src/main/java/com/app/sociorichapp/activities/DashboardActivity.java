@@ -37,7 +37,6 @@ import com.app.sociorichapp.R;
 import com.app.sociorichapp.adapters.DashbordAdapter;
 import com.app.sociorichapp.app_utils.ConstantMethods;
 import com.app.sociorichapp.app_utils.DbHelper;
-import com.app.sociorichapp.app_utils.PicassoImageLoadingService;
 import com.app.sociorichapp.modals.CommentModal;
 import com.app.sociorichapp.modals.DashModal;
 import com.facebook.login.LoginManager;
@@ -51,7 +50,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import ss.com.bannerslider.Slider;
 
 import static com.app.sociorichapp.app_utils.AppApis.BASE_URL;
 import static com.app.sociorichapp.app_utils.AppApis.GET_BANNER_DATA;
@@ -70,7 +68,7 @@ public class DashboardActivity extends AppCompatActivity {
     private LinearLayout globalView,networkView,intrestView;
     static String postupdation="N";
     private SQLiteDatabase dataBase;
-    private Button aboutBtn;
+    private Button aboutBtn,socioDayBtn;
 
     int visibleItemCount, totalItemCount = 1;
     int firstVisiblesItems = 0;
@@ -81,7 +79,6 @@ public class DashboardActivity extends AppCompatActivity {
     String tabTag = "Global";
     int i = 0;
     List<DashModal> dashModals = new ArrayList<>();
-    private Slider slider;
     List<String> imgList = new ArrayList<>();
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS= 7;
     int whichPosition = 0;
@@ -117,7 +114,8 @@ public class DashboardActivity extends AppCompatActivity {
             globlTxt = findViewById(R.id.globl_txt);
             netwrkTxt = findViewById(R.id.netwrk_txt);
             intrstTxt = findViewById(R.id.intrst_txt);
-            Slider.init(new PicassoImageLoadingService(this));
+            socioDayBtn = findViewById(R.id.socio_day_btn);
+            socioDayBtn.setOnClickListener(v->startActivity(new Intent(this,SocioOfDayActivity.class)));
 
 //        getBannerData();
             if (checkLogin.equals("login")) {

@@ -128,8 +128,8 @@ public class AboutFragment extends Fragment implements OnAboutDataReceivedListen
     @Override
     public void onResume() {
         super.onResume();
-        String workSpc = ConstantMethods.getStringPreference("location_prif",getActivity());
-        String location = ConstantMethods.getStringPreference("work_prif",getActivity());
+        String workSpc = ConstantMethods.getStringPreference("work_prif",getActivity());
+        String location = ConstantMethods.getStringPreference("location_prif",getActivity());
         String dob = ConstantMethods.getStringPreference("dob_prif",getActivity());
         workTxt.setText(workSpc);
         locationTxt.setText(location);

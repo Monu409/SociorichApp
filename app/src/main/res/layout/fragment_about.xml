@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#d3d3d3">
 
     <!--<ScrollView-->
         <!--android:layout_marginTop="10dp"-->
@@ -13,19 +14,18 @@
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="5dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="vertical"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/rect_view_orange"
-                android:layout_height="wrap_content">
+                android:background="#ffffff"
+                android:layout_height="match_parent">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_marginTop="5dp"
                     android:orientation="horizontal"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginRight="5dp"
                     android:layout_height="wrap_content">
 
                     <TextView
@@ -97,17 +97,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="vertical"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/rect_view_orange"
-                android:layout_height="wrap_content">
+                android:layout_marginTop="5dp"
+                android:layout_height="match_parent"
+                android:background="#ffffff">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_marginTop="5dp"
                     android:orientation="horizontal"
                     android:layout_marginLeft="10dp"
-                    android:layout_height="wrap_content">
+                    android:layout_marginRight="5dp"
+                    android:layout_height="match_parent">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -126,7 +125,7 @@
                     android:layout_width="match_parent"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
                     <LinearLayout
                         android:layout_width="80dp"
                         android:layout_marginLeft="10dp"
@@ -226,6 +225,12 @@
                             android:textColor="#000"
                             android:text="Date of birth not provided"/>
                     </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="900dp"
+                    android:background="#ffffff">
+
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

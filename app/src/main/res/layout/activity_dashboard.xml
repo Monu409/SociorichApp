@@ -189,29 +189,6 @@
         android:orientation="vertical"
         android:weightSum="10"
         >
-        <!--<ss.com.bannerslider.Slider-->
-            <!--android:id="@+id/banner_slider"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="0dp"-->
-            <!--android:layout_below="@+id/header"-->
-            <!--app:slider_loopSlides="true"-->
-            <!--app:slider_emptyView="@layout/error_banner"-->
-            <!--android:layout_weight="3"-->
-            <!--/>-->
-        <!--<androidx.core.widget.NestedScrollView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="0dp"-->
-            <!--android:layout_weight="6.25">-->
-
-            <!--<androidx.recyclerview.widget.RecyclerView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:id="@+id/home_list"-->
-                <!--android:layout_margin="5dp"-->
-                <!--&gt;-->
-
-            <!--</androidx.recyclerview.widget.RecyclerView>-->
-        <!--</androidx.core.widget.NestedScrollView>-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
@@ -230,13 +207,23 @@
             android:layout_height="0dp"
             android:textColor="@color/colorPrimary"
             android:layout_weight="0.5"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="2">
 
             <Button
                 android:id="@+id/about_btn"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:text="About"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/white"/>
+            <Button
+                android:id="@+id/socio_day_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Socio of the day"
                 android:background="@color/colorPrimary"
                 android:textColor="@color/white"/>
 

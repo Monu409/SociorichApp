@@ -1,8 +1,8 @@
 package com.app.sociorichapp.app_utils;
 
 public interface AppApis {
-//    String BASE_URL = "http://dev.sociorich.com/";
-    String BASE_URL = "https://www.sociorich.com/";
+    String BASE_URL = "http://dev.sociorich.com/";
+//    String BASE_URL = "https://www.sociorich.com/";
     String INDIVISUAL_SIGNUP = BASE_URL+"api/v1/user/create";
     String HOMEPAGE_URL_2 = BASE_URL+"api/v1/postcategory/all";
     String HOMEPAGE_URL_LOGOUT = BASE_URL+"api/v1/post/featured";

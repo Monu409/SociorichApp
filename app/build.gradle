@@ -1,14 +1,17 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.app.sociorichapp"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 28
-        versionCode 4
-        versionName "1.3"
+        versionCode 6
+        versionName "1.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     signingConfigs {
         release {
@@ -66,11 +69,11 @@ dependencies {
     implementation 'org.apache.httpcomponents:httpcore:4.4.1'
     testImplementation 'junit:junit:4.12'
     implementation 'androidx.palette:palette:1.0.0'
-    implementation 'com.ss.bannerslider:bannerslider:2.0.0'
 
     implementation 'com.google.firebase:firebase-auth:18.1.0'
 
     implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
+
 
     //this line you need to add
     //make sure you are using the same version for both
@@ -80,5 +83,11 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:4.36.1'
     implementation 'com.twitter.sdk.android:twitter-core:3.1.1'
     implementation 'com.twitter.sdk.android:tweet-ui:3.1.1'
+    compile "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.github.ahmedshaban1:EasySlider:1.0.0'
 }
 apply plugin: 'com.google.gms.google-services'
+repositories {
+    mavenCentral()
+}
