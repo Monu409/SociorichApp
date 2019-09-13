@@ -82,8 +82,10 @@ public class NetworkFragment extends Fragment {
                                 JSONObject childObj = jsonArray.getJSONObject(i);
                                 String displayName = childObj.getString("displayName");
                                 String socioMoneyBalance = childObj.getString("socioMoneyBalance");
+                                String identity = childObj.getString("identity");
                                 networkModal.setNameStr(displayName);
                                 networkModal.setSocioStr(socioMoneyBalance);
+                                networkModal.setIdentity(identity);
                                 JSONObject profilePicObj = null;
                                 try{
                                     profilePicObj = childObj.getJSONObject("profilePic");

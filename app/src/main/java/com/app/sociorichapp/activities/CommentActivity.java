@@ -44,6 +44,7 @@ public class CommentActivity extends BaseActivity {
     List<String> userName;
     private TextView loadMoreTxt;
     List<CommentModal> commentModals;
+    int pageNo = 1;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,8 +55,10 @@ public class CommentActivity extends BaseActivity {
         comntBtn = findViewById(R.id.comment_btn);
         loadMoreTxt = findViewById(R.id.load_more_txt);
         loadMoreTxt.setOnClickListener(v->{
-            loadMoreComents("1");
+            loadMoreComents(String.valueOf(pageNo));
+            pageNo = pageNo+1;
             commentAdapter.notifyDataSetChanged();
+            comntList.scrollToPosition(commentModals.size() - 1);
         });
         token = ConstantMethods.getStringPreference("user_token",this);
 
@@ -193,8 +196,10 @@ public class CommentActivity extends BaseActivity {
     }
 
     private void loadMoreComents(String pageNo){
+        String identity = getIntent().getStringExtra("post_id");
+//        7c836a7c-ff7c-41cc-a2c8-8afe032d59d7/comments?pageno=
         AndroidNetworking
-                .get(MY_LOAD_COMMENT+pageNo)
+                .get(MY_LOAD_COMMENT+identity+"/comments?pageno="+pageNo)
                 .addHeaders("authorization","Bearer "+token)
                 .setPriority(Priority.MEDIUM)
                 .build()
@@ -205,6 +210,7 @@ public class CommentActivity extends BaseActivity {
                             JSONArray jsonArray = response.getJSONArray("content");
                             List<CommentModal> commentModals = new ArrayList<>();
                             for(int i=0;i<jsonArray.length();i++){
+                                CommentModal commentModal = new CommentModal();
                                 JSONObject childObj = jsonArray.getJSONObject(i);
                                 JSONObject user = childObj.getJSONObject("user");
                                 JSONObject comment = childObj.getJSONObject("comment");
@@ -213,17 +219,29 @@ public class CommentActivity extends BaseActivity {
                                 String dateTime = comment.getString("createdAt");
                                 String comntDate = ConstantMethods.getDateForComment(dateTime);
 
-                                CommentModal commentModal = new CommentModal();
+                                JSONObject profilePicObj = null;
+
+                                try{
+                                    profilePicObj = user.getJSONObject("profilePic");
+                                    String profileImgUrl = profilePicObj.getString("url");
+                                    commentModal.setImgUrl(profileImgUrl);
+                                }catch(JSONException je){
+                                    //json object not found
+                                }
                                 commentModal.setComntStr(commentStr);
                                 commentModal.setUserStr(displayName);
                                 commentModal.setTimeDateStr(comntDate);
+
                                 commentModals.add(commentModal);
+
                             }
-                            List<CommentModal> finalData = new ArrayList<>();
-                            finalData.addAll(commentModals);
-                            finalData.addAll(CommentActivity.this.commentModals);
-                            commentAdapter = new CommentAdapter(finalData,CommentActivity.this);
+                            List<CommentModal> finalData = commentModals;
+//                            finalData.addAll(commentModals);
+//                            finalData.addAll(CommentActivity.this.commentModals);
+                            CommentActivity.this.commentModals.addAll(finalData);
+                            commentAdapter = new CommentAdapter(CommentActivity.this.commentModals,CommentActivity.this);
                             comntList.setAdapter(commentAdapter);
+                            commentAdapter.notifyDataSetChanged();
 //                            commentAdapter.addMoreData(commentModals);
                         } catch (JSONException e) {
                             e.printStackTrace();

@@ -1,6 +1,7 @@
 package com.app.sociorichapp.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.sociorichapp.R;
+import com.app.sociorichapp.activities.ShowProfileActivity;
 import com.app.sociorichapp.modals.NetworkModal;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
@@ -46,6 +48,19 @@ public class MyNetworkAdapter extends RecyclerView.Adapter<MyNetworkAdapter.MNet
                 .into(holder.profileImg);
         holder.socioTxt.setText(networkModals.get(position).getSocioStr());
         holder.proNameTxt.setText(networkModals.get(position).getNameStr());
+        holder.profileImg.setOnClickListener(v->{
+            String identity = networkModals.get(position).getIdentity();
+            Intent intent = new Intent(context, ShowProfileActivity.class);
+            intent.putExtra("user_identity", identity);
+            context.startActivity(intent);
+        });
+        holder.proNameTxt.setOnClickListener(v->{
+            String identity = networkModals.get(position).getIdentity();
+            Intent intent = new Intent(context, ShowProfileActivity.class);
+            intent.putExtra("user_identity", identity);
+            context.startActivity(intent);
+        });
+
     }
 
     @Override

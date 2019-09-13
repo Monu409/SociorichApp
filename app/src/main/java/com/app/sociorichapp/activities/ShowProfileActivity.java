@@ -26,8 +26,11 @@ import com.app.sociorichapp.app_utils.OnAboutDataReceivedListener;
 import com.app.sociorichapp.fragments.AboutForShowProfile;
 import com.app.sociorichapp.fragments.AboutFragment;
 import com.app.sociorichapp.fragments.GalleryFragment;
+import com.app.sociorichapp.fragments.GalleryFragmentOther;
 import com.app.sociorichapp.fragments.NetworkFragment;
 import com.app.sociorichapp.fragments.PostFragment;
+import com.app.sociorichapp.fragments.PostFragmentOther;
+import com.app.sociorichapp.fragments.UserNetworkOther;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.appbar.AppBarLayout;
@@ -105,11 +108,11 @@ public class ShowProfileActivity extends BaseActivity{
                 case 0:
                     return new AboutForShowProfile();
                 case 1:
-                    return new PostFragment();
+                    return new PostFragmentOther();
                 case 2:
-                    return new GalleryFragment();
+                    return new GalleryFragmentOther();
                 case 3:
-                    return new NetworkFragment();
+                    return new UserNetworkOther();
                 default:
                     return new AboutForShowProfile();
             }

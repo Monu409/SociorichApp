@@ -7,20 +7,21 @@
     >
 
     <EditText
+        android:id="@+id/work_edt"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:hint="Workplace"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="#000"
+        android:background="@drawable/rect_view_orange"
+        />
+
+    <EditText
         android:id="@+id/location_edt"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:hint="Location"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:textColor="#000"
-        android:background="@drawable/rect_view_orange"/>
-
-    <EditText
-        android:id="@+id/work_edt"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:hint="Work"
         android:maxLines="1"
         android:singleLine="true"
         android:textColor="#000"

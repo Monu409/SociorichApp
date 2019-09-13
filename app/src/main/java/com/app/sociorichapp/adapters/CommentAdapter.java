@@ -59,13 +59,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ComntHol
         comntHolder.comntTxt.setText(commentModals.get(i).getComntStr());
         comntHolder.userTxt.setText(commentModals.get(i).getUserStr());
         comntHolder.dateTxt.setText(commentModals.get(i).getTimeDateStr());
-//        Glide.with(context)
-//                .load(commentModals.get(i).getImgUrl())
-//                .placeholder(R.drawable.user_profile)
-//                .error(R.drawable.user_profile)
-//                .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                .priority(com.bumptech.glide.Priority.HIGH)
-//                .into(comntHolder.userImg);
+        Glide.with(context)
+                .load(commentModals.get(i).getImgUrl())
+                .placeholder(R.drawable.user_profile)
+                .error(R.drawable.user_profile)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .priority(com.bumptech.glide.Priority.HIGH)
+                .into(comntHolder.userImg);
     }
 
     @Override

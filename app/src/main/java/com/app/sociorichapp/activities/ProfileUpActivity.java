@@ -542,6 +542,7 @@ public class ProfileUpActivity extends AppCompatActivity {
                             mAboutDataListener.onDataReceived(profileDes, wrkPlace, location, dob);
                             JSONObject profileObj = response.getJSONObject("profilePic");
                             String profileUrl = profileObj.getString("url");
+                            ConstantMethods.setStringPreference("profile_url",profileUrl,ProfileUpActivity.this);
                             Glide.with(ProfileUpActivity.this)
                                     .load(profileUrl)
                                     .placeholder(R.drawable.user_profile)

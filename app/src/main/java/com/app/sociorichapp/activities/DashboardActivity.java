@@ -7,16 +7,23 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SearchView;
@@ -24,6 +31,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -33,19 +41,25 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.app.sociorichapp.R;
 import com.app.sociorichapp.adapters.DashbordAdapter;
 import com.app.sociorichapp.app_utils.ConstantMethods;
 import com.app.sociorichapp.app_utils.DbHelper;
 import com.app.sociorichapp.modals.CommentModal;
 import com.app.sociorichapp.modals.DashModal;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.facebook.login.LoginManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,6 +67,7 @@ import java.util.Map;
 
 import static com.app.sociorichapp.app_utils.AppApis.BASE_URL;
 import static com.app.sociorichapp.app_utils.AppApis.GET_BANNER_DATA;
+import static com.app.sociorichapp.app_utils.AppApis.GET_PROFILE_PICK;
 import static com.app.sociorichapp.app_utils.AppApis.HOMEPAGE_URL_2;
 import static com.app.sociorichapp.app_utils.AppApis.HOMEPAGE_URL_LOGIN;
 import static com.app.sociorichapp.app_utils.AppApis.HOMEPAGE_URL_LOGOUT;
@@ -60,7 +75,7 @@ import static com.app.sociorichapp.app_utils.AppApis.MY_INTEREST_URL;
 import static com.app.sociorichapp.app_utils.AppApis.MY_NETWORK_URL;
 
 public class DashboardActivity extends AppCompatActivity {
-    Map<String,String> catMap = new HashMap<>();
+    public static Map<String,String> catMap = new HashMap<>();
     private RecyclerView homeList;
     private LinearLayout createPostView,withLoginHeader,tabView;
     private RelativeLayout logoutHeader;
@@ -84,6 +99,7 @@ public class DashboardActivity extends AppCompatActivity {
     int whichPosition = 0;
     DashbordAdapter dashbordAdapter;
     int itemLimit = 10;
+    private String currentUserPRofile = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -236,6 +252,8 @@ public class DashboardActivity extends AppCompatActivity {
                 }
             }
         }
+
+        final ViewGroup decor = (ViewGroup) getWindow().getDecorView();
     }
 
     private void getHomePageData(String url, String pageNo){
@@ -315,6 +333,14 @@ public class DashboardActivity extends AppCompatActivity {
                                     String dateTime = comentObject.getString("createdAt");
                                     dashModal.setLongTime(dateTime);
                                     String comntDate = ConstantMethods.getDateForComment(dateTime);
+                                    JSONObject comntProfile;
+                                    try{
+                                        comntProfile = userObject.getJSONObject("profilePic");
+                                        String profileImgUrl = comntProfile.getString("url");
+                                        commentModal.setImgUrl(profileImgUrl);
+                                    }catch(JSONException je){
+                                        //json object not found
+                                    }
                                     commentModal.setComntStr(commentStr);
                                     commentModal.setUserStr(userStr);
                                     commentModal.setTimeDateStr(comntDate);
@@ -457,7 +483,7 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu( Menu menu) {
         getMenuInflater().inflate( R.menu.main_menu, menu);
-
+        getProfileData(menu);
         MenuItem myActionMenuItem = menu.findItem( R.id.action_search);
         SearchView searchView = (SearchView) myActionMenuItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -680,6 +706,82 @@ public class DashboardActivity extends AppCompatActivity {
                 .show();
     }
 
+    private void setProfileImage(String urlImage, Menu menu){
+        new AsyncTask<String, Integer, Drawable>(){
 
+            @Override
+            protected Drawable doInBackground(String... strings) {
+                Bitmap bmp = null;
+                try {
+                    HttpURLConnection connection = (HttpURLConnection) new URL(urlImage).openConnection();
+                    connection.connect();
+                    InputStream input = connection.getInputStream();
+                    bmp = BitmapFactory.decodeStream(input);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return new BitmapDrawable(bmp);
+            }
+
+            protected void onPostExecute(Drawable result) {
+                Bitmap bitmap = ((BitmapDrawable) result).getBitmap();
+                Drawable drawable = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, 50, 50, true));
+                RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), drawableToBitmap(drawable));
+                roundedBitmapDrawable.setCircular(true);
+                //Add image to ImageView
+                menu.getItem(2).setIcon(roundedBitmapDrawable);
+            }
+
+
+        }.execute();
+    }
+
+    public static Bitmap drawableToBitmap (Drawable drawable) {
+        Bitmap bitmap = null;
+
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if(bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
+        }
+
+        if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(20, 20, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        }
+
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
+
+    private void getProfileData(Menu menu) {
+        String userToken = ConstantMethods.getStringPreference("user_token", this);
+        AndroidNetworking
+                .get(GET_PROFILE_PICK)
+                .addHeaders("authorization", "Bearer " + userToken)
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONObject profileObj = response.getJSONObject("profilePic");
+                            currentUserPRofile = profileObj.getString("url");
+                            setProfileImage(currentUserPRofile,menu);
+                        } catch (Exception e) {
+                            e.getStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        Log.e("test", "" + anError);
+                    }
+                });
+    }
 }
 

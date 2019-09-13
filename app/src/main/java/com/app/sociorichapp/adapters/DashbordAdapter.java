@@ -107,6 +107,7 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
         if(shrObj!=null){
             dashBordHolder.shareView.setVisibility(View.VISIBLE);
             dashBordHolder.sharedTxt.setVisibility(View.VISIBLE);
+            dashBordHolder.blankView.setVisibility(View.VISIBLE);
         }
         if(isDescStrUrl){
             dashBordHolder.desTxt.setTextColor(Color.parseColor("#EE124FF0"));
@@ -178,7 +179,7 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
                 String identity = dashModals.get(i).getPostIdStr();
                 String postedId = dashModals.get(i).getUserIdentity();
                 String title = dashModals.get(i).getPostDataStr();
-                String des = "";
+                String des = dashModals.get(i).getDesStr();
                 String categoryId = dashModals.get(i).getCategoryId();
                 JSONObject jsonObject = new JSONObject();
                 JSONArray jsonArray = new JSONArray();
@@ -189,7 +190,7 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
                     jsonObject.put("title",title);
                     jsonObject.put("desc",des);
                     jsonObject.put("categoryId",categoryId);
-                    jsonObject.put("mediaList",jsonArray);
+//                    jsonObject.put("mediaList",jsonArray);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -463,6 +464,7 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
         EditText rwrdEdt;
         RelativeLayout rewadrLay1,shareView;
         private LinearLayout rwrdBtn;
+        View blankView;
 
 
 
@@ -499,6 +501,7 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
             shrCatTxt = itemView.findViewById(R.id.sr_category_txt);
             shareView = itemView.findViewById(R.id.share_view);
             sharedTxt = itemView.findViewById(R.id.shared_txt);
+            blankView = itemView.findViewById(R.id.blank_view);
         }
     }
 
@@ -691,6 +694,7 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
                     dialog.dismiss();
                     Intent intent = new Intent(context, Edit_Post.class);
                     intent.putExtra("json_string",jsonString);
+                    Log.e("json",jsonString);
                     context.startActivity(intent);
                 } else if (options[item].equals("Cancel")) {
                     dialog.dismiss();

@@ -8,7 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:actionButtonStyle">@style/myActionButtonStyle</item>
         <item name="actionButtonStyle">@style/myActionButtonStyle</item>
-        <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
+        <!--<item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>-->
     </style>
     <style name="myActionButtonStyle" parent="Widget.AppCompat.ActionButton">
         <item name="android:padding">55dp</item>
@@ -44,9 +44,9 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-    <style name="MyActionButtonOverflow" parent="android:style/Widget.Holo.Light.ActionButton.Overflow">
-        <item name="android:src">@drawable/user_top_profile</item>
-        <item name="android:background">?android:attr/actionBarItemBackground</item>
-        <item name="android:contentDescription">"Lala"</item>
-    </style>
+    <!--<style name="MyActionButtonOverflow" parent="android:style/Widget.Holo.Light.ActionButton.Overflow">-->
+        <!--<item name="android:src">@drawable/user_top_profile</item>-->
+        <!--<item name="android:background">?android:attr/actionBarItemBackground</item>-->
+        <!--<item name="android:contentDescription">""</item>-->
+    <!--</style>-->
 </resources>

@@ -28,6 +28,8 @@
         android:title="Sign Out"
         app:showAsAction="never" />
 
+
+
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/ttsearch"
@@ -40,7 +42,14 @@
         android:actionLayout="@layout/feed_update_count"
         android:icon="@drawable/ttnotification"
         app:showAsAction="always"
+        android:title="notification"/>
+
+    <item
+        android:id="@+id/badge1"
+        android:icon="@drawable/user_top_profile"
+        app:showAsAction="always"
         android:title="notification">
+
     </item>
 
 </menu>

@@ -1,8 +1,8 @@
 package com.app.sociorichapp.app_utils;
 
 public interface AppApis {
-    String BASE_URL = "http://dev.sociorich.com/";
-//    String BASE_URL = "https://www.sociorich.com/";
+//    String BASE_URL = "http://dev.sociorich.com/";
+    String BASE_URL = "https://www.sociorich.com/";
     String INDIVISUAL_SIGNUP = BASE_URL+"api/v1/user/create";
     String HOMEPAGE_URL_2 = BASE_URL+"api/v1/postcategory/all";
     String HOMEPAGE_URL_LOGOUT = BASE_URL+"api/v1/post/featured";
@@ -42,8 +42,10 @@ public interface AppApis {
     String SHOW_PROFILE = BASE_URL+"api/v1/user/profile/";
     String MY_NETWORK = BASE_URL+"api/v1/connections/my?pageno=0";
     String POST_CATEGORY = BASE_URL+"api/v1/postcategory/all";
-    String MY_LOAD_COMMENT = BASE_URL+"api/v1/post/7c836a7c-ff7c-41cc-a2c8-8afe032d59d7/comments?pageno=";
-//    api/v1/conn/request/cancel
+    String MY_LOAD_COMMENT = BASE_URL+"api/v1/post/";
+    String USER_CONNECTIONS = BASE_URL+"api/v1/connections/user/";
+//    String OTHER_POST = BASE_URL+"api/v1/post/byuser/"
+//    api/v1/conn/request/cancel  api/v1/post/byuser/3d6659a7-1791-4180-a0c6-f0d1d127dba0?pageno=0
 
 //    http://dev.sociorich.com/api/v1/post/global?pageno=http://dev.sociorich.com/api/v1/user/profile/5f73505f-4b5a-4beb-bad6-5060b549bd42/
 //    http://dev.sociorich.com/api/v1/user//coverpic

@@ -4,6 +4,7 @@ public class NetworkModal {
     private String profileStr;
     private String nameStr;
     private String socioStr;
+    private String identity;
 
     public String getProfileStr() {
         return profileStr;
@@ -27,5 +28,13 @@ public class NetworkModal {
 
     public void setSocioStr(String socioStr) {
         this.socioStr = socioStr;
+    }
+
+    public String getIdentity() {
+        return identity;
+    }
+
+    public void setIdentity(String identity) {
+        this.identity = identity;
     }
 }

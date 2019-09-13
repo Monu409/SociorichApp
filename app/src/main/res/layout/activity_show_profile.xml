@@ -194,6 +194,7 @@
                         android:textColor="@color/colorPrimary"
                         android:textSize="17sp"
                         android:textStyle="bold"
+                        android:layout_gravity="center_horizontal"
                         />
                 </LinearLayout>
                 <LinearLayout
@@ -216,6 +217,7 @@
                         android:textColor="@color/colorPrimary"
                         android:textSize="17sp"
                         android:textStyle="bold"
+                        android:layout_gravity="center_horizontal"
                         />
                 </LinearLayout>
             </LinearLayout>

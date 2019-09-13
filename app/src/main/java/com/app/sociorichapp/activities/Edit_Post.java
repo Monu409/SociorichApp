@@ -32,7 +32,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.sociorichapp.R;
@@ -123,6 +125,9 @@ public class Edit_Post extends BaseActivity implements AdapterView.OnItemSelecte
     private static final int REQUEST_IMAGE_CAPTURE = 2;
     public static final int PERMISSION_CAMERA_CODE = 121;
     String[] category = {"Animals", "Community & Development", "Discrimination", "Disasters", "Education", "Environment", "Health", "Homelessness+Poverty", "Spiritual", "Other", "Social News", "Social Discussions", "Social Suggestions", "Social Tasks"};
+    private RelativeLayout spinrView;
+    private String catID;
+    private TextView slctCatTxt;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -133,13 +138,18 @@ public class Edit_Post extends BaseActivity implements AdapterView.OnItemSelecte
 
         tv_titel = (EditText) findViewById(R.id.titel);
         tv_dec = (EditText) findViewById(R.id.edittext1);
+        slctCatTxt = findViewById(R.id.slct_cat_txt);
         Intent intent = getIntent();
         String jsonString = intent.getStringExtra("json_string");
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
             String title = jsonObject.getString("title");
+            String des = jsonObject.getString("desc");
+            catID = jsonObject.getString("categoryId");
+            String catValue = DashboardActivity.catMap.get(catID);
             tv_titel.setText(title);
-            tv_dec.setText(title);
+            tv_dec.setText(des);
+            slctCatTxt.setText(catValue);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -157,6 +167,11 @@ public class Edit_Post extends BaseActivity implements AdapterView.OnItemSelecte
         pathlist = new ArrayList<>();
         Button cnclBtn = findViewById(R.id.cancel_btn);
         cnclBtn.setOnClickListener(c->onBackPressed());
+        spinrView = findViewById(R.id.spiner_view);
+        spinrView.setOnClickListener(v->{
+            Intent intentCat = new Intent(this, CategoryActivity.class);
+            startActivityForResult(intentCat,10);
+        });
     }
 
     @Override
@@ -168,6 +183,9 @@ public class Edit_Post extends BaseActivity implements AdapterView.OnItemSelecte
         String titleStr,descStr;
         titleStr = tv_titel.getText().toString();
         descStr = tv_dec.getText().toString();
+        if(slctCatTxt.getText().toString().equals("Select Category")){
+            Toast.makeText(this, "Please select category", Toast.LENGTH_SHORT).show();
+        }
         if(titleStr.isEmpty()||descStr.isEmpty()){
             Toast.makeText(this, "Please enter all fields", Toast.LENGTH_SHORT).show();
         }
@@ -236,6 +254,11 @@ public class Edit_Post extends BaseActivity implements AdapterView.OnItemSelecte
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 10 && resultCode == Activity.RESULT_OK){
+            String message = data.getStringExtra("cat_name");
+            catID = data.getStringExtra("cat_id");
+            slctCatTxt.setText(message);
+        }
         if (requestCode == CAMERA_PHOTO && resultCode == Activity.RESULT_OK) {
             if (imageToUploadUri != null) {
                 Uri selectedImage = imageToUploadUri;
@@ -768,15 +791,28 @@ public class Edit_Post extends BaseActivity implements AdapterView.OnItemSelecte
 //            String url = "{\"mediaList\":" + medilalist + ",\"postedBy\":\"" + userID + "\",\"ownerUserId\":\"" + userID + "\",\"title\":\"" + value_titel + "\",\"desc\":\"" + value_description + "\",\"categoryId\":\"" + "post-category-40" + "\",\"sharedId\":\"" + "" + "\",\"location\":{}}";
             Intent intent = getIntent();
             String url = intent.getStringExtra("json_string");
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = new JSONObject(url);
+                jsonObject.remove("title");
+                jsonObject.remove("desc");
+                jsonObject.remove("categoryId");
+                jsonObject.remove("mediaList");
 
-            //  System.out.print("JSON-DATA"+url1);
+                jsonObject.put("title",tv_titel.getText().toString());
+                jsonObject.put("desc",tv_dec.getText().toString());
+//                jsonObject.put("mediaList",medilalist);
+                jsonObject.put("categoryId",catID);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             InputStream inputStream = null;
             try {
                 HttpClient httpclient = new DefaultHttpClient();
                 HttpPost httpPost = new HttpPost(UPDATE_POST);
                 //   HttpPost httpPost = new HttpPost("http://34.208.118.103/wcfserviceCustomer.svc/EBSPayment/?");
 
-                String json = url;
+                String json = String.valueOf(jsonObject);
 
                 StringEntity se = new StringEntity(json);
                 httpPost.setEntity(se);
