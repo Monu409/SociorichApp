@@ -37,6 +37,9 @@
         android:inputType="date"
         android:maxLines="1"
         android:singleLine="true"
+        android:editable="false"
+        android:focusable="false"
+        android:clickable="true"
         android:textColor="#000"
         android:background="@drawable/rect_view_orange"
         android:layout_marginTop="10dp"/>

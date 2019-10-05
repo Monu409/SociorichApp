@@ -16,12 +16,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/usr_detail">
-            <com.app.sociorichapp.app_utils.CircleImageView
+            <com.sociorich.app.app_utils.CircleImageView
                 android:id="@+id/profil_pic"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_marginTop="5dp"
-                android:scaleType="centerCrop"
                 android:src="@drawable/logo2" />
             <TextView
                 android:id="@+id/uname_txt"
@@ -103,12 +102,11 @@
                 android:layout_marginLeft="5dp"
                 android:textStyle="bold" />
 
-            <com.app.sociorichapp.app_utils.CircleImageView
+            <com.sociorich.app.app_utils.CircleImageView
                 android:id="@+id/sr_profil_pic"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_marginTop="5dp"
-                android:scaleType="centerCrop"
                 android:src="@drawable/profile_icon" />
 
             <TextView
@@ -357,19 +355,19 @@
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
-                <VideoView
-                    android:id="@+id/line_view1"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_below="@+id/comment_sec"
-                    android:layout_marginTop="5dp"
-                    android:background="#d3d3d3"/>
+                <!--<VideoView-->
+                    <!--android:id="@+id/line_view1"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="1dp"-->
+                    <!--android:layout_below="@+id/comment_sec"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:background="#d3d3d3"/>-->
 
                 <RelativeLayout
                     android:id="@+id/reward_lay1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/line_view1"
+                    android:layout_below="@+id/comment_sec"
                     android:orientation="horizontal"
                     android:visibility="visible">
 

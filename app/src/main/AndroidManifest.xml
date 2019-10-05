@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.app.sociorichapp">
+    package="com.sociorich.app">
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -14,6 +14,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".application.MyApplication"
@@ -95,10 +96,19 @@
         <activity android:name=".activities.FullImageActivity"/>
         <activity android:name=".activities.DeleteIntrestActivity"/>
         <activity android:name=".activities.ChangeNumberActivity"/>
-        <activity android:name=".activities.ShowProfileActivity"/>
+        <activity android:name=".activities.ShowProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".activities.TermsAndCondition"/>
         <activity android:name=".activities.CategoryActivity"/>
         <activity android:name=".activities.SocioOfDayActivity"/>
+        <service
+            android:name=".app_utils.SyncService"
+            android:enabled="true"
+            android:exported="true">
+        </service>
+        <service android:name = ".testpac.service"
+            android:enabled="true"
+            android:exported="true"/>
     </application>
 
 </manifest>

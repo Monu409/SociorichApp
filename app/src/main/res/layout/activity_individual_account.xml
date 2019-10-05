@@ -43,7 +43,6 @@
                     android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:background="@drawable/rect_view_orange"
                     android:paddingLeft="5dp"
                     android:maxLength="35"
                     android:hint="Full Name *"
@@ -52,39 +51,26 @@
                     android:singleLine="true"
                     android:textColor="#000" />
 
-                <RelativeLayout
+                <Spinner
+                    android:id="@+id/spinner"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:background="@drawable/rect_view_orange"
-                    android:layout_marginTop="10dp">
-
-                    <Spinner
-                        android:id="@+id/spinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_centerVertical="true"
-                        android:layout_gravity="center"
-                        android:background="@android:color/transparent"
-                        android:gravity="center"
-                        android:layout_marginLeft="5dp"
-                        android:spinnerMode="dropdown" />
-
-                    <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="10dp"
-                        android:src="@drawable/drop_down" />
-
-                </RelativeLayout>
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:spinnerMode="dropdown" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#d3d3d3"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"/>
 
                 <EditText
                     android:id="@+id/mobile"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:background="@drawable/rect_view_orange"
                     android:paddingLeft="5dp"
                     android:layout_marginTop="10dp"
                     android:hint="Mobile Number *"
@@ -98,7 +84,6 @@
                     android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:background="@drawable/rect_view_orange"
                     android:paddingLeft="5dp"
                     android:layout_marginTop="10dp"
                     android:hint="Enter Email *"
@@ -111,7 +96,6 @@
                     android:id="@+id/password"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:background="@drawable/rect_view_orange"
                     android:paddingLeft="5dp"
                     android:layout_marginTop="10dp"
                     android:hint="Password *"
@@ -124,7 +108,6 @@
                     android:id="@+id/repassowrd"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:background="@drawable/rect_view_orange"
                     android:paddingLeft="5dp"
                     android:layout_marginTop="10dp"
                     android:hint="Re-type Password *"

@@ -10,7 +10,7 @@
         android:layout_height="100dp"
         android:background="@drawable/rect_white_view">
 
-        <ImageView
+        <com.sociorich.app.app_utils.CircleImageView
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:id="@+id/fr_img"

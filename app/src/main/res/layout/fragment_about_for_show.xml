@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#ffffff">
 
     <!--<ScrollView-->
     <!--android:layout_marginTop="10dp"-->
@@ -13,19 +14,22 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp">
+        >
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:background="#D5D4D4"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:background="@drawable/rect_view_orange"
-            android:layout_height="wrap_content">
-            <LinearLayout
+            android:background="#ffffff"
+            android:layout_height="match_parent">
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_marginTop="5dp"
                 android:orientation="horizontal"
                 android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -38,19 +42,20 @@
 
                 <ImageView
                     android:id="@+id/pen_intro"
-                    android:layout_width="wrap_content"
+                    android:layout_width="25dp"
                     android:layout_marginLeft="50dp"
-                    android:layout_height="20dp"
+                    android:layout_height="25dp"
                     android:src="@drawable/edit_icon"
+                    android:layout_alignParentRight="true"
                     android:visibility="gone"/>
-            </LinearLayout>
+            </RelativeLayout>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#000"
                 android:layout_marginLeft="10dp"
                 android:layout_marginBottom="8dp"
-                android:text="demo"
+                android:text="No description Provided"
                 android:id="@+id/intro_txt"
                 android:textSize="15dp"/>
             <LinearLayout
@@ -94,20 +99,23 @@
 
             </LinearLayout>
         </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:background="#D5D4D4"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:background="@drawable/rect_view_orange"
-            android:layout_height="wrap_content">
-            <LinearLayout
+            android:layout_marginTop="5dp"
+            android:layout_height="match_parent"
+            android:background="#ffffff">
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_marginTop="5dp"
                 android:orientation="horizontal"
                 android:layout_marginLeft="10dp"
-                android:layout_height="wrap_content">
+                android:layout_marginRight="5dp"
+                android:layout_height="match_parent">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -116,17 +124,18 @@
                     android:textColor="@color/colorPrimary"/>
                 <ImageView
                     android:id="@+id/about_pen"
-                    android:layout_width="wrap_content"
+                    android:layout_width="25dp"
                     android:layout_marginLeft="100dp"
-                    android:layout_height="20dp"
+                    android:layout_height="25dp"
                     android:src="@drawable/edit_icon"
+                    android:layout_alignParentRight="true"
                     android:visibility="gone"/>
-            </LinearLayout>
+            </RelativeLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
                 <LinearLayout
                     android:layout_width="80dp"
                     android:layout_marginLeft="10dp"
@@ -196,7 +205,7 @@
                 android:layout_width="match_parent"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
                 <LinearLayout
                     android:layout_width="80dp"
                     android:layout_marginLeft="10dp"
@@ -227,6 +236,12 @@
                         android:text="Date of birth not provided"/>
                 </LinearLayout>
             </LinearLayout>
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="400dp"-->
+            <!--android:background="#ffffff">-->
+
+            <!--</LinearLayout>-->
         </LinearLayout>
     </LinearLayout>
 

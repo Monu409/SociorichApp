@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#d3d3d3">
+    android:background="#ffffff">
 
     <!--<ScrollView-->
         <!--android:layout_marginTop="10dp"-->
@@ -14,7 +14,11 @@
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="match_parent"
-            android:layout_marginTop="5dp">
+            >
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:background="#D5D4D4"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="vertical"
@@ -42,7 +46,8 @@
                         android:layout_marginLeft="50dp"
                         android:layout_height="25dp"
                         android:src="@drawable/edit_icon"
-                        android:layout_alignParentRight="true"/>
+                        android:layout_alignParentRight="true"
+                        />
                 </RelativeLayout>
                 <TextView
                     android:layout_width="wrap_content"
@@ -94,6 +99,10 @@
 
                 </LinearLayout>
             </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:background="#D5D4D4"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="vertical"
@@ -195,7 +204,7 @@
                     android:layout_width="match_parent"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
                     <LinearLayout
                         android:layout_width="80dp"
                         android:layout_marginLeft="10dp"
@@ -226,12 +235,12 @@
                             android:text="Date of birth not provided"/>
                     </LinearLayout>
                 </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="900dp"
-                    android:background="#ffffff">
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="400dp"-->
+                    <!--android:background="#ffffff">-->
 
-                </LinearLayout>
+                <!--</LinearLayout>-->
             </LinearLayout>
         </LinearLayout>
 

@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.app.sociorichapp.app_utils.CircleImageView
+            <com.sociorich.app.app_utils.CircleImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:id="@+id/user_img"

@@ -83,9 +83,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/rect_view_orange"
                     android:hint="Organisation Name *"
-                    android:inputType="textEmailAddress"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     android:maxLines="1"
                     android:paddingLeft="5dp"
                     android:singleLine="true"
@@ -98,57 +97,42 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/rect_view_orange"
                     android:hint="Organisation website link  *"
-                    android:inputType="textEmailAddress"
+                    android:inputType="text"
                     android:maxLines="1"
                     android:paddingLeft="5dp"
                     android:singleLine="true"
                     android:textColor="#000"
                     android:maxLength="30"/>
 
-                <RelativeLayout
+                <Spinner
+                    android:id="@+id/spinner1"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/rect_view_orange">
-
-                    <Spinner
-                        android:id="@+id/spinner1"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_centerVertical="true"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="5dp"
-                        android:background="@android:color/transparent"
-                        android:entries="@array/country_arrays"
-                        android:gravity="center"
-                        android:spinnerMode="dropdown" />
-
-                    <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="10dp"
-                        android:src="@drawable/drop_down" />
-
-                </RelativeLayout>
-
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:background="@android:color/transparent"
+                    android:entries="@array/country_arrays"
+                    android:gravity="center"
+                    android:spinnerMode="dropdown" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#d3d3d3"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"/>
 
                 <EditText
                     android:id="@+id/org_tvyear"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/rect_view_orange"
                     android:hint="Year of Incorporation(e.g. 2018) *"
-                    android:inputType="numberSigned"
+                    android:inputType="date"
                     android:maxLines="1"
                     android:paddingLeft="5dp"
-                    android:textColor="#000"
-                    android:maxLength="4"/>
+                    android:textColor="#000" />
 
 
                 <EditText
@@ -156,7 +140,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/rect_view_orange"
                     android:hint="Corporate/Registered address *"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
@@ -170,7 +153,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/rect_view_orange"
                     android:hint="About Organisation*"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
@@ -184,9 +166,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/rect_view_orange"
                     android:hint="Organisation Registration Number"
-                    android:inputType="textEmailAddress"
+                    android:inputType="phone"
                     android:maxLines="1"
                     android:paddingLeft="5dp"
                     android:singleLine="true"

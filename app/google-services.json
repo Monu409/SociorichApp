@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "819598392807-kjdm2p1l81okkljr3vvnu2n6brh16122.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.sociorichapp",
+            "certificate_hash": "6b70826244e97ebae8126fae8a12e495517f0b44"
+          }
+        },
+        {
           "client_id": "819598392807-hp70hnj15muri42marnhsqc1rkib5b7s.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -35,6 +43,43 @@
           "client_type": 1,
           "android_info": {
             "package_name": "com.app.sociorichapp",
+            "certificate_hash": "92a2fe3a82d7d14f70567cc093f9e0da6b8bfc0c"
+          }
+        },
+        {
+          "client_id": "819598392807-qucqho6l59570bcb4f6fbom31r8dsf88.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2EHPJVf1qJOFiBZOK32CSJCUhNdsLXV0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "819598392807-qucqho6l59570bcb4f6fbom31r8dsf88.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819598392807:android:49e0d4d4ecec7c8b4dd142",
+        "android_client_info": {
+          "package_name": "com.sociorich.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "819598392807-lp1utn11p1iho1t1om3h8cl3u1ajic9t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sociorich.app",
             "certificate_hash": "92a2fe3a82d7d14f70567cc093f9e0da6b8bfc0c"
           }
         },
