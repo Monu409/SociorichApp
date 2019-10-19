@@ -1,7 +1,6 @@
 package com.sociorich.app.activities;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,30 +11,29 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.tabs.TabLayout;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.palette.graphics.Palette;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.appcompat.widget.Toolbar;
-
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;;import com.androidnetworking.AndroidNetworking;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.viewpager.widget.ViewPager;
+
+import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.androidnetworking.interfaces.UploadProgressListener;
+import com.bumptech.glide.Glide;
+import com.google.android.material.tabs.TabLayout;
 import com.sociorich.app.R;
 import com.sociorich.app.app_utils.CircleImageView;
 import com.sociorich.app.app_utils.ConstantMethods;
@@ -43,7 +41,6 @@ import com.sociorich.app.fragments.AboutFragment;
 import com.sociorich.app.fragments.GalleryFragment;
 import com.sociorich.app.fragments.NetworkFragment;
 import com.sociorich.app.fragments.PostFragment;
-import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,10 +68,12 @@ import static com.sociorich.app.app_utils.AppApis.UPLOAD_PROFILE_PICK;
 import static com.sociorich.app.app_utils.CommonVariables.POST_CATEGORY_PROFILE_KEYS;
 import static com.sociorich.app.app_utils.CommonVariables.POST_CATEGORY_PROFILE_VALUES;
 
+;
+
 public class ProfileUpActivity extends AppCompatActivity {
     private Toolbar toolbar;
-    private CollapsingToolbarLayout collapsingToolbar;
-    private AppBarLayout appBarLayout;
+//    private CollapsingToolbarLayout collapsingToolbar;
+//    private AppBarLayout appBarLayout;
     private CircleImageView profileImg;
     public String profileDes;
     private TextView intrextTxt, intrestAllTxt, soCrTxt, eqCrTxt, qualityTxt;
@@ -99,9 +98,9 @@ public class ProfileUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_up);
-        toolbar = findViewById(R.id.anim_toolbar);
-        collapsingToolbar = findViewById(R.id.collapsing_toolbar);
-        appBarLayout = findViewById(R.id.appbar);
+//        toolbar = findViewById(R.id.anim_toolbar);
+//        collapsingToolbar = findViewById(R.id.collapsing_toolbar);
+//        appBarLayout = findViewById(R.id.appbar);
         intrextTxt = findViewById(R.id.intrest_txt);
         soCrTxt = findViewById(R.id.so_cr_txt);
         eqCrTxt = findViewById(R.id.eq_cr_txt);
@@ -125,10 +124,12 @@ public class ProfileUpActivity extends AppCompatActivity {
             Intent intent = new Intent(this, QualityActivity.class);
             startActivity(intent);
         });
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        collapsingToolbar.setTitle(" ");
+
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+//        collapsingToolbar.setTitle(" ");
 //        getProfileData();
         profileImg = findViewById(R.id.profile_img);
         profileImg.setOnClickListener(v -> {
@@ -169,28 +170,28 @@ public class ProfileUpActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.landscape);
-        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+//        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+//
+//            @SuppressWarnings("ResourceType")
+//            @Override
+//            public void onGenerated(Palette palette) {
+//                int vibrantColor = palette.getVibrantColor(R.color.primary_500);
+//                collapsingToolbar.setContentScrimColor(vibrantColor);
+//                collapsingToolbar.setStatusBarScrimColor(R.color.black_trans80);
+//            }
+//        });
 
-            @SuppressWarnings("ResourceType")
-            @Override
-            public void onGenerated(Palette palette) {
-                int vibrantColor = palette.getVibrantColor(R.color.primary_500);
-                collapsingToolbar.setContentScrimColor(vibrantColor);
-                collapsingToolbar.setStatusBarScrimColor(R.color.black_trans80);
-            }
-        });
-
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (Math.abs(verticalOffset) > 200) {
-                    appBarExpanded = false;
-                } else {
-                    appBarExpanded = true;
-                }
-                invalidateOptionsMenu();
-            }
-        });
+//        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+//            @Override
+//            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+//                if (Math.abs(verticalOffset) > 200) {
+//                    appBarExpanded = false;
+//                } else {
+//                    appBarExpanded = true;
+//                }
+//                invalidateOptionsMenu();
+//            }
+//        });
 
     }
 
@@ -463,6 +464,12 @@ public class ProfileUpActivity extends AppCompatActivity {
                         try {
                             JSONArray interestCategories = null;
                             try {
+                                String firstName = "";
+                                if(response.has("displayName")) {
+                                    firstName = response.getString("displayName");
+                                    TextView username = findViewById(R.id.user_name);
+                                    username.setText(firstName);
+                                }
                                 interestCategories = response.getJSONArray("interestCategories");
                                 intrstCatArr = interestCategories;
                                 for (int i = 0; i < interestCategories.length(); i++) {
@@ -615,5 +622,10 @@ public class ProfileUpActivity extends AppCompatActivity {
                 });
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this,DashboardActivity.class);
+        startActivity(intent);
+    }
 }

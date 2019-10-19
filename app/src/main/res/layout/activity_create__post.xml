@@ -61,7 +61,7 @@
                         android:layout_centerVertical="true"
                         android:layout_gravity="center"
                         android:layout_marginRight="10dp"
-                        android:src="@drawable/drop_down" />
+                        app:srcCompat="@drawable/drop_down" />
 
                 </RelativeLayout>
 
@@ -74,7 +74,8 @@
                     android:background="@drawable/rect_view_orange"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_marginTop="10dp"
-                    android:paddingLeft="5dp"/>
+                    android:paddingLeft="5dp"
+                    android:maxLength="90"/>
 
                 <EditText
                     android:id="@+id/edittext1"
@@ -92,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:onClick="choosefile"
-                    android:src="@drawable/uploadfile"
+                    app:srcCompat="@drawable/uploadfile"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"/>
 

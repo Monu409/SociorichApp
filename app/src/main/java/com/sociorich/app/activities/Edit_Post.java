@@ -18,11 +18,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,6 +30,11 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.sociorich.app.R;
 import com.sociorich.app.adapters.MyAdapter;
@@ -211,7 +211,7 @@ public class Edit_Post extends BaseActivity implements AdapterView.OnItemSelecte
 
 
         final CharSequence[] items = {"Camera", "Choose from Library", "Cancel"};
-        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(Edit_Post.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(Edit_Post.this);
         builder.setTitle("Select Photo!");
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
@@ -692,7 +692,7 @@ public class Edit_Post extends BaseActivity implements AdapterView.OnItemSelecte
      * Method to show alert dialog
      */
     private void showAlert(String message) {
-        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(message).setTitle("Response from Servers")
                 .setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -700,7 +700,7 @@ public class Edit_Post extends BaseActivity implements AdapterView.OnItemSelecte
                         // do nothing
                     }
                 });
-        android.app.AlertDialog alert = builder.create();
+        AlertDialog alert = builder.create();
         alert.show();
     }
 

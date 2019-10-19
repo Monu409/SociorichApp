@@ -1,19 +1,20 @@
 package com.sociorich.app.activities;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.sociorich.app.R;
 import com.sociorich.app.adapters.QualityAdapter;
 import com.sociorich.app.app_utils.ConstantMethods;
+
 import java.util.ArrayList;
 import java.util.List;
 

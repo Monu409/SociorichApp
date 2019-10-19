@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -25,7 +26,7 @@
                     android:id="@+id/imageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/logo2" />
+                    app:srcCompat="@drawable/logo2" />
 
 
             </LinearLayout>
@@ -43,7 +44,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Choose Your Organisation Type" />
+                    android:text="Choose Your Organization Type" />
 
                 <RadioGroup
                     android:id="@+id/radioSex"
@@ -83,8 +84,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="10dp"
-                    android:hint="Organisation Name *"
-                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:hint="Organization Name *"
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     android:maxLines="1"
                     android:paddingLeft="5dp"
                     android:singleLine="true"
@@ -97,7 +98,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="10dp"
-                    android:hint="Organisation website link  *"
+                    android:hint="Organization website link  *"
                     android:inputType="text"
                     android:maxLines="1"
                     android:paddingLeft="5dp"
@@ -153,7 +154,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="10dp"
-                    android:hint="About Organisation*"
+                    android:hint="About Organization*"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:paddingLeft="5dp"
@@ -166,7 +167,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="10dp"
-                    android:hint="Organisation Registration Number"
+                    android:hint="Organization Registration Number"
                     android:inputType="phone"
                     android:maxLines="1"
                     android:paddingLeft="5dp"

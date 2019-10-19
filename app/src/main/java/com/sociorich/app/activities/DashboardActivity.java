@@ -1,7 +1,6 @@
 package com.sociorich.app.activities;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,16 +15,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.RoundedBitmapDrawable;
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,18 +25,37 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
+import androidx.core.view.MenuItemCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.facebook.login.LoginManager;
 import com.sociorich.app.R;
 import com.sociorich.app.adapters.DashbordAdapter;
 import com.sociorich.app.app_utils.ConstantMethods;
 import com.sociorich.app.app_utils.DbHelper;
 import com.sociorich.app.modals.CommentModal;
 import com.sociorich.app.modals.DashModal;
-import com.facebook.login.LoginManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -325,6 +333,8 @@ public class DashboardActivity extends AppCompatActivity {
                                     JSONObject userObject = contentObj.getJSONObject("user");
                                     JSONObject comentObject = contentObj.getJSONObject("comment");
                                     String userStr = userObject.getString("displayName");
+                                    String identity = comentObject.getString("identity");
+                                    String createdBy = comentObject.getString("createdBy");
                                     String commentStr = comentObject.getString("comment");
                                     String dateTime = comentObject.getString("createdAt");
                                     dashModal.setLongTime(dateTime);
@@ -340,6 +350,8 @@ public class DashboardActivity extends AppCompatActivity {
                                     commentModal.setComntStr(commentStr);
                                     commentModal.setUserStr(userStr);
                                     commentModal.setTimeDateStr(comntDate);
+                                    commentModal.setIdentity(identity);
+                                    commentModal.setCreatedBy(createdBy);
                                     commentModals.add(commentModal);
                                     dashModal.setCommentModals(commentModals);
                                 }
@@ -437,7 +449,22 @@ public class DashboardActivity extends AppCompatActivity {
                     @Override
                     public void onError(ANError anError) {
                         ConstantMethods.dismissProgressBar();
-                        Toast.makeText(DashboardActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(DashboardActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        String loginStatus = ConstantMethods.getStringPreference("login_status", DashboardActivity.this);
+                        if (loginStatus.equals("login")) {
+                            String loginType = ConstantMethods.getStringPreference("login_type", DashboardActivity.this);
+                            if (loginType.equals("social")) {
+                                String email = ConstantMethods.getStringPreference("email_prif", DashboardActivity.this);
+                                String firstName = ConstantMethods.getStringPreference("first_name", DashboardActivity.this);
+                                ConstantMethods.socialLogin(email, firstName, DashboardActivity.this);
+                            }
+                            else {
+                                String email = ConstantMethods.getStringPreference("norm_email", DashboardActivity.this);
+                                String pass = ConstantMethods.getStringPreference("norm_pass", DashboardActivity.this);
+                                loginIfNot(email,pass);
+                            }
+                            getHomePageData(HOMEPAGE_URL_LOGIN, "0");
+                        }
                     }
                 });
     }
@@ -481,7 +508,7 @@ public class DashboardActivity extends AppCompatActivity {
         getMenuInflater().inflate( R.menu.main_menu, menu);
         getProfileData(menu);
         MenuItem myActionMenuItem = menu.findItem( R.id.action_search);
-        SearchView searchView = (SearchView) myActionMenuItem.getActionView();
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(myActionMenuItem);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -492,7 +519,7 @@ public class DashboardActivity extends AppCompatActivity {
                     intent.putExtra("search_key",query);
                     startActivity(intent);
                 }
-                myActionMenuItem.collapseActionView();
+                MenuItemCompat.collapseActionView(myActionMenuItem);
                 return false;
             }
             @Override
@@ -750,6 +777,51 @@ public class DashboardActivity extends AppCompatActivity {
                         Log.e("test", "" + anError);
                     }
                 });
+    }
+
+
+    private void loginIfNot(String normEmail, String normPass) {
+        //   dialog.ShowProgressDialog();
+        String url = BASE_URL + "oauth/token";
+        RequestQueue requestQueue = Volley.newRequestQueue(DashboardActivity.this);
+        StringRequestCustom stringRequest = new StringRequestCustom(DashboardActivity.this, Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    //  dialog.CancelProgressDialog();
+                    JSONObject obj = new JSONObject(response);
+                    String accesstoken = obj.getString("access_token");
+                    String token_type = obj.getString("access_token");
+                    String refresh_token = obj.getString("refresh_token");
+                    ConstantMethods.setStringPreference("login_status", "login", DashboardActivity.this);
+                    ConstantMethods.setStringPreference("user_token", accesstoken, DashboardActivity.this);
+
+                    ConstantMethods.setStringPreference("norm_email", normEmail, DashboardActivity.this);
+                    ConstantMethods.setStringPreference("norm_pass", normPass, DashboardActivity.this);
+                    ConstantMethods.saveTokenRefresh(DashboardActivity.this,refresh_token);
+                } catch (JSONException e) {
+//                    Toast.makeText(getApplicationContext(), "Invalid username or password", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                Toast.makeText(getApplicationContext(), "Invalid username or password", Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("grant_type", "password");
+                params.put("username", normEmail);
+                params.put("password", normPass);
+                return params;
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(stringRequest);
     }
 }
 

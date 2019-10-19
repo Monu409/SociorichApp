@@ -2,7 +2,6 @@ package com.sociorich.app.activities;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,9 +12,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +22,11 @@ import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.sociorich.app.R;
 
@@ -227,14 +228,14 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity {
             if (ContextCompat.checkSelfPermission(context,
                     Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(
-                        (Activity) context,
+                        (AppCompatActivity) context,
                         Manifest.permission.READ_EXTERNAL_STORAGE)) {
                     showDialog("External storage", context, Manifest.permission.READ_EXTERNAL_STORAGE);
 
                 } else {
                     ActivityCompat
                             .requestPermissions(
-                                    (Activity) context,
+                                    (AppCompatActivity) context,
                                     new String[] { Manifest.permission.READ_EXTERNAL_STORAGE },
                                     MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
                 }

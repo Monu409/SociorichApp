@@ -149,6 +149,7 @@ public class IndivisualSignupActivity extends BaseActivity {
                     .getAsJSONObject(new JSONObjectRequestListener() {
                         @Override
                         public void onResponse(JSONObject response) {
+                            ConstantMethods.dismissProgressBar();
                             String identity= null;
                             try {
                                 identity = response.getString("identity");

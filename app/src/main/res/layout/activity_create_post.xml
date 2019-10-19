@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/add_btn"
             android:onClick="choosefile"
-            android:src="@drawable/uploadfile"
+            app:srcCompat="@drawable/uploadfile"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"

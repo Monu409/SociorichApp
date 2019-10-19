@@ -7,6 +7,8 @@ public class CommentModal implements Serializable {
     private String timeDateStr;
     private String imgUrl;
     private String userStr;
+    private String identity;
+    private String createdBy;
 
     public String getComntStr() {
         return comntStr;
@@ -38,5 +40,21 @@ public class CommentModal implements Serializable {
 
     public void setUserStr(String userStr) {
         this.userStr = userStr;
+    }
+
+    public void setIdentity(String identity) {
+        this.identity = identity;
+    }
+
+    public String getIdentity() {
+        return identity;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 }

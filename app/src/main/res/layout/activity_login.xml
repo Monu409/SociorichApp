@@ -29,7 +29,7 @@
                         android:id="@+id/imageView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/logo2" />
+                        facebook:srcCompat="@drawable/logo2" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -65,7 +65,7 @@
                                     android:id="@+id/f_img"
                                     android:layout_width="30dp"
                                     android:layout_height="20dp"
-                                    android:src="@drawable/facebook_ch"
+                                    facebook:srcCompat="@drawable/facebook_ch"
                                     android:layout_centerVertical="true" />
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -99,7 +99,7 @@
                                     android:id="@+id/g_img"
                                     android:layout_width="35dp"
                                     android:layout_height="25dp"
-                                    android:src="@drawable/google_ch"
+                                    facebook:srcCompat="@drawable/google_ch"
                                     android:layout_centerVertical="true" />
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -133,7 +133,7 @@
                                     android:id="@+id/t_img"
                                     android:layout_width="30dp"
                                     android:layout_height="20dp"
-                                    android:src="@drawable/twitter_ch"
+                                    facebook:srcCompat="@drawable/twitter_ch"
                                     android:layout_centerVertical="true" />
                                 <TextView
                                     android:layout_width="wrap_content"

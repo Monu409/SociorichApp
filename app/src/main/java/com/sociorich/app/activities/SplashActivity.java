@@ -10,11 +10,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.sociorich.app.R;
 import com.sociorich.app.app_utils.ConstantMethods;
-//import com.sociorich.app.testpac.ServiceTest;
-import com.sociorich.app.testpac.service;
+
+import java.net.URLConnection;
 
 public class SplashActivity extends AppCompatActivity {
     private final int SPLASH_DISPLAY_LENGTH = 1000;
+    String url1 = "https://s3.ap-south-1.amazonaws.com/srch-dev-media/fe6b9f8f-c36e-4127-a3a3-9bd3f2f42f78/fbf48d5b-7941-415c-8ea9-326fa593e0ff.jpg";
+    String url2 = "https://s3.ap-south-1.amazonaws.com/srch-dev-media/fe6b9f8f-c36e-4127-a3a3-9bd3f2f42f78/445852ca-0230-4b8b-91fb-d25aafbba41d.mp4";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +25,8 @@ public class SplashActivity extends AppCompatActivity {
 //                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_splash);
+        boolean b = isImageFile(url1);
+        boolean b2 = isImageFile(url2);
 //        startService(new Intent(SplashActivity.this, service.class));
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //            String loginStatus = ConstantMethods.getStringPreference("login_status", this);
@@ -50,5 +54,10 @@ public class SplashActivity extends AppCompatActivity {
                 finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
+    }
+
+    public static boolean isImageFile(String path) {
+        String mimeType = URLConnection.guessContentTypeFromName(path);
+        return mimeType != null && mimeType.startsWith("image");
     }
 }

@@ -1,6 +1,5 @@
 package com.sociorich.app.adapters;
 
-import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -10,10 +9,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Typeface;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.net.Uri;
 import android.util.Log;
 import android.view.Display;
@@ -31,27 +26,35 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.bumptech.glide.Glide;
 import com.sociorich.app.R;
 import com.sociorich.app.activities.CommentActivity;
 import com.sociorich.app.activities.DashboardActivity;
 import com.sociorich.app.activities.Edit_Post;
 import com.sociorich.app.activities.FullImageActivity;
+import com.sociorich.app.activities.LoginActivity;
+import com.sociorich.app.activities.PlayVideoActivity;
 import com.sociorich.app.activities.ShowProfileActivity;
 import com.sociorich.app.app_utils.CircleImageView;
 import com.sociorich.app.app_utils.ConstantMethods;
+import com.sociorich.app.modals.CommentModal;
 import com.sociorich.app.modals.DashModal;
-import com.sociorich.app.activities.LoginActivity;
-import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +68,8 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
     private List<DashModal> dashModals;
     private Context context;
     private LayoutInflater layoutInflater;
+    public static String postId;
+    public static List<CommentModal> commentModals;
 
     public DashbordAdapter(List<DashModal> dashModals, Context context) {
         this.dashModals = dashModals;
@@ -86,6 +91,7 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
         Point size = new Point();
         display.getSize(size);
         int width = size.x;
+        int height = size.y;
         int sst = width - 20;
         dashBordHolder.catTxt.setText(dashModals.get(i).getCatNameStr());
         dashBordHolder.unameTxt.setText(dashModals.get(i).getUserNameStr());
@@ -150,7 +156,7 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
         String remove0 = intSocioCredit.substring(0, intSocioCredit.length() - 2);
         dashBordHolder.crditTxt.setText(remove0 + " Socio Credits");
         dashBordHolder.cmntTxt.setText(dashModals.get(i).getCommentStr() + " Comments");
-        String postId = dashModals.get(i).getPostIdStr();
+        postId = dashModals.get(i).getPostIdStr();
 
         String mVerify = dashModals.get(i).getmVeryfyStr();
         String mLike = dashModals.get(i).getmLikeStr();
@@ -236,10 +242,11 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
         }
 
         dashBordHolder.cmntTxt.setOnClickListener(v -> {
+            commentModals = dashModals.get(i).getCommentModals();
             if (loginStatus.equals("login")) {
                 Intent intent = new Intent(context, CommentActivity.class);
                 intent.putExtra("post_id", postId);
-                intent.putExtra("dash_modal", (Serializable) dashModals.get(i).getCommentModals());
+                intent.putExtra("dash_modal", (Serializable)commentModals);
                 context.startActivity(intent);
             } else {
                 context.startActivity(new Intent(context, LoginActivity.class));
@@ -308,35 +315,64 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
         }
         if (mediaSize == 1) {
             ImageView imageView = new ImageView(context);
-            Glide.with(context).load(dashModals.get(i).getMediaList().get(0)).into(imageView);
-            imageView.setPadding(0, 5, 0, 0);
-            imageView.setLayoutParams(new FrameLayout.LayoutParams(width, 400));
-            dashBordHolder.frameLayout.addView(imageView);
-            dashBordHolder.frameLayout.setOnClickListener(v->{
-                if (loginStatus.equals("login")) {
-                    Intent intent = new Intent(context, FullImageActivity.class);
-                    ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
-                    intent.putExtra("all_images",stringArrayList);
-                    intent.putExtra("header_name","Media Post");
-                    context.startActivity(intent);
-                }
-                else{
-                    context.startActivity(new Intent(context, LoginActivity.class));
-                }
-            });
+            tcking.github.com.giraffeplayer2.VideoView videoView = new tcking.github.com.giraffeplayer2.VideoView(context);
+            boolean b = isImageFile(dashModals.get(i).getMediaList().get(0));
+            if(!b) {
+                String vdoUrl = dashModals.get(i).getMediaList().get(0);
+                videoView.setVideoPath(vdoUrl);
+                dashBordHolder.frameLayout.addView(videoView);
+                videoView.setOnClickListener(v -> {
+                    if (loginStatus.equals("login")) {
+                        Intent intent = new Intent(context, PlayVideoActivity.class);
+                        intent.putExtra("video_url", vdoUrl);
+                        intent.putExtra("header_name", "Media Post");
+                        context.startActivity(intent);
+                    } else {
+                        context.startActivity(new Intent(context, LoginActivity.class));
+                    }
+                });
+            }
+            else {
+                //VideoView videoView = new VideoView(context);
+                Glide.with(context).load(dashModals.get(i).getMediaList().get(0)).override(600, 300).centerCrop().into(imageView);
+                imageView.setPadding(0, 5, 0, 0);
+                imageView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                dashBordHolder.frameLayout.addView(imageView);
+                dashBordHolder.frameLayout.setOnClickListener(v -> {
+                    if (loginStatus.equals("login")) {
+                        Intent intent = new Intent(context, FullImageActivity.class);
+                        ArrayList<String> stringArrayList = (ArrayList<String>) dashModals.get(i).getMediaList();
+                        intent.putExtra("all_images", stringArrayList);
+                        intent.putExtra("header_name", "Media Post");
+                        context.startActivity(intent);
+                    } else {
+                        context.startActivity(new Intent(context, LoginActivity.class));
+                    }
+                });
+            }
         }
         if (mediaSize == 2) {
             ImageView imageView = new ImageView(context);
             Glide.with(context).load(dashModals.get(i).getMediaList().get(0)).into(imageView);
             imageView.setPadding(0, 5, 0, 0);
             imageView.setLayoutParams(new FrameLayout.LayoutParams(width / 2,
-                    400));
+                    ViewGroup.LayoutParams.MATCH_PARENT));
             ImageView imageView1 = new ImageView(context);
             Glide.with(context).load(dashModals.get(i).getMediaList().get(1)).into(imageView1);
             imageView1.setLayoutParams(new FrameLayout.LayoutParams(width / 2,
-                    400));
+                    ViewGroup.LayoutParams.MATCH_PARENT));
             imageView1.setX(width / 2);
             imageView1.setPadding(5, 5, 0, 0);
+//            imageView.setScaleType(ImageView.ScaleType.CENTER);
+
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            imageView.setAdjustViewBounds(true);
+
+//            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+//            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+//            imageView.setScaleType(ImageView.ScaleType.FIT_END);
+//            imageView.setScaleType(ImageView.ScaleType.MATRIX);
+//            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             dashBordHolder.frameLayout.addView(imageView);
             dashBordHolder.frameLayout.addView(imageView1);
             imageView.setOnClickListener(v->{
@@ -893,5 +929,10 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
 //            }
 //        }
 //    };
+
+    public static boolean isImageFile(String path) {
+        String mimeType = URLConnection.guessContentTypeFromName(path);
+        return mimeType != null && mimeType.startsWith("image");
+    }
 
 }

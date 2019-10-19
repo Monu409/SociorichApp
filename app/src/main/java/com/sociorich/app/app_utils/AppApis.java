@@ -43,6 +43,9 @@ public interface AppApis {
     String POST_CATEGORY = BASE_URL+"api/v1/postcategory/all";
     String MY_LOAD_COMMENT = BASE_URL+"api/v1/post/";
     String USER_CONNECTIONS = BASE_URL+"api/v1/connections/user/";
+    String DELETE_COMMENT = BASE_URL+"api/v1/post/comment/";
+    String UPDATE_COMMENT = BASE_URL+"api/v1/post/comment/update";
+
 //    String OTHER_POST = BASE_URL+"api/v1/post/byuser/"
 //    api/v1/conn/request/cancel  api/v1/post/byuser/3d6659a7-1791-4180-a0c6-f0d1d127dba0?pageno=0
 

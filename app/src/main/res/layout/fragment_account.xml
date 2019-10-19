@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -11,7 +12,7 @@
             android:id="@+id/mail_icn"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/envelope"
+            app:srcCompat="@drawable/envelope"
             android:layout_centerVertical="true"
             />
         <TextView
@@ -32,7 +33,7 @@
             android:id="@+id/profile_icn"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/profile_icon"
+            app:srcCompat="@drawable/profile_icon"
             android:layout_centerVertical="true"
             />
         <TextView
@@ -88,7 +89,7 @@
             android:id="@+id/name_edit_icn"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/edit_icon"
+            app:srcCompat="@drawable/edit_icon"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             />
@@ -101,7 +102,7 @@
             android:id="@+id/call_icn"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/phone"
+            app:srcCompat="@drawable/phone"
             android:layout_centerVertical="true"
             />
         <TextView
@@ -160,7 +161,7 @@
             android:id="@+id/mob_edit_icn"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/edit_icon"
+            app:srcCompat="@drawable/edit_icon"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             />

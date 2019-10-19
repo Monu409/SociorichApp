@@ -22,7 +22,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/logo_rounded"
+                app:srcCompat="@drawable/logo_rounded"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"/>
 
@@ -93,7 +93,7 @@
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:src="@drawable/global_icon"/>
+                    app:srcCompat="@drawable/global_icon"/>
                 <TextView
                     android:id="@+id/globl_txt"
                     android:layout_width="wrap_content"
@@ -113,7 +113,7 @@
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:src="@drawable/mynetwork"/>
+                    app:srcCompat="@drawable/mynetwork"/>
                 <TextView
                     android:id="@+id/netwrk_txt"
                     android:layout_width="wrap_content"
@@ -132,7 +132,7 @@
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:src="@drawable/heart_icon"/>
+                    app:srcCompat="@drawable/heart_icon"/>
                 <TextView
                     android:id="@+id/intrst_txt"
                     android:layout_width="wrap_content"
@@ -178,7 +178,7 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
                 android:layout_height="30dp"
-                android:src="@drawable/edit_icon"/>
+                app:srcCompat="@drawable/edit_icon"/>
         </LinearLayout>
 
     </LinearLayout>

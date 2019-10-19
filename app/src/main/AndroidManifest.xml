@@ -101,14 +101,16 @@
         <activity android:name=".activities.TermsAndCondition"/>
         <activity android:name=".activities.CategoryActivity"/>
         <activity android:name=".activities.SocioOfDayActivity"/>
-        <service
-            android:name=".app_utils.SyncService"
-            android:enabled="true"
-            android:exported="true">
-        </service>
-        <service android:name = ".testpac.service"
-            android:enabled="true"
-            android:exported="true"/>
+        <activity android:name=".activities.PlayVideoActivity"/>
+        <activity android:name=".activities.Main"/>
+        <!--<service-->
+            <!--android:name=".app_utils.SyncService"-->
+            <!--android:enabled="true"-->
+            <!--android:exported="true">-->
+        <!--</service>-->
+        <!--<service android:name = ".testpac.service"-->
+            <!--android:enabled="true"-->
+            <!--android:exported="true"/>-->
     </application>
 
 </manifest>

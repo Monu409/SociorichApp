@@ -29,7 +29,7 @@ public class CreateAccActivity extends BaseActivity {
         loginTxt.setOnClickListener(v->startActivity(new Intent(this, LoginActivity.class)));
         String str1 = "Create your Account As";
         String penalty = " INDIVIDUAL";
-        String penalty2 = " ORGANISATION";
+        String penalty2 = " ORGANIZATION";
 
 
         String strb = "<b><font color='#ef633f'>"+ penalty +"</font></b>";

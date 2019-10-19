@@ -1,31 +1,27 @@
 package com.sociorich.app.app_utils;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.preference.PreferenceManager;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.text.Html;
 import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sociorich.app.activities.DashboardActivity;
-import com.sociorich.app.activities.LoginActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;

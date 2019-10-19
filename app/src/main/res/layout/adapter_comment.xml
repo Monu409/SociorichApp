@@ -52,6 +52,18 @@
                 android:layout_toRightOf="@+id/user_img"
                 android:layout_marginLeft="5dp"/>
 
+            <ImageView
+                android:id="@+id/menu_img"
+                android:layout_width="30dp"
+                android:layout_height="20dp"
+                card_view:srcCompat="@drawable/hori_dots"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/date_txt"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"
+                android:visibility="gone"
+                />
+
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>

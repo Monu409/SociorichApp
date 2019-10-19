@@ -41,16 +41,16 @@ public class ShowProfileActivity extends BaseActivity{
     private TextView intrextTxt, intrestAllTxt, soCrTxt, eqCrTxt, qualityTxt;
     private ImageView deleteBnrImg,edtBnrImg,bannerImg;
     private CircleImageView profileImg;
-    private Toolbar toolbar;
-    private CollapsingToolbarLayout collapsingToolbar;
-    private AppBarLayout appBarLayout;
-    private boolean appBarExpanded = true;
+//    private Toolbar toolbar;
+//    private CollapsingToolbarLayout collapsingToolbar;
+//    private AppBarLayout appBarLayout;
+//    private boolean appBarExpanded = true;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        toolbar = findViewById(R.id.anim_toolbar);
-        collapsingToolbar = findViewById(R.id.collapsing_toolbar);
-        appBarLayout = findViewById(R.id.appbar);
+//        toolbar = findViewById(R.id.anim_toolbar);
+//        collapsingToolbar = findViewById(R.id.collapsing_toolbar);
+//        appBarLayout = findViewById(R.id.appbar);
         soCrTxt = findViewById(R.id.so_cr_txt);
         eqCrTxt = findViewById(R.id.eq_cr_txt);
         bannerImg = findViewById(R.id.header);
@@ -66,29 +66,29 @@ public class ShowProfileActivity extends BaseActivity{
         viewPager.setAdapter(new SectionPagerAdapter(getSupportFragmentManager()));
         tabLayout.setupWithViewPager(viewPager);
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.landscape);
-        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+//        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.landscape);
+//        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+//
+//            @SuppressWarnings("ResourceType")
+//            @Override
+//            public void onGenerated(Palette palette) {
+//                int vibrantColor = palette.getVibrantColor(R.color.primary_500);
+//                collapsingToolbar.setContentScrimColor(vibrantColor);
+//                collapsingToolbar.setStatusBarScrimColor(R.color.black_trans80);
+//            }
+//        });
 
-            @SuppressWarnings("ResourceType")
-            @Override
-            public void onGenerated(Palette palette) {
-                int vibrantColor = palette.getVibrantColor(R.color.primary_500);
-                collapsingToolbar.setContentScrimColor(vibrantColor);
-                collapsingToolbar.setStatusBarScrimColor(R.color.black_trans80);
-            }
-        });
-
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (Math.abs(verticalOffset) > 200) {
-                    appBarExpanded = false;
-                } else {
-                    appBarExpanded = true;
-                }
-                invalidateOptionsMenu();
-            }
-        });
+//        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+//            @Override
+//            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+//                if (Math.abs(verticalOffset) > 200) {
+//                    appBarExpanded = false;
+//                } else {
+//                    appBarExpanded = true;
+//                }
+//                invalidateOptionsMenu();
+//            }
+//        });
 
     }
 
@@ -163,7 +163,8 @@ public class ShowProfileActivity extends BaseActivity{
                             String firstName = "";
                             if(response.has("displayName")) {
                                 firstName = response.getString("displayName");
-                                collapsingToolbar.setTitle(firstName);
+                                TextView username = findViewById(R.id.user_name);
+                                username.setText(firstName);
                             }
 
 

@@ -134,40 +134,7 @@ public class CommentActivity extends BaseActivity {
                 });
     }
 
-    private void checkVerifyAndInspire(String changeValue){
-        String postId = getIntent().getStringExtra("post_id");
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("postId",postId);
-            jsonObject.put("type","LIKE");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        AndroidNetworking
-                .post(MY_INSPIRE_VERIFY)
-                .addJSONObjectBody(jsonObject)
-                .addHeaders("authorization","Bearer "+token)
-                .setPriority(Priority.MEDIUM)
-                .build()
-                .getAsJSONObject(new JSONObjectRequestListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            String result = response.getString("result");
-                            if(result.equals("success")){
 
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onError(ANError anError) {
-
-                    }
-                });
-    }
 
     private void loadMoreComents(String pageNo){
         String identity = getIntent().getStringExtra("post_id");
@@ -192,6 +159,7 @@ public class CommentActivity extends BaseActivity {
                                 String displayName = user.getString("displayName");
                                 String dateTime = comment.getString("createdAt");
                                 String comntDate = ConstantMethods.getDateForComment(dateTime);
+                                String identity = comment.getString("identity");
 
                                 JSONObject profilePicObj = null;
 
@@ -205,6 +173,7 @@ public class CommentActivity extends BaseActivity {
                                 commentModal.setComntStr(commentStr);
                                 commentModal.setUserStr(displayName);
                                 commentModal.setTimeDateStr(comntDate);
+                                commentModal.setIdentity(identity);
 
                                 commentModals.add(commentModal);
 
