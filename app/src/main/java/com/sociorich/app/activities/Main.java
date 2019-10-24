@@ -28,7 +28,7 @@ public class Main extends AppCompatActivity {
 //            getSupportActionBar().setTitle("Staggered Grid");
 //        }
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.masonry_grid);
+//        mRecyclerView = (RecyclerView) findViewById(R.id.masonry_grid);
         mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
 
         MasonryAdapter adapter = new MasonryAdapter(this);

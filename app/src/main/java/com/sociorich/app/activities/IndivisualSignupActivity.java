@@ -1,5 +1,7 @@
 package com.sociorich.app.activities;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
@@ -12,11 +14,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.facebook.login.LoginManager;
 import com.sociorich.app.R;
 import com.sociorich.app.app_utils.ConstantMethods;
 
@@ -153,9 +158,11 @@ public class IndivisualSignupActivity extends BaseActivity {
                             String identity= null;
                             try {
                                 identity = response.getString("identity");
-                                Intent intent = new Intent(IndivisualSignupActivity.this, OtpSendActivity.class);
-                                intent.putExtra("user_id", identity);
-                                startActivity(intent);
+//                                Intent intent = new Intent(IndivisualSignupActivity.this, OtpSendActivity.class);
+//                                intent.putExtra("user_id", identity);
+//                                startActivity(intent);
+//                                Toast.makeText(IndivisualSignupActivity.this, "An Email has been sent to your id\nPlease Confirm", Toast.LENGTH_SHORT).show();
+                                alertDialogForLogout(IndivisualSignupActivity.this);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -204,5 +211,32 @@ public class IndivisualSignupActivity extends BaseActivity {
 
                     }
                 });
+    }
+
+    private void alertDialogForLogout(Context context){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+        builder1.setTitle("Login now");
+        builder1.setMessage("An Email has been sent to your email id\nPlease Confirm.");
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(IndivisualSignupActivity.this,LoginActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+        builder1.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
 }

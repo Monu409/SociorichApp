@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_main"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -33,8 +33,7 @@
                         android:layout_height="match_parent"
                         android:fitsSystemWindows="true"
                         android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/banner"
-                        />
+                        app:srcCompat="@drawable/banner" />
                     <ImageView
                         android:id="@+id/edt_bnr_img"
                         android:layout_width="35dp"
@@ -53,11 +52,7 @@
                         android:layout_marginBottom="10dp"
                         android:layout_marginRight="10dp"/>
 
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        app:srcCompat="@drawable/left_arrow"
-                        android:layout_margin="8dp"/>
+
 
                 </RelativeLayout>
                 <com.sociorich.app.app_utils.CircleImageView
@@ -243,6 +238,12 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <ImageView
+        android:id="@+id/left_arrow"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:srcCompat="@drawable/left_arrow"
+        android:layout_margin="8dp"/>
 
 
-</LinearLayout>
+</RelativeLayout>

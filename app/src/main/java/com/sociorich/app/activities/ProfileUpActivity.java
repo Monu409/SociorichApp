@@ -51,6 +51,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -85,13 +87,14 @@ public class ProfileUpActivity extends AppCompatActivity {
     String userToken;
     Map<String, String> interestMap = new HashMap<>();
     private ImageView showAllTxt;
-    private ImageView deleteBnrImg, edtBnrImg, bannerImg;
+    private ImageView deleteBnrImg, edtBnrImg, bannerImg,backArrow;
     private String clickImageView = "";
     private RelativeLayout qltyRel;
     String allIntrest = "";
     private JSONArray intrstCatArr = null;
     private String intrestCatAllValues = "";
     List<String> catIdForIntrest = new ArrayList<>();
+
 
 
     @Override
@@ -111,13 +114,15 @@ public class ProfileUpActivity extends AppCompatActivity {
         edtBnrImg = findViewById(R.id.edt_bnr_img);
         bannerImg = findViewById(R.id.header);
         qltyRel = findViewById(R.id.qlty_rel);
+        backArrow = findViewById(R.id.left_arrow);
+        backArrow.setOnClickListener(v->onBackPressed());
         userToken = ConstantMethods.getStringPreference("user_token", this);
         for (int i = 0; i < POST_CATEGORY_PROFILE_KEYS.length; i++) {
             interestMap.put(POST_CATEGORY_PROFILE_KEYS[i], POST_CATEGORY_PROFILE_VALUES[i]);
         }
         deleteBnrImg.setOnClickListener(db -> deleteBannerImage());
         edtBnrImg.setOnClickListener(db -> {
-            selectImage();
+            selectBanner();
             clickImageView = "banner";
         });
         qltyRel.setOnClickListener(q -> {
@@ -345,6 +350,45 @@ public class ProfileUpActivity extends AppCompatActivity {
     }
 
     private void selectImage() {
+        try {
+            PackageManager pm = getPackageManager();
+            int hasPerm = pm.checkPermission(Manifest.permission.CAMERA, getPackageName());
+            if (hasPerm == PackageManager.PERMISSION_GRANTED) {
+                final CharSequence[] options = {"Take Photo", "Choose From Gallery","Remove Photo", "Cancel"};
+                androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+                builder.setTitle("Select Option");
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        if (options[item].equals("Take Photo")) {
+                            dialog.dismiss();
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(intent, PICK_IMAGE_CAMERA);
+                        } else if (options[item].equals("Choose From Gallery")) {
+                            dialog.dismiss();
+                            Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            startActivityForResult(pickPhoto, PICK_IMAGE_GALLERY);
+                        }
+                        else if(options[item].equals("Remove Photo")){
+                            profileImg.setImageResource(R.drawable.avatar);
+                            File file = getFileFromDrawable();
+                            updateProfilePicture(file);
+                        }
+                        else if (options[item].equals("Cancel")) {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+                builder.show();
+            } else
+                Toast.makeText(this, "Camera Permission error", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(this, "Camera Permission error", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+
+    private void selectBanner() {
         try {
             PackageManager pm = getPackageManager();
             int hasPerm = pm.checkPermission(Manifest.permission.CAMERA, getPackageName());
@@ -627,5 +671,23 @@ public class ProfileUpActivity extends AppCompatActivity {
         super.onBackPressed();
         Intent intent = new Intent(this,DashboardActivity.class);
         startActivity(intent);
+    }
+
+    private File getFileFromDrawable(){
+        Bitmap bitmap= BitmapFactory.decodeResource(getResources(),
+                R.drawable.avatar);
+        File filesDir = getFilesDir();
+        File imageFile = new File(filesDir, "pro" + ".jpg");
+
+        OutputStream os;
+        try {
+            os = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+            Log.e(getClass().getSimpleName(), "Error writing bitmap", e);
+        }
+        return imageFile;
     }
 }

@@ -176,7 +176,7 @@
                     android:textSize="16sp"
                     />
 
-                <FrameLayout
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/image_grid"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
@@ -186,7 +186,7 @@
                     android:layout_marginRight="10dp"
                     >
 
-                </FrameLayout>
+                </androidx.recyclerview.widget.RecyclerView>
 
                 <VideoView
                     android:id="@+id/line_view"

@@ -1,6 +1,7 @@
 package com.sociorich.app.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -54,6 +55,15 @@ public class SplashActivity extends AppCompatActivity {
                 finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
+//        new Handler().postDelayed(new Runnable(){
+//            @Override
+//            public void run() {
+//                /* Create an Intent that will start the Menu-Activity. */
+//                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.sociorich.com/"));
+//                startActivity(browserIntent);
+//                finish();
+//            }
+//        }, SPLASH_DISPLAY_LENGTH);
     }
 
     public static boolean isImageFile(String path) {
