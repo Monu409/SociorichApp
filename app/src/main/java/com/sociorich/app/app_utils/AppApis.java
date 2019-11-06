@@ -45,10 +45,11 @@ public interface AppApis {
     String USER_CONNECTIONS = BASE_URL+"api/v1/connections/user/";
     String DELETE_COMMENT = BASE_URL+"api/v1/post/comment/";
     String UPDATE_COMMENT = BASE_URL+"api/v1/post/comment/update";
+    String EVENT_CREATE = BASE_URL+"api/v1/event/create";
+    String ALL_EVENT = BASE_URL+"api/v1/event/byuser/";
 
 //    String OTHER_POST = BASE_URL+"api/v1/post/byuser/"
 //    api/v1/conn/request/cancel  api/v1/post/byuser/3d6659a7-1791-4180-a0c6-f0d1d127dba0?pageno=0
-
 //    http://dev.sociorich.com/api/v1/post/global?pageno=http://dev.sociorich.com/api/v1/user/profile/5f73505f-4b5a-4beb-bad6-5060b549bd42/
 //    http://dev.sociorich.com/api/v1/user//coverpic
 }

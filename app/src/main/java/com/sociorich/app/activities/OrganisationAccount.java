@@ -90,7 +90,10 @@ public class OrganisationAccount extends BaseActivity {
         org_address = org_tvadress.getText().toString();
         String aboutOrStr = aboutOrgEdt.getText().toString();
         String orgnRnum = orgnRNumEdt.getText().toString();
-        if (org_name.equals("") || org_websitE.equals("") || org_incorpo.equals("") || org_address.equals("")|| aboutOrStr.equals("")) {
+        if(radioSexGroup.getCheckedRadioButtonId()==-1){
+            Toast.makeText(this, "Select any organization", Toast.LENGTH_SHORT).show();
+        }
+        else if (org_name.equals("") || org_websitE.equals("") || org_incorpo.equals("") || org_address.equals("")|| aboutOrStr.equals("")) {
             Toast.makeText(getApplicationContext(), "All field are mandatory", Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent(OrganisationAccount.this, AdminDetail.class);

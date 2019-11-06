@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -94,6 +95,7 @@ public class ProfileUpActivity extends AppCompatActivity {
     private JSONArray intrstCatArr = null;
     private String intrestCatAllValues = "";
     List<String> catIdForIntrest = new ArrayList<>();
+    private Button aboutBtn,postBtn,galryBtn,netwrkBtn;
 
 
 
@@ -128,6 +130,47 @@ public class ProfileUpActivity extends AppCompatActivity {
         qltyRel.setOnClickListener(q -> {
             Intent intent = new Intent(this, QualityActivity.class);
             startActivity(intent);
+        });
+
+        aboutBtn = findViewById(R.id.about_btn);
+        postBtn = findViewById(R.id.post_btn);
+        galryBtn = findViewById(R.id.gallery_btn);
+        netwrkBtn = findViewById(R.id.netwrk_btn);
+
+        aboutBtn.setOnClickListener(v->{
+            Intent intent = new Intent(this,ProfileDataFragActivity.class);
+            intent.putExtra("fr_name","About us");
+            intent.putExtra("crnt_usr","me");
+            startActivity(intent);
+        });
+        postBtn.setOnClickListener(v->{
+            Intent intent = new Intent(this,ProfileDataFragActivity.class);
+//            String userIdentity = getIntent().getStringExtra("user_identity");
+//            intent.putExtra("user_identity",userIdentity);
+            intent.putExtra("crnt_usr","me");
+            intent.putExtra("fr_name","Post");
+            startActivity(intent);
+        });
+        galryBtn.setOnClickListener(v->{
+            Intent intent = new Intent(this,ProfileDataFragActivity.class);
+//            String userIdentity = getIntent().getStringExtra("user_identity");
+//            intent.putExtra("user_identity",userIdentity);
+            intent.putExtra("crnt_usr","me");
+            intent.putExtra("fr_name","Gallery");
+            startActivity(intent);
+        });
+        netwrkBtn.setOnClickListener(v->{
+            String thisBtnName = netwrkBtn.getText().toString().trim();
+            if(thisBtnName.equals("Network")) {
+                Intent intent = new Intent(this,ProfileDataFragActivity.class);
+                intent.putExtra("crnt_usr","me");
+                intent.putExtra("fr_name","Network");
+                startActivity(intent);
+            }
+            else {
+                Intent intent = new Intent(this,EventsAvtivity.class);
+                startActivity(intent);
+            }
         });
 
 
@@ -173,30 +216,6 @@ public class ProfileUpActivity extends AppCompatActivity {
 
         viewPager.setAdapter(new SectionPagerAdapter(getSupportFragmentManager()));
         tabLayout.setupWithViewPager(viewPager);
-
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.landscape);
-//        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-//
-//            @SuppressWarnings("ResourceType")
-//            @Override
-//            public void onGenerated(Palette palette) {
-//                int vibrantColor = palette.getVibrantColor(R.color.primary_500);
-//                collapsingToolbar.setContentScrimColor(vibrantColor);
-//                collapsingToolbar.setStatusBarScrimColor(R.color.black_trans80);
-//            }
-//        });
-
-//        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-//            @Override
-//            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-//                if (Math.abs(verticalOffset) > 200) {
-//                    appBarExpanded = false;
-//                } else {
-//                    appBarExpanded = true;
-//                }
-//                invalidateOptionsMenu();
-//            }
-//        });
 
     }
 
@@ -513,6 +532,10 @@ public class ProfileUpActivity extends AppCompatActivity {
                                     firstName = response.getString("displayName");
                                     TextView username = findViewById(R.id.user_name);
                                     username.setText(firstName);
+                                }
+                                String profileType = response.getString("profileType");
+                                if(profileType.equals("ORG")){
+                                    netwrkBtn.setText("Events");
                                 }
                                 interestCategories = response.getJSONArray("interestCategories");
                                 intrstCatArr = interestCategories;

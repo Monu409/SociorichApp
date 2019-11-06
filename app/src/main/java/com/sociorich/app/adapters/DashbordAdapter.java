@@ -29,6 +29,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidnetworking.AndroidNetworking;
@@ -47,6 +50,7 @@ import com.sociorich.app.activities.ShowProfileActivity;
 import com.sociorich.app.app_utils.CircleImageView;
 import com.sociorich.app.app_utils.ConstantMethods;
 import com.sociorich.app.app_utils.SpannedGridLayoutManager;
+import com.sociorich.app.fragments.PostImageFragment;
 import com.sociorich.app.modals.CommentModal;
 import com.sociorich.app.modals.DashModal;
 import com.sociorich.app.testpac.CustomAdapter;
@@ -316,79 +320,102 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
         if (mediaSize==0) {
             dashBordHolder.frameLayout.setVisibility(View.GONE);
         }
-        SpannedGridLayoutManager manager = new SpannedGridLayoutManager(
-                new SpannedGridLayoutManager.GridSpanLookup() {
-                    @Override
-                    public SpannedGridLayoutManager.SpanInfo getSpanInfo(int position) {
-                        // Conditions for 2x2 items
-                        if (position % 6 == 0 || position % 6 == 4) {
-                            return new SpannedGridLayoutManager.SpanInfo(2, 2);
-                        } else {
-                            return new SpannedGridLayoutManager.SpanInfo(1, 1);
-                        }
+
+//        Fragment fragment = new PostImageFragment();
+//        FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+//        FragmentTransaction fragmentTransaction =
+//                fragmentManager.beginTransaction();
+//        fragmentTransaction.add(R.id.image_grid, fragment);
+//        fragmentTransaction.commit();
+//        SpannedGridLayoutManager manager = new SpannedGridLayoutManager(
+//                new SpannedGridLayoutManager.GridSpanLookup() {
+//                    @Override
+//                    public SpannedGridLayoutManager.SpanInfo getSpanInfo(int position) {
+//                        // Conditions for 2x2 items
+//                        if (position % 6 == 0 || position % 6 == 4) {
+//                            return new SpannedGridLayoutManager.SpanInfo(2, 2);
+//                        } else {
+//                            return new SpannedGridLayoutManager.SpanInfo(1, 1);
+//                        }
+//                    }
+//                },
+//                3, // number of columns
+//                1f // how big is default item
+//        );
+
+//        dashBordHolder.frameLayout.setLayoutManager(manager); // set LayoutManager to RecyclerView
+//        //  call the constructor of CustomAdapter to send the reference and data to Adapter
+//        CustomAdapter customAdapter = new CustomAdapter(context,dashModals.get(i).getMediaList());
+//        dashBordHolder.frameLayout.setAdapter(customAdapter);
+
+
+        if (mediaSize == 1) {
+            ImageView imageView = new ImageView(context);
+            tcking.github.com.giraffeplayer2.VideoView videoView = new tcking.github.com.giraffeplayer2.VideoView(context);
+            boolean b = isImageFile(dashModals.get(i).getMediaList().get(0));
+            if(!b) {
+                String vdoUrl = dashModals.get(i).getMediaList().get(0);
+                videoView.setVideoPath(vdoUrl);
+                dashBordHolder.frameLayout.addView(videoView);
+                videoView.setOnClickListener(v -> {
+                    if (loginStatus.equals("login")) {
+                        Intent intent = new Intent(context, PlayVideoActivity.class);
+                        intent.putExtra("video_url", vdoUrl);
+                        intent.putExtra("header_name", "Media Post");
+                        context.startActivity(intent);
+                    } else {
+                        context.startActivity(new Intent(context, LoginActivity.class));
                     }
-                },
-                3, // number of columns
-                1f // how big is default item
-        );
-        dashBordHolder.frameLayout.setLayoutManager(manager); // set LayoutManager to RecyclerView
-        //  call the constructor of CustomAdapter to send the reference and data to Adapter
-        CustomAdapter customAdapter = new CustomAdapter(context,dashModals.get(i).getMediaList());
-        dashBordHolder.frameLayout.setAdapter(customAdapter);
-//        if (mediaSize == 1) {
-//            ImageView imageView = new ImageView(context);
-//            tcking.github.com.giraffeplayer2.VideoView videoView = new tcking.github.com.giraffeplayer2.VideoView(context);
-//            boolean b = isImageFile(dashModals.get(i).getMediaList().get(0));
-//            if(!b) {
-//                String vdoUrl = dashModals.get(i).getMediaList().get(0);
-//                videoView.setVideoPath(vdoUrl);
-//                dashBordHolder.frameLayout.addView(videoView);
-//                videoView.setOnClickListener(v -> {
-//                    if (loginStatus.equals("login")) {
-//                        Intent intent = new Intent(context, PlayVideoActivity.class);
-//                        intent.putExtra("video_url", vdoUrl);
-//                        intent.putExtra("header_name", "Media Post");
-//                        context.startActivity(intent);
-//                    } else {
-//                        context.startActivity(new Intent(context, LoginActivity.class));
-//                    }
-//                });
-//            }
-//            else {
-//                //VideoView videoView = new VideoView(context);
-//                Glide.with(context).load(dashModals.get(i).getMediaList().get(0)).override(600, 300).centerCrop().into(imageView);
-//                imageView.setPadding(0, 5, 0, 0);
-//                imageView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-//                dashBordHolder.frameLayout.addView(imageView);
-//                dashBordHolder.frameLayout.setOnClickListener(v -> {
-//                    if (loginStatus.equals("login")) {
-//                        Intent intent = new Intent(context, FullImageActivity.class);
-//                        ArrayList<String> stringArrayList = (ArrayList<String>) dashModals.get(i).getMediaList();
-//                        intent.putExtra("all_images", stringArrayList);
-//                        intent.putExtra("header_name", "Media Post");
-//                        context.startActivity(intent);
-//                    } else {
-//                        context.startActivity(new Intent(context, LoginActivity.class));
-//                    }
-//                });
-//            }
-//        }
-//        if (mediaSize == 2) {
+                });
+            }
+            else {
+                //VideoView videoView = new VideoView(context);
+                Glide.with(context).load(dashModals.get(i).getMediaList().get(0)).override(600, 300).centerCrop().into(imageView);
+                imageView.setPadding(0, 5, 0, 0);
+                imageView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                dashBordHolder.frameLayout.addView(imageView);
+                dashBordHolder.frameLayout.setOnClickListener(v -> {
+                    if (loginStatus.equals("login")) {
+                        Intent intent = new Intent(context, FullImageActivity.class);
+                        ArrayList<String> stringArrayList = (ArrayList<String>) dashModals.get(i).getMediaList();
+                        intent.putExtra("all_images", stringArrayList);
+                        intent.putExtra("header_name", "Media Post");
+                        context.startActivity(intent);
+                    } else {
+                        context.startActivity(new Intent(context, LoginActivity.class));
+                    }
+                });
+            }
+        }
+        if (mediaSize == 2) {
+            ImageView imageView = new ImageView(context);
+            imageView.setImageResource(R.drawable.img3);
+            imageView.setPadding(0,5,0,0);
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            imageView.setLayoutParams(new FrameLayout.LayoutParams(width/2, 400));
+            ImageView imageView1 = new ImageView(context);
+            imageView1.setImageResource(R.drawable.img3);
+            imageView1.setScaleType(ImageView.ScaleType.FIT_XY);
+            imageView1.setLayoutParams(new FrameLayout.LayoutParams(width/2, 400));
+            imageView1.setX(width/2);
+            imageView1.setPadding(5,5,0,0);
+            dashBordHolder.frameLayout.addView(imageView);
+            dashBordHolder.frameLayout.addView(imageView1);
+
+
 //            ImageView imageView = new ImageView(context);
 //            Glide.with(context).load(dashModals.get(i).getMediaList().get(0)).into(imageView);
 //            imageView.setPadding(0, 5, 0, 0);
-//            imageView.setLayoutParams(new FrameLayout.LayoutParams(width / 2,
-//                    ViewGroup.LayoutParams.MATCH_PARENT));
+//            imageView.setLayoutParams(new FrameLayout.LayoutParams(sst / 2, 400));
 //            ImageView imageView1 = new ImageView(context);
 //            Glide.with(context).load(dashModals.get(i).getMediaList().get(1)).into(imageView1);
-//            imageView1.setLayoutParams(new FrameLayout.LayoutParams(width / 2,
-//                    ViewGroup.LayoutParams.MATCH_PARENT));
+//            imageView1.setLayoutParams(new FrameLayout.LayoutParams(sst / 2, 400));
 //            imageView1.setX(width / 2);
 //            imageView1.setPadding(5, 5, 0, 0);
 ////            imageView.setScaleType(ImageView.ScaleType.CENTER);
 //
-//            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-//            imageView.setAdjustViewBounds(true);
+////            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+////            imageView.setAdjustViewBounds(true);
 //
 ////            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 ////            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -397,189 +424,189 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
 ////            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 //            dashBordHolder.frameLayout.addView(imageView);
 //            dashBordHolder.frameLayout.addView(imageView1);
-//            imageView.setOnClickListener(v->{
-//                if (loginStatus.equals("login")) {
-//                    Intent intent = new Intent(context, FullImageActivity.class);
-//                    ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
-//                    intent.putExtra("all_images",stringArrayList);
-//                    intent.putExtra("header_name","Media Post");
-//                    intent.putExtra("image_position",0);
-//                    context.startActivity(intent);
-//                }
-//                else{
-//                    context.startActivity(new Intent(context, LoginActivity.class));
-//                }
-//            });
-//            imageView1.setOnClickListener(v->{
-//                if (loginStatus.equals("login")) {
-//                    Intent intent = new Intent(context, FullImageActivity.class);
-//                    ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
-//                    intent.putExtra("all_images",stringArrayList);
-//                    intent.putExtra("header_name","Media Post");
-//                    intent.putExtra("image_position",1);
-//                    context.startActivity(intent);
-//                }
-//                else{
-//                    context.startActivity(new Intent(context, LoginActivity.class));
-//                }
-//            });
-//        }
-//        if (mediaSize == 3) {
-//            ImageView imageView = new ImageView(context);
-//            Glide.with(context).load(dashModals.get(i).getMediaList().get(0)).into(imageView);
-//            imageView.setPadding(0, 5, 0, 0);
-//            imageView.setLayoutParams(new FrameLayout.LayoutParams(width / 2,
-//                    400));
-//            ImageView imageView1 = new ImageView(context);
-//            Glide.with(context).load(dashModals.get(i).getMediaList().get(1)).into(imageView1);
-//            imageView1.setX(width / 2);
-//            imageView1.setPadding(5, 5, 0, 0);
-//            imageView1.setLayoutParams(new FrameLayout.LayoutParams(width / 2,
-//                    200));
-//            ImageView imageView2 = new ImageView(context);
-//            Glide.with(context).load(dashModals.get(i).getMediaList().get(2)).into(imageView2);
-//            imageView2.setX(width / 2);
-//            imageView2.setY(200);
-//            imageView2.setPadding(5, 5, 0, 0);
-//            imageView2.setLayoutParams(new FrameLayout.LayoutParams(width / 2,
-//                    200));
-//            dashBordHolder.frameLayout.addView(imageView);
-//            dashBordHolder.frameLayout.addView(imageView1);
-//            dashBordHolder.frameLayout.addView(imageView2);
-//            imageView.setOnClickListener(v->{
-//                if (loginStatus.equals("login")) {
-//                    Intent intent = new Intent(context, FullImageActivity.class);
-//                    ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
-//                    intent.putExtra("all_images",stringArrayList);
-//                    intent.putExtra("header_name","Media Post");
-//                    intent.putExtra("image_position",0);
-//                    context.startActivity(intent);
-//                }
-//                else{
-//                    context.startActivity(new Intent(context, LoginActivity.class));
-//                }
-//            });
-//            imageView1.setOnClickListener(v->{
-//                if (loginStatus.equals("login")) {
-//                    Intent intent = new Intent(context, FullImageActivity.class);
-//                    ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
-//                    intent.putExtra("all_images",stringArrayList);
-//                    intent.putExtra("header_name","Media Post");
-//                    intent.putExtra("image_position",1);
-//                    context.startActivity(intent);
-//                }
-//                else{
-//                    context.startActivity(new Intent(context, LoginActivity.class));
-//                }
-//            });
-//            imageView2.setOnClickListener(v->{
-//                if (loginStatus.equals("login")) {
-//                    Intent intent = new Intent(context, FullImageActivity.class);
-//                    ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
-//                    intent.putExtra("all_images",stringArrayList);
-//                    intent.putExtra("header_name","Media Post");
-//                    intent.putExtra("image_position",2);
-//                    context.startActivity(intent);
-//                }
-//                else{
-//                    context.startActivity(new Intent(context, LoginActivity.class));
-//                }
-//            });
-//        }
-//        if (mediaSize >= 4) {
-//            ImageView imageView = new ImageView(context);
-//            Glide.with(context).load(dashModals.get(i).getMediaList().get(0)).into(imageView);
-//            imageView.setPadding(0, 5, 0, 0);
-//            imageView.setLayoutParams(new FrameLayout.LayoutParams(sst / 2, 400));
-//            //x=200,y==0
-//            ImageView imageView1 = new ImageView(context);
-//            Glide.with(context).load(dashModals.get(i).getMediaList().get(1)).into(imageView1);
-//            imageView1.setX(sst / 2);
-//            imageView1.setPadding(2, 5, 0, 0);
-//            imageView1.setLayoutParams(new FrameLayout.LayoutParams(sst / 2, 400 / 3));
-//
-//            ImageView imageView2 = new ImageView(context);
-//            Glide.with(context).load(dashModals.get(i).getMediaList().get(2)).into(imageView2);
-//            imageView2.setX(sst / 2);
-//            imageView2.setY(400 / 3);
-//            imageView2.setPadding(2, 5, 0, 0);
-//            imageView2.setLayoutParams(new FrameLayout.LayoutParams(sst / 2, 400 / 3));
-//
-//            ImageView imageView3 = new ImageView(context);
-//            Glide.with(context).load(dashModals.get(i).getMediaList().get(3)).into(imageView3);
-//            imageView3.setX(sst / 2);
-//            imageView3.setY((400 / 3 + 400 / 3));
-//            imageView3.setPadding(2, 5, 0, 0);
-//            imageView3.setLayoutParams(new FrameLayout.LayoutParams(sst / 2, 400 / 3));
-//
-//            TextView textView = new TextView(context);
-//            int plusImages = dashModals.get(i).getMediaList().size()-4;
-//            textView.setText("+ "+plusImages);
-//            textView.setX(sst / 2);
-//            textView.setTextColor(Color.parseColor("#ef633f"));
-//            textView.setTypeface(null, Typeface.BOLD);
-//            textView.setY(400 / 3 + 400 / 3);
-//            textView.setGravity(Gravity.CENTER);
-//            textView.setTextSize(20);
-//            textView.setLayoutParams(new FrameLayout.LayoutParams(sst / 2, 400 / 3));
-//            dashBordHolder.frameLayout.addView(imageView);
-//            dashBordHolder.frameLayout.addView(imageView1);
-//            dashBordHolder.frameLayout.addView(imageView2);
-//            dashBordHolder.frameLayout.addView(imageView3);
-//            dashBordHolder.frameLayout.addView(textView);
-//            imageView.setOnClickListener(v->{
-//                if (loginStatus.equals("login")) {
-//                    Intent intent = new Intent(context, FullImageActivity.class);
-//                    ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
-//                    intent.putExtra("all_images",stringArrayList);
-//                    intent.putExtra("header_name","Media Post");
-//                    intent.putExtra("image_position",0);
-//                    context.startActivity(intent);
-//                }
-//                else{
-//                    context.startActivity(new Intent(context, LoginActivity.class));
-//                }
-//            });
-//            imageView1.setOnClickListener(v->{
-//                if (loginStatus.equals("login")) {
-//                    Intent intent = new Intent(context, FullImageActivity.class);
-//                    ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
-//                    intent.putExtra("all_images",stringArrayList);
-//                    intent.putExtra("header_name","Media Post");
-//                    intent.putExtra("image_position",1);
-//                    context.startActivity(intent);
-//                }
-//                else{
-//                    context.startActivity(new Intent(context, LoginActivity.class));
-//                }
-//            });
-//            imageView2.setOnClickListener(v->{
-//                if (loginStatus.equals("login")) {
-//                    Intent intent = new Intent(context, FullImageActivity.class);
-//                    ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
-//                    intent.putExtra("all_images",stringArrayList);
-//                    intent.putExtra("header_name","Media Post");
-//                    intent.putExtra("image_position",2);
-//                    context.startActivity(intent);
-//                }
-//                else{
-//                    context.startActivity(new Intent(context, LoginActivity.class));
-//                }
-//            });
-//            imageView3.setOnClickListener(v->{
-//                if (loginStatus.equals("login")) {
-//                    Intent intent = new Intent(context, FullImageActivity.class);
-//                    ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
-//                    intent.putExtra("all_images",stringArrayList);
-//                    intent.putExtra("header_name","Media Post");
-//                    intent.putExtra("image_position",3);
-//                    context.startActivity(intent);
-//                }
-//                else{
-//                    context.startActivity(new Intent(context, LoginActivity.class));
-//                }
-//            });
-//        }
+            imageView.setOnClickListener(v->{
+                if (loginStatus.equals("login")) {
+                    Intent intent = new Intent(context, FullImageActivity.class);
+                    ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
+                    intent.putExtra("all_images",stringArrayList);
+                    intent.putExtra("header_name","Media Post");
+                    intent.putExtra("image_position",0);
+                    context.startActivity(intent);
+                }
+                else{
+                    context.startActivity(new Intent(context, LoginActivity.class));
+                }
+            });
+            imageView1.setOnClickListener(v->{
+                if (loginStatus.equals("login")) {
+                    Intent intent = new Intent(context, FullImageActivity.class);
+                    ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
+                    intent.putExtra("all_images",stringArrayList);
+                    intent.putExtra("header_name","Media Post");
+                    intent.putExtra("image_position",1);
+                    context.startActivity(intent);
+                }
+                else{
+                    context.startActivity(new Intent(context, LoginActivity.class));
+                }
+            });
+        }
+        if (mediaSize == 3) {
+            ImageView imageView = new ImageView(context);
+            Glide.with(context).load(dashModals.get(i).getMediaList().get(0)).into(imageView);
+            imageView.setPadding(0, 5, 0, 0);
+            imageView.setLayoutParams(new FrameLayout.LayoutParams(width / 2,
+                    400));
+            ImageView imageView1 = new ImageView(context);
+            Glide.with(context).load(dashModals.get(i).getMediaList().get(1)).into(imageView1);
+            imageView1.setX(width / 2);
+            imageView1.setPadding(5, 5, 0, 0);
+            imageView1.setLayoutParams(new FrameLayout.LayoutParams(width / 2,
+                    200));
+            ImageView imageView2 = new ImageView(context);
+            Glide.with(context).load(dashModals.get(i).getMediaList().get(2)).into(imageView2);
+            imageView2.setX(width / 2);
+            imageView2.setY(200);
+            imageView2.setPadding(5, 5, 0, 0);
+            imageView2.setLayoutParams(new FrameLayout.LayoutParams(width / 2,
+                    200));
+            dashBordHolder.frameLayout.addView(imageView);
+            dashBordHolder.frameLayout.addView(imageView1);
+            dashBordHolder.frameLayout.addView(imageView2);
+            imageView.setOnClickListener(v->{
+                if (loginStatus.equals("login")) {
+                    Intent intent = new Intent(context, FullImageActivity.class);
+                    ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
+                    intent.putExtra("all_images",stringArrayList);
+                    intent.putExtra("header_name","Media Post");
+                    intent.putExtra("image_position",0);
+                    context.startActivity(intent);
+                }
+                else{
+                    context.startActivity(new Intent(context, LoginActivity.class));
+                }
+            });
+            imageView1.setOnClickListener(v->{
+                if (loginStatus.equals("login")) {
+                    Intent intent = new Intent(context, FullImageActivity.class);
+                    ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
+                    intent.putExtra("all_images",stringArrayList);
+                    intent.putExtra("header_name","Media Post");
+                    intent.putExtra("image_position",1);
+                    context.startActivity(intent);
+                }
+                else{
+                    context.startActivity(new Intent(context, LoginActivity.class));
+                }
+            });
+            imageView2.setOnClickListener(v->{
+                if (loginStatus.equals("login")) {
+                    Intent intent = new Intent(context, FullImageActivity.class);
+                    ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
+                    intent.putExtra("all_images",stringArrayList);
+                    intent.putExtra("header_name","Media Post");
+                    intent.putExtra("image_position",2);
+                    context.startActivity(intent);
+                }
+                else{
+                    context.startActivity(new Intent(context, LoginActivity.class));
+                }
+            });
+        }
+        if (mediaSize >= 4) {
+            ImageView imageView = new ImageView(context);
+            Glide.with(context).load(dashModals.get(i).getMediaList().get(0)).into(imageView);
+            imageView.setPadding(0, 5, 0, 0);
+            imageView.setLayoutParams(new FrameLayout.LayoutParams(sst / 2, 400));
+            //x=200,y==0
+            ImageView imageView1 = new ImageView(context);
+            Glide.with(context).load(dashModals.get(i).getMediaList().get(1)).into(imageView1);
+            imageView1.setX(sst / 2);
+            imageView1.setPadding(2, 5, 0, 0);
+            imageView1.setLayoutParams(new FrameLayout.LayoutParams(sst / 2, 400 / 3));
+
+            ImageView imageView2 = new ImageView(context);
+            Glide.with(context).load(dashModals.get(i).getMediaList().get(2)).into(imageView2);
+            imageView2.setX(sst / 2);
+            imageView2.setY(400 / 3);
+            imageView2.setPadding(2, 5, 0, 0);
+            imageView2.setLayoutParams(new FrameLayout.LayoutParams(sst / 2, 400 / 3));
+
+            ImageView imageView3 = new ImageView(context);
+            Glide.with(context).load(dashModals.get(i).getMediaList().get(3)).into(imageView3);
+            imageView3.setX(sst / 2);
+            imageView3.setY((400 / 3 + 400 / 3));
+            imageView3.setPadding(2, 5, 0, 0);
+            imageView3.setLayoutParams(new FrameLayout.LayoutParams(sst / 2, 400 / 3));
+
+            TextView textView = new TextView(context);
+            int plusImages = dashModals.get(i).getMediaList().size()-4;
+            textView.setText("+ "+plusImages);
+            textView.setX(sst / 2);
+            textView.setTextColor(Color.parseColor("#ef633f"));
+            textView.setTypeface(null, Typeface.BOLD);
+            textView.setY(400 / 3 + 400 / 3);
+            textView.setGravity(Gravity.CENTER);
+            textView.setTextSize(20);
+            textView.setLayoutParams(new FrameLayout.LayoutParams(sst / 2, 400 / 3));
+            dashBordHolder.frameLayout.addView(imageView);
+            dashBordHolder.frameLayout.addView(imageView1);
+            dashBordHolder.frameLayout.addView(imageView2);
+            dashBordHolder.frameLayout.addView(imageView3);
+            dashBordHolder.frameLayout.addView(textView);
+            imageView.setOnClickListener(v->{
+                if (loginStatus.equals("login")) {
+                    Intent intent = new Intent(context, FullImageActivity.class);
+                    ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
+                    intent.putExtra("all_images",stringArrayList);
+                    intent.putExtra("header_name","Media Post");
+                    intent.putExtra("image_position",0);
+                    context.startActivity(intent);
+                }
+                else{
+                    context.startActivity(new Intent(context, LoginActivity.class));
+                }
+            });
+            imageView1.setOnClickListener(v->{
+                if (loginStatus.equals("login")) {
+                    Intent intent = new Intent(context, FullImageActivity.class);
+                    ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
+                    intent.putExtra("all_images",stringArrayList);
+                    intent.putExtra("header_name","Media Post");
+                    intent.putExtra("image_position",1);
+                    context.startActivity(intent);
+                }
+                else{
+                    context.startActivity(new Intent(context, LoginActivity.class));
+                }
+            });
+            imageView2.setOnClickListener(v->{
+                if (loginStatus.equals("login")) {
+                    Intent intent = new Intent(context, FullImageActivity.class);
+                    ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
+                    intent.putExtra("all_images",stringArrayList);
+                    intent.putExtra("header_name","Media Post");
+                    intent.putExtra("image_position",2);
+                    context.startActivity(intent);
+                }
+                else{
+                    context.startActivity(new Intent(context, LoginActivity.class));
+                }
+            });
+            imageView3.setOnClickListener(v->{
+                if (loginStatus.equals("login")) {
+                    Intent intent = new Intent(context, FullImageActivity.class);
+                    ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
+                    intent.putExtra("all_images",stringArrayList);
+                    intent.putExtra("header_name","Media Post");
+                    intent.putExtra("image_position",3);
+                    context.startActivity(intent);
+                }
+                else{
+                    context.startActivity(new Intent(context, LoginActivity.class));
+                }
+            });
+        }
     }
 
     @Override
@@ -594,7 +621,7 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
         public CircleImageView userProfileImg;
         private LinearLayout inspireLay, varifyLay, rwrdLay, shareLay;
         public ImageView inspireImg, verifyImg, vMenuImg;
-        RecyclerView frameLayout;
+        LinearLayout frameLayout;
         Button sendRwrd, cnclRwrd;
         EditText rwrdEdt;
         RelativeLayout rewadrLay1,shareView;

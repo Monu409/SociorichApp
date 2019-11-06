@@ -176,17 +176,28 @@
                     android:textSize="16sp"
                     />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/image_grid"
+<!--                <androidx.recyclerview.widget.RecyclerView-->
+<!--                    android:id="@+id/image_grid"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="200dp"-->
+<!--                    android:layout_below="@+id/des_txt"-->
+<!--                    android:layout_centerHorizontal="true"-->
+<!--                    android:layout_marginLeft="10dp"-->
+<!--                    android:layout_marginRight="10dp"-->
+<!--                    >-->
+
+<!--                </androidx.recyclerview.widget.RecyclerView>-->
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
+                    android:id="@+id/image_grid"
+                    android:orientation="vertical"
                     android:layout_below="@+id/des_txt"
-                    android:layout_centerHorizontal="true"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    >
+                    android:layout_marginRight="10dp">
 
-                </androidx.recyclerview.widget.RecyclerView>
+                </LinearLayout>
 
                 <VideoView
                     android:id="@+id/line_view"

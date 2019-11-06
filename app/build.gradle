@@ -90,6 +90,7 @@ dependencies {
     implementation 'com.yashoid:instacropper:1.0.6'
     implementation 'com.github.tcking:giraffeplayer2:0.1.25-lazyLoad'
     implementation 'com.felipecsl.asymmetricgridview:library:2.0.1'
+    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 }
 apply plugin: 'com.google.gms.google-services'
 repositories {

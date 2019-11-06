@@ -7,11 +7,11 @@
     android:background="#d3d3d3"
     android:orientation="vertical">
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/parent_scroll"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+<!--    <androidx.core.widget.NestedScrollView-->
+<!--        android:id="@+id/parent_scroll"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:fillViewport="true">-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -219,6 +219,67 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:orientation="vertical"
+                    android:background="#ffffff"
+                    android:layout_marginTop="5dp">
+                    <Button
+                        android:id="@+id/about_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:text="About"
+                        android:textColor="#ffffff"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="5dp"
+                        android:textSize="17sp"
+                        android:background="@drawable/round_btn_orange"/>
+                    <Button
+                        android:id="@+id/post_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:textStyle="bold"
+                        android:textSize="17sp"
+                        android:text="Post"
+                        android:textColor="#ffffff"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/round_btn_orange"/>
+
+                    <Button
+                        android:id="@+id/gallery_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:textStyle="bold"
+                        android:textSize="17sp"
+                        android:text="Gallery"
+                        android:textColor="#ffffff"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/round_btn_orange"/>
+
+                    <Button
+                        android:id="@+id/netwrk_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:textStyle="bold"
+                        android:textSize="17sp"
+                        android:text="Network"
+                        android:textColor="#ffffff"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/round_btn_orange"/>
+
+
+                </LinearLayout>
+
+
             </LinearLayout>
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_layout"
@@ -226,6 +287,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:background="#ffffff"
+                android:visibility="gone"
                 >
             </com.google.android.material.tabs.TabLayout>
             <com.sociorich.app.app_utils.CustomViewPager
@@ -233,10 +295,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#ffffff"
+                android:visibility="gone"
                 />
 
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+<!--    </androidx.core.widget.NestedScrollView>-->
 
     <ImageView
         android:id="@+id/left_arrow"

@@ -467,15 +467,24 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                     JSONObject ob1j = new JSONObject(response);
                     username = ob1j.getString("displayName");
                     identity = ob1j.getString("identity");
+                    ConstantMethods.saveUserID(LoginActivity.this, identity);
+                    String profileType = ob1j.getString("profileType");
                     String displayName = ob1j.getString("displayName");
                     String phoneNo = ob1j.getString("phoneNo");
                     String email = ob1j.getString("email");
-                    String firstName = ob1j.getString("firstName");
-                    ConstantMethods.setStringPreference("first_name",firstName,LoginActivity.this);
-                    ConstantMethods.setStringPreference("display_name_prif",displayName,LoginActivity.this);
-                    ConstantMethods.setStringPreference("phone_no_prif",phoneNo,LoginActivity.this);
-                    ConstantMethods.setStringPreference("email_prif",email,LoginActivity.this);
-                    ConstantMethods.saveUserID(LoginActivity.this, identity);
+                    if(profileType.equals("INDV")) {
+                        String firstName = ob1j.getString("firstName");
+                        ConstantMethods.setStringPreference("first_name", firstName, LoginActivity.this);
+                    }
+                    else if(profileType.equals("ORG")){
+                        JSONObject adminObj = ob1j.getJSONObject("admin");
+                        String firstName = adminObj.getString("name");
+                        ConstantMethods.setStringPreference("first_name", firstName, LoginActivity.this);
+                    }
+                    ConstantMethods.setStringPreference("display_name_prif", displayName, LoginActivity.this);
+                    ConstantMethods.setStringPreference("phone_no_prif", phoneNo, LoginActivity.this);
+                    ConstantMethods.setStringPreference("email_prif", email, LoginActivity.this);
+
                     //   Toast.makeText(getApplicationContext(),"Invalid username or password-2289",Toast.LENGTH_SHORT).show();
                     Intent intent_call = new Intent(LoginActivity.this, DashboardActivity.class);
                     intent_call.addFlags(intent_call.FLAG_ACTIVITY_CLEAR_TOP);

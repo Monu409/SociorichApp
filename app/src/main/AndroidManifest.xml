@@ -103,8 +103,9 @@
         <activity android:name=".activities.SocioOfDayActivity"/>
         <activity android:name=".activities.PlayVideoActivity"/>
         <activity android:name=".activities.WebAppActivity"/>
-        <activity android:name=".testpac.MainActivity"/>
-        <activity android:name=".testpac.SecondActivity"/>
+        <activity android:name=".activities.ProfileDataFragActivity"/>
+        <activity android:name=".activities.EventsAvtivity"/>
+        <activity android:name=".activities.CreateEventActivity"/>
         <!--<service-->
             <!--android:name=".app_utils.SyncService"-->
             <!--android:enabled="true"-->

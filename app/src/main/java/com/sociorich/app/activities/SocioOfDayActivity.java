@@ -34,7 +34,7 @@ public class SocioOfDayActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ConstantMethods.setTitleAndBack(this,"Socio of the Day");
+        ConstantMethods.setTitleAndBack(this,"Socio of the Week");
         getBannerData();
     }
 
@@ -117,14 +117,16 @@ public class SocioOfDayActivity extends BaseActivity {
                                 String title = postObj.getString("title");
                                 JSONObject profileObj = bannerObject.getJSONObject("userProfile");
                                 String displayName = profileObj.getString("displayName");
-                                String socioMoneyBalance = profileObj.getString("socioMoneyBalance");
-                                String nowBalance = socioMoneyBalance.substring(0, socioMoneyBalance.length() - 2);
+//                                String socioMoneyBalance = profileObj.getString("socioMoneyBalance");
+                                JSONObject socioMoneyObj = bannerObject.getJSONObject("sotwPost");
+                                String socioMonetStr = socioMoneyObj.getString("socioMoney");
+                                String socioMoneyBalance = socioMonetStr.substring(0, socioMonetStr.length() - 2);
                                 String categoryId = postObj.getString("categoryId");
                                 String catValue = DashboardActivity.catMap.get(categoryId);
                                 socoDayModal.setCatTxt(catValue);
                                 socoDayModal.setDesStr(title);
                                 socoDayModal.setImgUrl(urlImg);
-                                socoDayModal.setSocoCrdt(nowBalance);
+                                socoDayModal.setSocoCrdt(socioMoneyBalance);
                                 socoDayModal.setuName(displayName);
                                 socoDayModals.add(socoDayModal);
                             } catch (JSONException e) {

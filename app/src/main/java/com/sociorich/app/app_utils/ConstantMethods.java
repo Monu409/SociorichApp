@@ -1,5 +1,6 @@
 package com.sociorich.app.app_utils;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,7 +13,10 @@ import android.text.Html;
 import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +33,8 @@ import org.json.JSONObject;
 import java.lang.reflect.Type;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -230,6 +236,70 @@ public class ConstantMethods {
 
                     }
                 });
+    }
+
+    public static void setDate(EditText editText, Context context){
+        final Calendar calendar = Calendar.getInstance();
+        int yy = calendar.get(Calendar.YEAR);
+        int mm = calendar.get(Calendar.MONTH);
+        int dd = calendar.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog datePicker = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                String date = String.valueOf(dayOfMonth) + "/" + String.valueOf(monthOfYear + 1)
+                        + "/" + String.valueOf(year);
+                SimpleDateFormat input = new SimpleDateFormat("dd/MM/yy");
+                SimpleDateFormat output = new SimpleDateFormat("MM/dd/yyyy");
+                try {
+                    Date oneWayTripDate = input.parse(date);
+                    String dateo = output.format(oneWayTripDate);
+                    String todayDate = todayDate();
+                    boolean checkDate = isValidPastDate(todayDate,dateo);
+                    if(checkDate) {
+                        editText.setText(dateo);
+                    }
+                    else{
+                        Toast.makeText(context, "Past date is not allowed", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, yy, mm, dd);
+        datePicker.show();
+    }
+
+    public static String todayDate(){
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        String formattedDate = df.format(c);
+        return formattedDate;
+    }
+
+    private static boolean isValidPastDate(String selectedDateStr, String myDateStr){
+        boolean futureDate = false;
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        Date dateSlctd = null;
+        Date dateMy = null;
+        try {
+            dateSlctd = sdf.parse(selectedDateStr);
+            dateMy = sdf.parse(myDateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        System.out.println("date1 : " + sdf.format(dateSlctd));
+        System.out.println("date2 : " + sdf.format(dateMy));
+
+        if (dateSlctd.compareTo(dateMy) > 0) {
+            futureDate = false;
+        } else if (dateSlctd.compareTo(dateMy) < 0) {
+            futureDate = true;
+        } else if (dateSlctd.compareTo(dateMy) == 0) {
+            futureDate = false;
+        } else {
+            System.out.println("How to get here?");
+        }
+        return futureDate;
     }
 
 }

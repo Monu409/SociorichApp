@@ -1,13 +1,19 @@
 package com.sociorich.app.activities;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -41,6 +47,8 @@ public class ShowProfileActivity extends BaseActivity{
     private TextView intrextTxt, intrestAllTxt, soCrTxt, eqCrTxt, qualityTxt;
     private ImageView deleteBnrImg,edtBnrImg,bannerImg;
     private CircleImageView profileImg;
+    private Button aboutBtn,postBtn,galryBtn,netwrkBtn;
+//    private ScrollView nestedScrollView;
 //    private Toolbar toolbar;
 //    private CollapsingToolbarLayout collapsingToolbar;
 //    private AppBarLayout appBarLayout;
@@ -56,6 +64,54 @@ public class ShowProfileActivity extends BaseActivity{
         bannerImg = findViewById(R.id.header);
         profileImg = findViewById(R.id.profile_img);
         intrestAllTxt = findViewById(R.id.intrest_all);
+
+        aboutBtn = findViewById(R.id.about_btn);
+        postBtn = findViewById(R.id.post_btn);
+        galryBtn = findViewById(R.id.gallery_btn);
+        netwrkBtn = findViewById(R.id.netwrk_btn);
+        ImageView backBtn = findViewById(R.id.back_btn);
+        backBtn.setOnClickListener(v->onBackPressed());
+
+        aboutBtn.setOnClickListener(v->{
+            Intent intent = new Intent(this,ProfileDataFragActivity.class);
+            intent.putExtra("fr_name","About us");
+            intent.putExtra("crnt_usr","othr");
+            startActivity(intent);
+        });
+        postBtn.setOnClickListener(v->{
+            Intent intent = new Intent(this,ProfileDataFragActivity.class);
+            String userIdentity = getIntent().getStringExtra("user_identity");
+            intent.putExtra("user_identity",userIdentity);
+            intent.putExtra("crnt_usr","othr");
+            intent.putExtra("fr_name","Post");
+            startActivity(intent);
+        });
+        galryBtn.setOnClickListener(v->{
+            Intent intent = new Intent(this,ProfileDataFragActivity.class);
+            String userIdentity = getIntent().getStringExtra("user_identity");
+            intent.putExtra("user_identity",userIdentity);
+            intent.putExtra("crnt_usr","othr");
+            intent.putExtra("fr_name","Gallery");
+            startActivity(intent);
+        });
+        netwrkBtn.setOnClickListener(v->{
+            String thisBtnName = netwrkBtn.getText().toString().trim();
+            if(thisBtnName.equals("Network")) {
+                Intent intent = new Intent(this, ProfileDataFragActivity.class);
+                String userIdentity = getIntent().getStringExtra("user_identity");
+                intent.putExtra("user_identity", userIdentity);
+                intent.putExtra("crnt_usr", "othr");
+                intent.putExtra("fr_name", "Network");
+                startActivity(intent);
+            }
+            else {
+
+            }
+        });
+
+
+//        nestedScrollView = findViewById(R.id.parent_scroll);
+//        nestedScrollView.setFillViewport(true);
         getProfileData();
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
@@ -64,6 +120,40 @@ public class ShowProfileActivity extends BaseActivity{
         ViewPager viewPager = findViewById(R.id.pager);
 
         viewPager.setAdapter(new SectionPagerAdapter(getSupportFragmentManager()));
+        viewPager.setOnTouchListener(new View.OnTouchListener() {
+
+            int dragthreshold = 30;
+            int downX;
+            int downY;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        downX = (int) event.getRawX();
+                        downY = (int) event.getRawY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        int distanceX = Math.abs((int) event.getRawX() - downX);
+                        int distanceY = Math.abs((int) event.getRawY() - downY);
+
+                        if (distanceY > distanceX && distanceY > dragthreshold) {
+                            viewPager.getParent().requestDisallowInterceptTouchEvent(false);
+//                            nestedScrollView.getParent().requestDisallowInterceptTouchEvent(true);
+                        } else if (distanceX > distanceY && distanceX > dragthreshold) {
+                            viewPager.getParent().requestDisallowInterceptTouchEvent(true);
+//                            nestedScrollView.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+//                        nestedScrollView.getParent().requestDisallowInterceptTouchEvent(false);
+                        viewPager.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+                return false;
+            }
+        });
         tabLayout.setupWithViewPager(viewPager);
 
 //        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.landscape);
@@ -167,6 +257,11 @@ public class ShowProfileActivity extends BaseActivity{
                                 username.setText(firstName);
                             }
 
+                            String profileType = response.getString("profileType");
+                            if(profileType.equals("ORG")){
+                                netwrkBtn.setText("Events");
+                            }
+
 
                             JSONArray interestCategories = null;
                             try{
@@ -190,26 +285,6 @@ public class ShowProfileActivity extends BaseActivity{
                             }catch (Exception e){
                                 e.getStackTrace();
                             }
-//                            JSONObject locationObj = null;
-//                            String location = "";
-//                            try {
-//                                locationObj = response.getJSONObject("location");
-//                                location = locationObj.getString("desc");
-//                            } catch (Exception e) {
-//                                e.getStackTrace();
-//                            }
-//                            if(profileDes==null){
-//                                profileDes = "No description Provided";
-//                            }
-//                            else if(wrkPlace==null){
-//                                wrkPlace = "No workplace Provided";
-//                            }
-//                            else if(location==null){
-//                                location = "Location not Provided";
-//                            }
-//                            else if(dob==null){
-//                                dob = "Date of birth not provided";
-//                            }
 
                             JSONObject bannerObj = null;
                             String bannerStr = "";

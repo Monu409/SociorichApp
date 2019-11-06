@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/l2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/l1"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp">
+
+                <EditText
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="5dp"
+                    android:maxLength="35"
+                    android:hint="Title *"
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="#000" />
+
+                <EditText
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="5dp"
+                    android:maxLength="35"
+                    android:hint="Description *"
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="#000" />
+
+                <EditText
+                    android:id="@+id/hostname"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="5dp"
+                    android:maxLength="35"
+                    android:hint="abd"
+                    android:inputType="text"
+                    android:focusable="false"
+                    android:editable="false"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="#000" />
+
+                <EditText
+                    android:id="@+id/co_host"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="5dp"
+                    android:maxLength="35"
+                    android:hint="Co-Host Name"
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="#000" />
+
+                <Spinner
+                    android:id="@+id/cause_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:spinnerMode="dropdown" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#d3d3d3"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"/>
+
+                <EditText
+                    android:id="@+id/start_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="Start Date"
+                    android:inputType="number"
+                    android:clickable="true"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="#000" />
+
+
+                <EditText
+                    android:id="@+id/end_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="End Date"
+                    android:clickable="true"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="#000" />
+
+                <EditText
+                    android:id="@+id/key_agends"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="5dp"
+                    android:maxLength="35"
+                    android:hint="Key Agenda"
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="#000" />
+
+                <EditText
+                    android:id="@+id/trgt_estimate"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="5dp"
+                    android:maxLength="35"
+                    android:hint="Target Estimate"
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="#000" />
+
+                <EditText
+                    android:id="@+id/estmt_bdgt"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="5dp"
+                    android:maxLength="35"
+                    android:hint="Estimate Budget"
+                    android:inputType="numberSigned"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="#000" />
+
+                <EditText
+                    android:id="@+id/location"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="5dp"
+                    android:maxLength="35"
+                    android:hint="Enter region location"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="#000" />
+
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/add_img"
+                    android:src="@drawable/add"
+                    android:background="@drawable/rect_view_orng_white"/>
+
+                <Button
+                    android:id="@+id/submit_button"
+                    style="?android:textAppearanceSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="16dp"
+                    android:background="#ef633f"
+                    android:onClick="submitdata"
+                    android:text="Save"
+                    android:textColor="#fff"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

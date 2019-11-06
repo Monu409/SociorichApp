@@ -118,4 +118,6 @@
 
     <string name="com_twitter_sdk_android_CONSUMER_KEY">pAK1MwEDmAfJP2e6OJeRggvav</string>
     <string name="com_twitter_sdk_android_CONSUMER_SECRET">IQesQhqmlmhfoe3iECpoWewx8Ph1IGtJMI0YqPr2qSlxska7cn</string>
+    <string name="title"><![CDATA[ <font color=#000000 size=\'28\'><b>%1$s </b></font> <font color=#7e7e7e size=\'18\'>added %2$s new photos</font>]]></string>
+
 </resources>
