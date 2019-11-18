@@ -269,6 +269,37 @@ public class ConstantMethods {
         datePicker.show();
     }
 
+    public static void selectAnyDate(EditText editText, Context context){
+        final Calendar calendar = Calendar.getInstance();
+        int yy = calendar.get(Calendar.YEAR);
+        int mm = calendar.get(Calendar.MONTH);
+        int dd = calendar.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog datePicker = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                String date = String.valueOf(dayOfMonth) + "/" + String.valueOf(monthOfYear + 1)
+                        + "/" + String.valueOf(year);
+                SimpleDateFormat input = new SimpleDateFormat("dd/MM/yy");
+                SimpleDateFormat output = new SimpleDateFormat("MM/dd/yyyy");
+                try {
+                    Date oneWayTripDate = input.parse(date);
+                    String dateo = output.format(oneWayTripDate);
+                    String todayDate = todayDate();
+//                    boolean checkDate = isValidPastDate(todayDate,dateo);
+//                    if(checkDate) {
+                        editText.setText(dateo);
+//                    }
+//                    else{
+//                        Toast.makeText(context, "Past date is not allowed", Toast.LENGTH_SHORT).show();
+//                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, yy, mm, dd);
+        datePicker.show();
+    }
+
     public static String todayDate(){
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
@@ -300,6 +331,21 @@ public class ConstantMethods {
             System.out.println("How to get here?");
         }
         return futureDate;
+    }
+    public static String changeDateFormate(String strDate, String sourceFormate, String destinyFormate) {
+        SimpleDateFormat df;
+        df = new SimpleDateFormat(sourceFormate);
+        Date date = null;
+        try {
+            date = df.parse(strDate);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        df = new SimpleDateFormat(destinyFormate);
+        return df.format(date);
+
     }
 
 }

@@ -47,6 +47,12 @@ public interface AppApis {
     String UPDATE_COMMENT = BASE_URL+"api/v1/post/comment/update";
     String EVENT_CREATE = BASE_URL+"api/v1/event/create";
     String ALL_EVENT = BASE_URL+"api/v1/event/byuser/";
+    String ORG_ABOUT_US = BASE_URL+"api/v1/user/currentuserprofile";
+    String CREATE_AWARD = BASE_URL+"api/v1/user/orgprofile";
+    String ORG_PROFILE_INTRO = BASE_URL+"api/v1/user/orgprofile";
+    String FRIEND_REQUEST = BASE_URL+"api/v1/connections/pending/my?pageno=0";
+    String FRIEND_REQUEST_ACCEPT = BASE_URL+"api/v1/conn/accept";
+    String FRIEND_REQUEST_REJECT = BASE_URL+"api/v1/conn/reject";
 
 //    String OTHER_POST = BASE_URL+"api/v1/post/byuser/"
 //    api/v1/conn/request/cancel  api/v1/post/byuser/3d6659a7-1791-4180-a0c6-f0d1d127dba0?pageno=0

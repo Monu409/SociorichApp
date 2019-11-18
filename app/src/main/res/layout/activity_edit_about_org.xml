@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="15dp"
+    android:layout_marginLeft="15dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sector"
+                android:visibility="gone"/>
+
+            <Spinner
+                android:id="@+id/sector_spnr"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
+                android:textColor="#000"
+                android:background="@drawable/rect_view_orange"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Website"
+                android:layout_marginTop="10dp"/>
+
+            <EditText
+                android:id="@+id/web_edt"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:layout_marginTop="5dp"
+                android:textColor="#000"
+                android:background="@drawable/rect_view_orange"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Office Address"
+                android:layout_marginTop="10dp"/>
+
+            <EditText
+                android:id="@+id/adres_edt"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:layout_marginTop="5dp"
+                android:textColor="#000"
+                android:background="@drawable/rect_view_orange"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Founded"
+                android:layout_marginTop="10dp"/>
+
+            <EditText
+                android:id="@+id/found_edt"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:maxLines="1"
+                android:digits="1234567890"
+                android:maxLength="4"
+                android:inputType="number"
+                android:singleLine="true"
+                android:layout_marginTop="5dp"
+                android:textColor="#000"
+                android:background="@drawable/rect_view_orange"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Team Strength"
+                android:layout_marginTop="10dp"/>
+
+            <Spinner
+                android:id="@+id/team_spnr"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:layout_marginTop="5dp"
+                android:textColor="#000"
+                android:entries="@array/country_arrays2"
+                android:background="@drawable/rect_view_orange"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:text="More Info"
+                android:gravity="center"
+                android:background="@color/colorPrimary"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:textSize="17sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mission &amp; Objective"
+                android:textColor="@color/colorPrimary"
+                android:textSize="17sp"
+                android:layout_marginTop="10dp"/>
+
+            <EditText
+                android:id="@+id/mission_edt"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:layout_marginTop="5dp"
+                android:textColor="#000"
+                android:background="@drawable/rect_view_orange"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Awards &amp; Recognitions"
+                android:textColor="@color/colorPrimary"
+                android:textSize="17sp"
+                android:layout_marginTop="10dp"/>
+
+            <EditText
+                android:id="@+id/titl_edt"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:maxLines="1"
+                android:hint="Award Title"
+                android:singleLine="true"
+                android:layout_marginTop="5dp"
+                android:textColor="#000"
+                android:background="@drawable/rect_view_orange"
+                />
+
+            <EditText
+                android:id="@+id/desc_edt"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:maxLines="1"
+                android:hint="Award Description"
+                android:singleLine="true"
+                android:layout_marginTop="5dp"
+                android:textColor="#000"
+                android:background="@drawable/rect_view_orange"
+                />
+
+            <EditText
+                android:id="@+id/date_edt"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:maxLines="1"
+                android:hint="Award Date"
+                android:singleLine="true"
+                android:layout_marginTop="5dp"
+                android:editable="false"
+                android:focusable="false"
+                android:clickable="true"
+                android:textColor="#000"
+                android:background="@drawable/rect_view_orange"
+                />
+
+            <Button
+                android:id="@+id/save_btn"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Save"
+                android:layout_marginTop="10dp"
+                android:textColor="#ffffff"
+                android:background="@color/colorPrimary"/>
+        </LinearLayout>
+    </ScrollView>
+
+
+
+
+</LinearLayout>

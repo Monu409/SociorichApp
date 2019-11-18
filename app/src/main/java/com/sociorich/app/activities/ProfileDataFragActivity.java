@@ -9,8 +9,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.sociorich.app.R;
 import com.sociorich.app.app_utils.ConstantMethods;
+import com.sociorich.app.fragments.AboutForOrgAcc;
 import com.sociorich.app.fragments.AboutForShowProfile;
 import com.sociorich.app.fragments.AboutFragment;
+import com.sociorich.app.fragments.AwardFragment;
 import com.sociorich.app.fragments.GalleryFragment;
 import com.sociorich.app.fragments.GalleryFragmentOther;
 import com.sociorich.app.fragments.NetworkFragment;
@@ -25,14 +27,19 @@ public class ProfileDataFragActivity extends BaseActivity{
         Intent intent = getIntent();
         String frName = intent.getStringExtra("fr_name");
         String crntUsr = intent.getStringExtra("crnt_usr");
+        String accountType = intent.getStringExtra("account_type");
         ConstantMethods.setTitleAndBack(this,frName);
         switch (frName){
             case "About us":
-                if(crntUsr.equals("me")){
-                    loadFragment(new AboutFragment());
+                if(accountType.equals("ORG")){
+                    loadFragment(new AboutForOrgAcc());
                 }
                 else {
-                    loadFragment(new AboutForShowProfile());
+                    if (crntUsr.equals("me")) {
+                        loadFragment(new AboutFragment());
+                    } else {
+                        loadFragment(new AboutForShowProfile());
+                    }
                 }
                 break;
             case "Post":
@@ -59,9 +66,15 @@ public class ProfileDataFragActivity extends BaseActivity{
                     loadFragment(new UserNetworkOther());
                 }
                 break;
-
+            case "More Info":
+                if(crntUsr.equals("me")){
+                    loadFragment(new AwardFragment());
+                }
+                else {
+                    loadFragment(new AwardFragment());
+                }
+                break;
         }
-
     }
 
     @Override

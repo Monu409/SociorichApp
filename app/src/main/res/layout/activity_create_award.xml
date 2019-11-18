@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/titl_edt"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:paddingLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rect_view_orange"
+        android:hint="Award Title"
+        android:inputType="text"
+        android:maxLines="1"
+        android:layout_below="@id/email_edt"
+        />
+
+    <EditText
+        android:id="@+id/desc_edt"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:paddingLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rect_view_orange"
+        android:hint="Award Description"
+        android:inputType="text"
+        android:maxLines="1"
+        android:layout_below="@id/email_edt"
+        />
+
+    <EditText
+        android:id="@+id/date_edt"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:paddingLeft="5dp"
+        android:editable="false"
+        android:focusable="false"
+        android:clickable="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rect_view_orange"
+        android:hint="Select Date"
+        android:inputType="textPassword"
+        android:maxLines="1"
+        android:layout_below="@id/email_edt"
+        />
+    <Button
+        android:id="@+id/submit_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@+id/forgot_txt"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorPrimary"
+        android:text="Add"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/white" />
+
+</LinearLayout>

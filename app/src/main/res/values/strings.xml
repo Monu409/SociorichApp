@@ -46,6 +46,18 @@
         <item>10001 + Members</item>
 
     </string-array>
+
+    <string-array name="country_arrays2">
+        <item>1-10 Members</item>
+        <item>11-50 Members</item>
+        <item>51-200 Members</item>
+        <item>201-500 Members</item>
+        <item>501-1000 Members</item>
+        <item>1001-5000 Members</item>
+        <item>5001-10000 Members</item>
+        <item>10001 + Members</item>
+
+    </string-array>
     <string name="pref_title_social_recommendations">Enable social recommendations</string>
     <string name="pref_description_social_recommendations">Recommendations for people to contact
         based on your message history

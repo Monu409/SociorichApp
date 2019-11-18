@@ -100,7 +100,9 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
         int width = size.x;
         int height = size.y;
         int sst = width - 20;
-        dashBordHolder.catTxt.setText(dashModals.get(i).getCatNameStr());
+        String catName = dashModals.get(i).getCatNameStr();
+        setCatIcon(catName,dashBordHolder.catImg);
+        dashBordHolder.catTxt.setText(catName);
         dashBordHolder.unameTxt.setText(dashModals.get(i).getUserNameStr());
         dashBordHolder.dateTxt.setText(dashModals.get(i).getDateStr());
         String descStr = dashModals.get(i).getDesStr();
@@ -627,8 +629,7 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
         RelativeLayout rewadrLay1,shareView;
         private LinearLayout rwrdBtn;
         View blankView;
-
-
+        ImageView catImg;
 
         public DashBordHolder(@NonNull View itemView) {
             super(itemView);
@@ -664,6 +665,7 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
             shareView = itemView.findViewById(R.id.share_view);
             sharedTxt = itemView.findViewById(R.id.shared_txt);
             blankView = itemView.findViewById(R.id.blank_view);
+            catImg = itemView.findViewById(R.id.cat_icon);
         }
     }
 
@@ -960,28 +962,89 @@ public class DashbordAdapter extends RecyclerView.Adapter<DashbordAdapter.DashBo
     }
 
 
-
-//    View.OnClickListener galleryLstnr = new View.OnClickListener() {
-//        @Override
-//        public void onClick(View view) {
-//            String loginStatus = ConstantMethods.getStringPreference("login_status", context);
-//            if (loginStatus.equals("login")) {
-//                Intent intent = new Intent(context, FullImageActivity.class);
-//                ArrayList<String> stringArrayList = (ArrayList<String>)dashModals.get(i).getMediaList();
-//                intent.putExtra("all_images",stringArrayList);
-//                intent.putExtra("header_name","Media Post");
-//                intent.putExtra("image_position",0);
-//                context.startActivity(intent);
-//            }
-//            else{
-//                context.startActivity(new Intent(context, LoginActivity.class));
-//            }
-//        }
-//    };
-
     public static boolean isImageFile(String path) {
         String mimeType = URLConnection.guessContentTypeFromName(path);
         return mimeType != null && mimeType.startsWith("image");
+    }
+
+    private void setCatIcon(String catName, ImageView imageView){
+        if(catName==null){
+            catName = "Books";
+        }
+        switch (catName){
+            case "Animals":
+               imageView.setImageResource(R.drawable.animals);
+               break;
+            case "Community & Development":
+                   imageView.setImageResource(R.drawable.community_developement);
+                   break;
+            case "Discrimination":
+                   imageView.setImageResource(R.drawable.discrimination);
+                   break;
+            case "Disasters":
+                   imageView.setImageResource(R.drawable.disasters);
+                   break;
+            case "Education":
+                   imageView.setImageResource(R.drawable.education);
+                   break;
+            case "Environment":
+                   imageView.setImageResource(R.drawable.environment);
+                   break;
+            case "Health":
+                   imageView.setImageResource(R.drawable.health);
+                   break;
+            case "Homelessness+Poverty":
+                   imageView.setImageResource(R.drawable.homelessness_poverty);
+                   break;
+            case "Spiritual":
+                   imageView.setImageResource(R.drawable.spiritual);
+                   break;
+            case "Other":
+                   imageView.setImageResource(R.drawable.other);
+                   break;
+            case "Books":
+                   imageView.setImageResource(R.drawable.books);
+                   break;
+            case "Medicine":
+                   imageView.setImageResource(R.drawable.medicine);
+                   break;
+            case "Old toys":
+                   imageView.setImageResource(R.drawable.old_toys);
+                   break;
+            case "Grocery and food items":
+                   imageView.setImageResource(R.drawable.clothes);
+                   break;
+            case "Others":
+                   imageView.setImageResource(R.drawable.other);
+                   break;
+            case "Good deeds of Unknown":
+                   imageView.setImageResource(R.drawable.good_deeds_o_unknown);
+                   break;
+            case "Social News":
+                   imageView.setImageResource(R.drawable.social_news);
+                   break;
+            case "Social Discussions":
+                   imageView.setImageResource(R.drawable.social_discussions);
+                   break;
+            case "Social Suggestions":
+                   imageView.setImageResource(R.drawable.social_suggestions);
+                   break;
+            case "Social Tasks":
+                   imageView.setImageResource(R.drawable.social_tasks);
+                   break;
+            case "Acid attack victim":
+                   imageView.setImageResource(R.drawable.acid_atteck);
+                   break;
+            default:
+                   imageView.setImageResource(R.drawable.medicine);
+                   break;
+//            case "Animals":
+//                   imageView.setImageResource(R.drawable.animals);
+//                   break;
+//            case "Animals":
+//                   imageView.setImageResource(R.drawable.animals);
+//                   break;
+            }
     }
 
 }

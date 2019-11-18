@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static com.sociorich.app.app_utils.AppApis.EVENT_CREATE;
+import static com.sociorich.app.app_utils.CommonVariables.POST_CATEGORY_PROFILE_VALUES;
 
 public class CreateEventActivity extends BaseActivity {
     private EditText title,desc,uname,cohost,strtDate,endDate,keyAgnda,trgtEstmt,estmtBdgt,location;
@@ -80,11 +81,11 @@ public class CreateEventActivity extends BaseActivity {
 
         String userId = ConstantMethods.getUserID(this);
 
-        String selectedVal = catSpnr.getSelectedItem().toString();
-        String catId = DashboardActivity.catMap.get(selectedVal);
+        int selectedVal = catSpnr.getSelectedItemPosition();
+        String catId = POST_CATEGORY_PROFILE_VALUES[selectedVal];
 
-        String sDateForServer = getFormatedDate(strtdtStr,"MM/dd/yyyy","yyyy-MM-dd");
-        String eDateForServer = getFormatedDate(enddtStr,"MM/dd/yyyy","yyyy-MM-dd");
+        String sDateForServer = ConstantMethods.changeDateFormate(strtdtStr,"MM/dd/yyyy","yyyy-MM-dd");
+        String eDateForServer = ConstantMethods.changeDateFormate(enddtStr,"MM/dd/yyyy","yyyy-MM-dd");
 
         if(titlStr.isEmpty()||desStr.isEmpty()||unameStr.isEmpty()||cohostStr.isEmpty()||strtdtStr.isEmpty()||
                 enddtStr.isEmpty()||keyagndStr.isEmpty()||trgtEstiStr.isEmpty()||estibdgtStr.isEmpty()||locationStr.isEmpty()){
@@ -155,6 +156,7 @@ public class CreateEventActivity extends BaseActivity {
                     public void onResponse(JSONObject response) {
                         Log.e("response",""+response);
                         Toast.makeText(CreateEventActivity.this, "Event created succefully", Toast.LENGTH_SHORT).show();
+                        onBackPressed();
                     }
 
                     @Override
@@ -165,19 +167,4 @@ public class CreateEventActivity extends BaseActivity {
                 });
     }
 
-    public static String getFormatedDate(String strDate, String sourceFormate, String destinyFormate) {
-        SimpleDateFormat df;
-        df = new SimpleDateFormat(sourceFormate);
-        Date date = null;
-        try {
-            date = df.parse(strDate);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        df = new SimpleDateFormat(destinyFormate);
-        return df.format(date);
-
-    }
 }

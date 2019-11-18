@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -95,8 +96,10 @@ public class ProfileUpActivity extends AppCompatActivity {
     private JSONArray intrstCatArr = null;
     private String intrestCatAllValues = "";
     List<String> catIdForIntrest = new ArrayList<>();
-    private Button aboutBtn,postBtn,galryBtn,netwrkBtn;
-
+    private Button aboutBtn,postBtn,galryBtn,netwrkBtn,awardRecBtn;
+    private String profileType;
+    public static JSONArray recogArr;
+    public static String missionStatement;
 
 
     @Override
@@ -136,11 +139,13 @@ public class ProfileUpActivity extends AppCompatActivity {
         postBtn = findViewById(R.id.post_btn);
         galryBtn = findViewById(R.id.gallery_btn);
         netwrkBtn = findViewById(R.id.netwrk_btn);
+        awardRecBtn = findViewById(R.id.award_btn);
 
         aboutBtn.setOnClickListener(v->{
             Intent intent = new Intent(this,ProfileDataFragActivity.class);
             intent.putExtra("fr_name","About us");
             intent.putExtra("crnt_usr","me");
+            intent.putExtra("account_type",profileType);
             startActivity(intent);
         });
         postBtn.setOnClickListener(v->{
@@ -171,6 +176,14 @@ public class ProfileUpActivity extends AppCompatActivity {
                 Intent intent = new Intent(this,EventsAvtivity.class);
                 startActivity(intent);
             }
+        });
+        awardRecBtn.setOnClickListener(v->{
+            Intent intent = new Intent(this,ProfileDataFragActivity.class);
+//            String userIdentity = getIntent().getStringExtra("user_identity");
+//            intent.putExtra("user_identity",userIdentity);
+            intent.putExtra("crnt_usr","me");
+            intent.putExtra("fr_name","More Info");
+            startActivity(intent);
         });
 
 
@@ -533,9 +546,17 @@ public class ProfileUpActivity extends AppCompatActivity {
                                     TextView username = findViewById(R.id.user_name);
                                     username.setText(firstName);
                                 }
-                                String profileType = response.getString("profileType");
+                                profileType = response.getString("profileType");
                                 if(profileType.equals("ORG")){
                                     netwrkBtn.setText("Events");
+                                    awardRecBtn.setVisibility(View.VISIBLE);
+                                    try {
+                                        recogArr = response.getJSONArray("recognitions");
+                                        missionStatement = response.getString("missionStatement");
+                                    }
+                                    catch (Exception e){
+                                        recogArr = new JSONArray();
+                                    }
                                 }
                                 interestCategories = response.getJSONArray("interestCategories");
                                 intrstCatArr = interestCategories;

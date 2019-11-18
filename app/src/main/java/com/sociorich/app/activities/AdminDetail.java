@@ -1,6 +1,8 @@
 package com.sociorich.app.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
 
 import com.sociorich.app.R;
 import com.sociorich.app.app_utils.ConstantMethods;
@@ -88,14 +92,6 @@ static String orgname_p,orgtype_p,orgfselect_p,orgadress_p,orgyear_p,orgwebsite_
             pDialog.show();
         }
         protected String doInBackground(String... urls) {
-//            String url = "{\"password\":\""+adminpassword_tv+"\",\"profile\":{\"displayName\":\"" + orgname_p + "\"," +
-//                    "\"profileDesc\":\"\"" + aboutOrgnStr + "\",\"regNum\":\"\"" + orgnRnumStr
-//                    + "\"\",\"website\":\"" + orgwebsite_p + "\",\"industryId\":\"" + "org-industry-id-2" + "\",\"otherOrgTypeId\":\"" + "null"
-//                    + "\",\"supportedCauses\":[],\"employeeSize\":\"" + orgtstren_p + "\",\"location\":{\"desc\":\"" + orgadress_p + "\"}" +
-//                    ",\"foundationYear\":\"" + orgyear_p + "\",\"profileDesc\":\"" + orgtstren_p + "\",\"orgType\":\"" + "CSR" + "\",\"admin\"" +
-//                    ":{\"name\":\"" + adminname_tv + "\",\"email\":\"" + adminemail_tv + "\",\"phoneNo\":\"" + "null" + "\",\"designation\":\""
-//                    + "null" + "\"}" +
-//                    ",\"referIdentity\":\"" + "undefined" + "\",\"regNum\":\""+""+"\"}}";
 
             JSONObject completeObj = new JSONObject();
             JSONObject profileJson = new JSONObject();
@@ -131,35 +127,6 @@ static String orgname_p,orgtype_p,orgfselect_p,orgadress_p,orgyear_p,orgwebsite_
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-//            String url = "{\n" +
-//                    "  \"password\": \""+adminpassword_tv+",\n" +
-//                    "  \"profile\": {\n" +
-//                    "    \"displayName\": \"\" + orgname_p + \"\",\n" +
-//                    "    \"website\": \"https://google.com\",\n" +
-//                    "    \"industryId\": \"org-industry-id-2\",\n" +
-//                    "    \"otherOrgTypeId\": null,\n" +
-//                    "    \"supportedCauses\": [\n" +
-//                    "      \n" +
-//                    "    ],\n" +
-//                    "    \"employeeSize\": \"51-200\",\n" +
-//                    "    \"location\": {\n" +
-//                    "      \"desc\": \"otty tyfffff uttttt\"\n" +
-//                    "    },\n" +
-//                    "    \"foundationYear\": 1900,\n" +
-//                    "    \"profileDesc\": \"this is verjhjh bvghSAGHD   BVGHASVD NASVHDN  VHASBDN N\",\n" +
-//                    "    \"orgType\": \"CSR\",\n" +
-//                    "    \"admin\": {\n" +
-//                    "      \"name\": \"MONU\",\n" +
-//                    "      \"email\": \"monu19@gmail.com\",\n" +
-//                    "      \"phoneNo\": null,\n" +
-//                    "      \"designation\": null\n" +
-//                    "    },\n" +
-//                    "    \"regNum\": \"\",\n" +
-//                    "    \"referIdentity\": \"undefined\"\n" +
-//                    "  }\n" +
-//                    "}";
-
 
             //  System.out.print("JSON-DATA"+url1);
             InputStream inputStream = null;
@@ -206,23 +173,11 @@ static String orgname_p,orgtype_p,orgfselect_p,orgadress_p,orgyear_p,orgwebsite_
                     Toast.makeText(getApplicationContext(),"This email id is already register",Toast.LENGTH_LONG).show();
                 }
                 else {
-                    String identity=mainObject.getString("identity");
-                    Intent intent = new Intent(AdminDetail.this, NewUser_OTP.class);
-                    intent.putExtra("userid", identity);
-                    startActivity(intent);
+                    confirmEmail(AdminDetail.this);
                 }
-
-               /* json1 = mainObject.getString("StrMessage");
-                OrderID = mainObject.getInt("OrderID");*/
             } catch (Exception e) {
                 Log.d("InputStream1", e.getLocalizedMessage());
             }
-
-
-/*
-            Toast.makeText(getApplicationContext(),"OrderID-1 : "+OrderID,Toast.LENGTH_LONG).show();
-            System.out.println("json1"+json1+result);
-            System.out.println("OrderID"+OrderID);*/
 
             pDialog.dismiss();
         }
@@ -237,5 +192,32 @@ static String orgname_p,orgtype_p,orgfselect_p,orgadress_p,orgyear_p,orgwebsite_
         inputStream.close();
         return result;
 
+    }
+
+    private void confirmEmail(Context context) {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+        builder1.setTitle("Login now");
+        builder1.setMessage("An Email has been sent to your email id\nPlease Confirm.");
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(AdminDetail.this, LoginActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+        builder1.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
 }

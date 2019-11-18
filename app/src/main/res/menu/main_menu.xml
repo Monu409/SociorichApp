@@ -38,16 +38,21 @@
         android:title="Search"/>
 
     <item
-        android:id="@+id/badge"
-        android:actionLayout="@layout/feed_update_count"
-        android:icon="@drawable/ttnotification"
+        android:id="@+id/frnd_rqst"
+        android:icon="@drawable/add_firend"
         app:showAsAction="always"
         android:title="notification"/>
 
     <item
+        android:id="@+id/badge"
+        android:icon="@drawable/ttnotification"
+        app:showAsAction="always"
+        android:title="notification"/>
+
+
+    <item
         android:id="@+id/badge1"
         android:icon="@drawable/user_top_profile"
-        app:showAsAction="always"
         android:title="notification">
 
     </item>

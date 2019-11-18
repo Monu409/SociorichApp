@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#d3d3d3">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/rect_white_view"
+        android:layout_margin="10dp">
+
+        <com.sociorich.app.app_utils.CircleImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/user_img"
+            android:src="@drawable/profile"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="name"
+            android:id="@+id/name_txt"
+            android:textColor="@color/colorPrimary"
+            android:layout_toRightOf="@+id/user_img"
+            android:textSize="17sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="name"
+            android:id="@+id/mutual_txt"
+            android:layout_below="@+id/name_txt"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/user_img"/>
+
+        <TextView
+            android:layout_width="90dp"
+            android:layout_height="35dp"
+            android:text="Accept"
+            android:id="@+id/accept_txt"
+            android:textColor="@color/colorPrimary"
+            android:textSize="17sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/rect_view_orng_white"
+            android:layout_below="@+id/mutual_txt"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@+id/user_img"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="90dp"
+            android:layout_height="35dp"
+            android:text="Ignore"
+            android:id="@+id/ignore_txt"
+            android:textColor="@color/colorPrimary"
+            android:textSize="17sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/accept_txt"
+            android:background="@drawable/rect_view_orng_white"
+            android:layout_below="@+id/mutual_txt"
+            android:gravity="center"/>
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>

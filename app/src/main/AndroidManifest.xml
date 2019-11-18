@@ -106,6 +106,8 @@
         <activity android:name=".activities.ProfileDataFragActivity"/>
         <activity android:name=".activities.EventsAvtivity"/>
         <activity android:name=".activities.CreateEventActivity"/>
+        <activity android:name=".activities.EditAboutOrgActivity"/>
+        <activity android:name=".activities.FriendRequestActivity"/>
         <!--<service-->
             <!--android:name=".app_utils.SyncService"-->
             <!--android:enabled="true"-->

@@ -302,7 +302,9 @@ public class DashboardActivity extends AppCompatActivity {
                                 String desStr = postJsonObj.getString("desc");
                                 String postOwnerUserId = postJsonObj.getString("ownerUserId");
                                 JSONObject profilePicObj = null;
-                                dashModal.setCategoryId(catId);
+                                if(!catId.equals("null")) {
+                                    dashModal.setCategoryId(catId);
+                                }
                                 try{
                                     profilePicObj = uProfileJsonObj.getJSONObject("profilePic");
                                 }catch(JSONException je){
@@ -421,8 +423,10 @@ public class DashboardActivity extends AppCompatActivity {
                                 if (profilePicObj != null) {
                                     profilePicUrl = profilePicObj.getString("url");
                                 }
-                                String catName = catMap.get(catId);
-                                dashModal.setCatNameStr(catName);
+                                if(!catId.equals("null")) {
+                                    String catName = catMap.get(catId);
+                                    dashModal.setCatNameStr(catName);
+                                }
                                 dashModal.setUserNameStr(displayName);
                                 dashModal.setDateStr(theDate);
                                 dashModal.setPostDataStr(title);
@@ -542,6 +546,9 @@ public class DashboardActivity extends AppCompatActivity {
                 return true;
             case R.id.settings_menu:
                 startActivity(new Intent(this,SettingsActivity.class));
+                return true;
+            case R.id.frnd_rqst:
+                startActivity(new Intent(this,FriendRequestActivity.class));
                 return true;
             case R.id.help_guide:
                 Intent intent = new Intent(this, AboutUsActivity.class);

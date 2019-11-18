@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.androidnetworking.AndroidNetworking;
@@ -36,12 +38,18 @@ public class EventsAvtivity extends BaseActivity {
         eventList = findViewById(R.id.evnt_list);
         eventList.setLayoutManager(new LinearLayoutManager(this));
         createEventView.setOnClickListener(v->startActivity(new Intent(this,CreateEventActivity.class)));
-        getEventData();
+//        getEventData();
     }
 
     @Override
     protected int getLayoutResourceId() {
         return R.layout.activity_events;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getEventData();
     }
 
     private void getEventData() {
@@ -57,25 +65,30 @@ public class EventsAvtivity extends BaseActivity {
                     public void onResponse(JSONArray response) {
                         Log.e("test", "" + response);
                         List<EventModel> eventModels = new ArrayList<>();
-                        for(int i=0;i<response.length();i++) {
-                            try {
-                                JSONObject jsonObject = response.getJSONObject(i);
-                                JSONObject childObj = jsonObject.getJSONObject("post");
-                                String title = childObj.getString("title");
-                                String desc = childObj.getString("desc");
-                                String startDate = childObj.getString("startDate");
-                                String formatedDate = ConstantMethods.getDateAsWeb(startDate);
-                                EventModel eventModel = new EventModel();
-                                eventModel.setDate(formatedDate);
-                                eventModel.setDesc(desc);
-                                eventModel.setTitle(title);
-                                eventModels.add(eventModel);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                        if(response.length()==0){
+                            Toast.makeText(EventsAvtivity.this, "No data found", Toast.LENGTH_SHORT).show();
                         }
-                        EventAdapter eventAdapter = new EventAdapter(eventModels,EventsAvtivity.this);
-                        eventList.setAdapter(eventAdapter);
+                        else {
+                            for (int i = 0; i < response.length(); i++) {
+                                try {
+                                    JSONObject jsonObject = response.getJSONObject(i);
+                                    JSONObject childObj = jsonObject.getJSONObject("post");
+                                    String title = childObj.getString("title");
+                                    String desc = childObj.getString("desc");
+                                    String startDate = childObj.getString("startDate");
+                                    String formatedDate = ConstantMethods.getDateAsWeb(startDate);
+                                    EventModel eventModel = new EventModel();
+                                    eventModel.setDate(formatedDate);
+                                    eventModel.setDesc(desc);
+                                    eventModel.setTitle(title);
+                                    eventModels.add(eventModel);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            EventAdapter eventAdapter = new EventAdapter(eventModels, EventsAvtivity.this);
+                            eventList.setAdapter(eventAdapter);
+                        }
                     }
 
                     @Override
